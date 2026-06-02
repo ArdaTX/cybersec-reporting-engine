@@ -1,0 +1,272 @@
+name: ad-assessment-report
+version: 1.0.0
+category: offensive-security
+description: >
+  Generates comprehensive Active Directory security assessment reports from BloodHound,
+  PingCastle, Certipy, Impacket, NetExec, and other AD tool outputs. Produces executive
+  summaries, attack-path graphs, critical findings mapped to MITRE ATT&CK, and phased
+  hardening roadmaps at senior AD consultant quality.
+
+tags:
+  - active-directory
+  - ad
+  - kerberos
+  - bloodhound
+  - dcsync
+  - kerberoasting
+  - ntlm
+  - ldap
+  - domain-controller
+  - acl-abuse
+  - delegation
+  - certipy
+  - adcs
+  - pingcastle
+  - sharpHound
+  - tier-model
+  - as-rep-roasting
+  - smb-signing
+  - gpo
+  - laps
+  - golden-ticket
+  - silver-ticket
+  - sid-history
+  - cross-forest
+  - esa
+  - privileged-access
+
+workflows:
+  - name: full-assessment
+    description: Complete AD security posture assessment using BloodHound, PingCastle, Certipy, and Impacket
+    steps:
+      - ingest_raw_data
+      - parse_and_normalize
+      - attack_path_analysis
+      - kerberos_and_authentication_analysis
+      - acl_and_delegation_analysis
+      - adcs_assessment
+      - tier_model_and_architecture_review
+      - generate_hardening_recommendations
+      - assemble_final_report
+
+  - name: kerberos-focused
+    description: Targeted Kerberos configuration audit including roasting, delegation, and ticket analysis
+    steps:
+      - ingest_kerberos_data
+      - analyze_roasting_targets
+      - audit_delegation_configuration
+      - review_ticket_encryption
+      - assess_krbtgt_hygiene
+      - generate_focused_report
+
+  - name: attack-path-review
+    description: BloodHound-only attack path analysis focusing on privilege escalation chains
+    steps:
+      - ingest_bloodhound_json
+      - build_graph_model
+      - identify_dangerous_acl_chains
+      - map_escalation_paths_to_tier0
+      - score_and_prioritize_paths
+      - generate_attack_path_report
+
+examples:
+  - name: full-ad-assessment-contoso
+    description: Complete assessment of a single-domain enterprise forest revealing critical ACL abuse, weak Kerberos configuration, and missing Tier Model segmentation
+    input:
+      engagement:
+        client_name: "Contoso Ltd."
+        assessment_date: "2026-05-15"
+        assessor: "CyberSec Consulting"
+        scope: "contoso.com (single forest, single domain)"
+        methodology: "BloodHound CE, PingCastle, Certipy, Impacket, NetExec"
+      raw_data:
+        bloodhound_json: "./data/bloodhound_contoso.json"
+        pingcastle_xml: "./data/pingcastle_contoso.xml"
+        certipy_json: "./data/certipy_contoso.json"
+        impacket_kerberoast: "./data/kerberoastable_users.txt"
+        netexec_smb: "./data/smb_signing.txt"
+      domain_context:
+        domain_count: 1
+        total_users: 4523
+        total_computers: 1230
+        dc_list: ["DC01.contoso.com", "DC02.contoso.com"]
+        forest_functional_level: "2016"
+    expected_outputs:
+      - "12 critical findings including GenericAll on Domain Admins"
+      - "38 attack paths to Domain Admins (12% of users affected)"
+      - "15 Kerberoastable accounts with Tier 0 access"
+      - "4 unconstrained delegation hosts on Tier 0"
+      - "2 ESC1-vulnerable certificate templates"
+      - "Overall Risk Score: 82/100 (Critical)"
+
+  - name: kerberos-assessment-fabrikam
+    description: Focused Kerberos audit identifying stale krbtgt, roastable accounts, weak encryption, and delegation misconfigurations
+    input:
+      engagement:
+        client_name: "Fabrikam Inc."
+        assessment_date: "2026-04-20"
+        scope: "Kerberos configuration audit for fabrikam.local"
+        methodology: "Impacket, Certipy, BloodHound CE (Kerberos-focused)"
+      raw_data:
+        impacket_kerberoast: "./data/fabrikam_kerberoast.txt"
+        impacket_asrep: "./data/fabrikam_asrep.txt"
+        certipy_json: "./data/fabrikam_certipy.json"
+      domain_context:
+        domain_count: 1
+        total_users: 2800
+        dc_list: ["DC01.fabrikam.local"]
+    expected_outputs:
+      - "Krbtgt password age: 720 days (Critical)"
+      - "23 Kerberoastable accounts, 4 with Domain Admin equivalence"
+      - "7 AS-REP roastable accounts"
+      - "12 service accounts using RC4-HMAC only"
+      - "Risk Score: 75/100 (High)"
+
+output_formats:
+  - format: markdown
+    description: Full structured report with Mermaid diagrams, tables, and severity badges
+    use_case: "Deliverable to client, executive briefing"
+  - format: json
+    description: Machine-readable findings array for SIEM/SOAR ingestion
+    use_case: "Integration with ticketing systems, automated remediation tracking"
+  - format: html
+    description: Self-contained HTML report with styled diagrams and interactive finding navigation
+    use_case: "Browser-based review, offline distribution"
+  - format: pdf
+    description: Print-optimized PDF with page numbering, table of contents, and appendices
+    use_case: "Formal deliverable, compliance evidence"
+
+prompt: |
+  You are a **Senior Active Directory Security Consultant** with over 15 years of experience assessing Fortune 500 and government Active Directory environments. Your expertise encompasses the full spectrum of AD security, from architectural design through offensive security testing to incident response.
+
+  ## Core Competencies
+
+  You possess deep, practical knowledge of:
+
+  ### Authentication Protocols
+  - **Kerberos**: You understand the full TGT/TGS exchange, PAC validation, S4U2self/S4U2proxy extensions, and the cryptographic underpinnings of each ticket type. You can identify and explain Kerberoasting (T1558.003), AS-REP roasting (T1558.004), Golden Ticket (T1558.001), Silver Ticket (T1558.002), and Diamond Ticket attacks.
+  - **NTLM**: You know NTLMv1/v2 differences, Net-NTLMv1/v2 relay implications, SMB signing requirements, LDAP signing, and channel binding tokens.
+  - **LDAP**: You understand LDAP signing, channel binding, and how ACLs evaluated at the directory level translate to attack surface.
+
+  ### Attack Path Analysis
+  - You are fluent in BloodHound graph theory — you can trace multi-hop attack paths through ACL abuse (GenericAll, WriteDACL, WriteOwner, AddMember, ForceChangePassword, AddKeyCredentialLink), group nesting, GPO linking, delegation chains, and cross-forest trusts.
+  - You understand the concept of "Tier 0 equivalency" and can identify when a non-DA account has effective control over Tier 0 assets.
+
+  ### AD CS Attack Surface
+  - You can enumerate certificate templates for all 13 ESC abuse scenarios (ESC1–ESC13), prioritize them by exploitation likelihood, and map certificate-based privilege escalation to domain compromise.
+
+  ### Delegation Models
+  - You understand unconstrained delegation (TGT theft), constrained delegation (S4U2proxy), resource-based constrained delegation (RBCD), and protocol transition nuances. You can identify delegation chains that grant Tier 0 access from low-privilege starting points.
+
+  ### Microsoft Security Best Practices
+  - Tier Model / ESAE architecture (Tier 0, 1, 2 separation)
+  - Protected Users group and its Kerberos/NTLM implications
+  - LAPS deployment and coverage analysis
+  - Authentication Policy Silos and Authentication Policies
+  - Privileged Access Workstation (PAW) design
+  - krbtgt rotation procedures and dual-reset methodology
+
+  ### Regulatory Alignment
+  - NIST SP 800-53 control families (AC, IA, AU, CM, SI)
+  - MITRE ATT&CK Enterprise matrix
+  - CIS Benchmarks for Windows Server and AD
+
+  ## Report Generation Standards
+
+  When generating an AD assessment report, you MUST:
+
+  1. **Prioritize by Exploitability** — Rank findings by whether they represent a currently exploitable path, not by theoretical risk. If a path requires local admin on a jump box, note that constraint.
+
+  2. **Provide Actionable Remediation** — Every finding must include specific PowerShell commands, Group Policy settings, or architectural changes. Avoid vague recommendations like "improve monitoring" or "review permissions." State: "Run this command: Remove-ADGroupMember -Identity 'Domain Admins' -Members 'svc-badaccount'"
+
+  3. **Contextualize Severity** — A Kerberoastable account with no path to Tier 0 is Medium. A Kerberoastable account with GenericAll on a Domain Admin is Critical. Explain the escalation chain.
+
+  4. **Graph Everything** — Every attack path over 2 hops must be visualized as a Mermaid diagram. Color-code nodes by tier and edges by relationship type.
+
+  5. **Speak to Different Audiences** — The Executive Summary must be understandable by a CISO. The Findings section must satisfy a Domain Admin. The Appendices must serve the SOC analyst implementing detections.
+
+  6. **Cross-Reference Standards** — Every finding maps to MITRE ATT&CK and NIST SP 800-53. The appendix provides complete mapping tables.
+
+  7. **Tell the Story** — The report should narrate the attacker's journey: "A standard domain user can escalate to Domain Admin in 3 hops by exploiting a GenericAll relationship on the HelpDesk group, which has DCSync rights on the domain."
+
+  8. **Flag Quick Wins** — Identify findings that can be remediated in under 4 hours with no downtime (e.g., adding a user to Protected Users, removing a single ACL, enabling a GPO setting). These boost client confidence.
+
+  9. **Validate Your Own Analysis** — Cross-check BloodHound paths against manual ACL review. Note when tools disagree and explain why.
+
+  10. **Include Defense Recommendations** — For each attack path, suggest the detection: "Deploy Sigma rule X to detect Event ID 4662 for non-DC replication requests" or "Monitor Event ID 4769 for RC4-encrypted TGS requests to high-value SPNs."
+
+validation_rules:
+  - name: severity_must_be_justified
+    description: Every finding severity must include explicit justification linking to potential business impact and exploitation feasibility
+    check: finding.severity and finding.description and finding.impact
+    fail_message: "Severity '{severity}' for finding '{title}' lacks justification in description or impact fields"
+
+  - name: mitre_technique_required
+    description: Every finding must reference at least one MITRE ATT&CK technique ID
+    check: finding.mitre_technique matches pattern 'T\d{4}(\.\d{3})?'
+    fail_message: "Finding '{title}' missing valid MITRE ATT&CK technique reference"
+
+  - name: evidence_required
+    description: Every critical and high-severity finding must include raw tool output as evidence
+    check: finding.severity in ['critical', 'high'] implies finding.evidence is not empty
+    fail_message: "High-severity finding '{title}' missing evidence from tool output"
+
+  - name: remediation_must_be_specific
+    description: Remediation steps must include executable commands or specific configuration changes, not vague advice
+    check: finding.remediation.commands length > 0 and any command contains recognizable tool reference
+    fail_message: "Finding '{title}' remediation contains no executable commands"
+
+  - name: attack_path_edge_validity
+    description: BloodHound-derived attack paths must not include invalid edge transitions (e.g., unconstrained delegation without TGT access)
+    check: all edges in attack_path.chain are valid transitions for the source/target object types
+    fail_message: "Attack path '{path_id}' contains an invalid edge transition"
+
+  - name: tier0_escalation_bumps_severity
+    description: Any finding involving a path to Tier 0 assets must be at minimum High severity
+    check: if finding affects Tier0 then finding.severity >= 'high'
+    fail_message: "Finding '{title}' affects Tier 0 but severity is only '{severity}'"
+
+  - name: krbtgt_age_check
+    description: If krbtgt password age exceeds 180 days, a critical finding must be generated
+    check: if krbtgt_age > 180 then exists finding with category='kerberos' and severity='critical' referencing krbtgt
+    fail_message: "krbtgt password is {krbtgt_age} days old but no critical finding generated"
+
+  - name: no_finding_without_category
+    description: Every finding must be assigned one of the defined AD finding categories
+    check: finding.category in ['acl_abuse', 'kerberos', 'delegation', 'trusts', 'adcs', 'gpo', 'password_policy', 'tier_model', 'stale_objects', 'authentication', 'dcsync', 'laps', 'credential_dumping', 'persistence']
+    fail_message: "Finding '{title}' has invalid or missing category '{category}'"
+
+  - name: delegation_must_identify_protocol_transition
+    description: Constrained delegation findings must indicate whether protocol transition (S4U2self) is enabled
+    check: if finding.category == 'delegation' and 'constrained' in finding.description then 'protocol_transition' in finding.tags
+    fail_message: "Constrained delegation finding '{title}' does not specify protocol transition status"
+
+  - name: cross_forest_must_state_sid_filtering
+    description: Cross-forest trust findings must state whether SID filtering is enabled and its security implication
+    check: if finding.category == 'trusts' and 'cross-forest' in finding.description then 'sid_filtering' in finding.tags
+    fail_message: "Cross-forest trust finding '{title}' does not state SID filtering status"
+
+  - name: mermaid_diagram_renders
+    description: All Mermaid attack path diagrams use only valid Mermaid syntax
+    check: mermaid_diagram passes Mermaid syntax validation (no unclosed brackets, valid node IDs, valid edge syntax)
+    fail_message: "Mermaid diagram in attack path '{path_id}' contains syntax errors"
+
+  - name: executive_summary_max_1_page
+    description: The executive summary should not exceed what fits on a single printed page
+    check: executive_summary word count < 500
+    fail_message: "Executive summary exceeds 500 words ({word_count} words)"
+
+  - name: finding_id_format
+    description: All finding IDs must follow the format AD-{category}-{NNN}
+    check: finding.id matches pattern 'AD-[a-z_]+-\d{3}'
+    fail_message: "Finding ID '{id}' does not match format AD-{category}-{NNN}"
+
+  - name: nist_800_53_mapping
+    description: Every finding must map to at least one NIST SP 800-53 control
+    check: finding.nist_800_53 is not empty
+    fail_message: "Finding '{title}' missing NIST SP 800-53 control mapping"
+
+  - name: trust_risk_classification
+    description: Trust relationships must be classified by risk level based on direction, type, SID filtering, and selective authentication
+    check: all trusts have risk_score and risk_level assigned
+    fail_message: "Trust relationship '{source}->{target}' missing risk classification"

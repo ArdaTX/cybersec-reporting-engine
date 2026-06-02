@@ -1,0 +1,370 @@
+# CIS Controls Knowledge Base Reference
+# CyberSec Reporting Engine
+# Covers CIS Controls v8 and CIS Benchmarks
+
+metadata:
+  organization: Center for Internet Security (CIS)
+  url: https://www.cisecurity.org
+  version: v8
+  last_updated: "2025-01"
+
+cis_controls_v8:
+  - id: 01
+    name: Inventory and Control of Enterprise Assets
+    asset_type: Devices
+    safeguard_count: 5
+    description: Actively manage all hardware assets for complete visibility
+    safeguards:
+      - "1.1: Establish and Maintain Detailed Enterprise Asset Inventory"
+      - "1.2: Address Unauthorized Assets"
+      - "1.3: Utilize an Active Discovery Tool"
+      - "1.4: Use Dynamic Host Configuration Protocol (DHCP) Logging"
+      - "1.5: Use a Passive Asset Discovery Tool"
+
+  - id: 02
+    name: Inventory and Control of Software Assets
+    asset_type: Applications
+    safeguard_count: 7
+    description: Actively manage all software on the network
+    safeguards:
+      - "2.1: Establish and Maintain a Software Inventory"
+      - "2.2: Ensure Authorized Software is Currently Supported"
+      - "2.3: Address Unauthorized Software"
+      - "2.4: Utilize Automated Software Inventory Tools"
+      - "2.5: Allowlist Authorized Software"
+      - "2.6: Allowlist Authorized Libraries"
+      - "2.7: Allowlist Authorized Scripts"
+
+  - id: 03
+    name: Data Protection
+    asset_type: Data
+    safeguard_count: 14
+    description: Develop processes and controls to protect sensitive data
+    safeguards:
+      - "3.1: Establish and Maintain a Data Management Process"
+      - "3.2: Establish and Maintain a Data Inventory"
+      - "3.3: Configure Data Access Control Lists"
+      - "3.4: Enforce Data Retention"
+      - "3.5: Securely Dispose of Data"
+      - "3.6: Encrypt Data at Rest"
+      - "3.7: Establish and Maintain a Data Classification Scheme"
+      - "3.8: Document Data Flows"
+      - "3.9: Encrypt Data on Removable Media"
+      - "3.10: Encrypt Sensitive Data in Transit"
+      - "3.11: Encrypt Sensitive Data at Rest"
+      - "3.12: Segment Data Processing and Storage Based on Sensitivity"
+      - "3.13: Deploy a Data Loss Prevention Solution"
+      - "3.14: Log Sensitive Data Access"
+
+  - id: 04
+    name: Secure Configuration of Enterprise Assets and Software
+    asset_type: Devices
+    safeguard_count: 12
+    description: Establish and maintain secure configurations for endpoints
+    safeguards:
+      - "4.1: Establish and Maintain a Secure Configuration Process"
+      - "4.2: Establish and Maintain a Secure Configuration Process for Network Infrastructure"
+      - "4.3: Configure Automatic Session Locking on Enterprise Assets"
+      - "4.4: Implement and Manage a Firewall on Servers"
+      - "4.5: Implement and Manage a Firewall on End-User Devices"
+      - "4.6: Securely Manage Enterprise Assets and Software"
+      - "4.7: Manage Default Accounts on Enterprise Assets and Software"
+      - "4.8: Uninstall or Disable Unnecessary Services on Enterprise Assets"
+      - "4.9: Configure Trusted DNS Servers"
+      - "4.10: Enforce Automatic Device Lockout on Portable End-User Devices"
+      - "4.11: Enforce Remote Wipe Capability on Portable End-User Devices"
+      - "4.12: Separate Enterprise Workspaces on Mobile End-User Devices"
+
+  - id: 05
+    name: Account Management
+    asset_type: Users
+    safeguard_count: 6
+    description: Manage the lifecycle of user and system accounts
+    safeguards:
+      - "5.1: Establish and Maintain an Inventory of Accounts"
+      - "5.2: Use Unique Passwords"
+      - "5.3: Disable Dormant Accounts"
+      - "5.4: Restrict Administrator Privileges to Dedicated Administrator Accounts"
+      - "5.5: Establish and Maintain an Inventory of Service Accounts"
+      - "5.6: Centralize Account Management"
+
+  - id: 06
+    name: Access Control Management
+    asset_type: Users
+    safeguard_count: 8
+    description: Use processes and tools to assign and manage authorization
+    safeguards:
+      - "6.1: Establish an Access Granting Process"
+      - "6.2: Establish an Access Revoking Process"
+      - "6.3: Require MFA for Externally-Exposed Applications"
+      - "6.4: Require MFA for Remote Network Access"
+      - "6.5: Require MFA for Administrative Access"
+      - "6.6: Establish and Maintain an Inventory of Authentication and Authorization Systems"
+      - "6.7: Centralize Access Control"
+      - "6.8: Define and Maintain Role-Based Access Control"
+
+  - id: 07
+    name: Continuous Vulnerability Management
+    asset_type: Applications
+    safeguard_count: 7
+    description: Develop a plan to continuously assess and track vulnerabilities
+    safeguards:
+      - "7.1: Establish and Maintain a Vulnerability Management Process"
+      - "7.2: Establish and Maintain a Remediation Process"
+      - "7.3: Perform Automated Operating System Patch Management"
+      - "7.4: Perform Automated Application Patch Management"
+      - "7.5: Perform Automated Vulnerability Scans of Internal Enterprise Assets"
+      - "7.6: Perform Automated Vulnerability Scans of Externally-Exposed Enterprise Assets"
+      - "7.7: Remediate Detected Vulnerabilities"
+
+  - id: 08
+    name: Audit Log Management
+    asset_type: Data
+    safeguard_count: 12
+    description: Collect, alert, review, and retain audit logs
+    safeguards:
+      - "8.1: Establish and Maintain an Audit Log Management Process"
+      - "8.2: Collect Audit Logs"
+      - "8.3: Ensure Adequate Audit Log Storage"
+      - "8.4: Standardize Time Synchronization"
+      - "8.5: Collect Detailed Audit Logs"
+      - "8.6: Collect DNS Query Audit Logs"
+      - "8.7: Collect URL Request Audit Logs"
+      - "8.8: Collect Command-Line Audit Logs"
+      - "8.9: Centralize Audit Logs"
+      - "8.10: Retain Audit Logs"
+      - "8.11: Conduct Audit Log Reviews"
+      - "8.12: Collect Service Provider Logs"
+
+  - id: 09
+    name: Email and Web Browser Protections
+    asset_type: Network
+    safeguard_count: 7
+    description: Improve defenses against email and web-based threats
+    safeguards:
+      - "9.1: Ensure Use of Only Fully Supported Browsers and Email Clients"
+      - "9.2: Use DNS Filtering Services"
+      - "9.3: Maintain and Enforce Network-Based URL Filters"
+      - "9.4: Restrict Unnecessary or Unauthorized Browser and Email Client Extensions"
+      - "9.5: Implement DMARC"
+      - "9.6: Block Unnecessary File Types"
+      - "9.7: Deploy and Maintain Email Server Anti-Malware Protections"
+
+  - id: 10
+    name: Malware Defenses
+    asset_type: Network
+    safeguard_count: 7
+    description: Prevent or control the installation and spread of malware
+    safeguards:
+      - "10.1: Deploy and Maintain Anti-Malware Software"
+      - "10.2: Configure Automatic Anti-Malware Signature Updates"
+      - "10.3: Disable Autorun and Autoplay"
+      - "10.4: Configure Automatic Anti-Malware Scanning of Removable Media"
+      - "10.5: Enable Anti-Exploitation Features"
+      - "10.6: Centrally Manage Anti-Malware Software"
+      - "10.7: Use Behavior-Based Anti-Malware Software"
+
+  - id: 11
+    name: Data Recovery
+    asset_type: Data
+    safeguard_count: 5
+    description: Establish and maintain data recovery practices
+    safeguards:
+      - "11.1: Establish and Maintain a Data Recovery Process"
+      - "11.2: Perform Automated Backups"
+      - "11.3: Protect Recovery Data"
+      - "11.4: Establish and Maintain an Isolated Instance of Recovery Data"
+      - "11.5: Test Data Recovery"
+
+  - id: 12
+    name: Network Infrastructure Management
+    asset_type: Network
+    safeguard_count: 8
+    description: Actively manage network devices to prevent attacks
+    safeguards:
+      - "12.1: Ensure Network Infrastructure is Up-to-Date"
+      - "12.2: Establish and Maintain a Secure Network Architecture"
+      - "12.3: Securely Manage Network Infrastructure"
+      - "12.4: Establish and Maintain Architecture Diagram(s)"
+      - "12.5: Centralize Network Authentication, Authorization, and Auditing (AAA)"
+      - "12.6: Use of Secure Network Management and Communication Protocols"
+      - "12.7: Ensure Remote Devices Utilize a VPN and are Connecting to an Enterprise's AAA Infrastructure"
+      - "12.8: Establish and Maintain Dedicated Computing Resources for Administrative Work"
+
+  - id: 13
+    name: Network Monitoring and Defense
+    asset_type: Network
+    safeguard_count: 11
+    description: Operate processes and tools to establish and maintain comprehensive network monitoring
+    safeguards:
+      - "13.1: Centralize Security Event Alerting"
+      - "13.2: Deploy a Host-Based Intrusion Detection Solution"
+      - "13.3: Deploy a Network Intrusion Detection Solution"
+      - "13.4: Perform Traffic Filtering Between Network Segments"
+      - "13.5: Manage Access Control for Remote Assets"
+      - "13.6: Collect Network Traffic Flow Logs"
+      - "13.7: Deploy a Host-Based Intrusion Prevention Solution"
+      - "13.8: Deploy a Network Intrusion Prevention Solution"
+      - "13.9: Deploy Port-Level Access Control"
+      - "13.10: Perform Application Layer Filtering"
+      - "13.11: Tune Security Event Alerting Thresholds"
+
+  - id: 14
+    name: Security Awareness and Skills Training
+    asset_type: Users
+    safeguard_count: 9
+    description: Establish and maintain a security awareness program
+    safeguards:
+      - "14.1: Establish and Maintain a Security Awareness Program"
+      - "14.2: Train Workforce Members to Recognize Social Engineering Attacks"
+      - "14.3: Train Workforce Members on Authentication Best Practices"
+      - "14.4: Train Workforce on Data Handling Best Practices"
+      - "14.5: Train Workforce Members on Causes of Unintentional Data Exposure"
+      - "14.6: Train Workforce Members on Recognizing and Reporting Security Incidents"
+      - "14.7: Train Workforce on How to Identify and Report if Their Enterprise's Assets are Missing Security Updates"
+      - "14.8: Train Workforce on the Dangers of Connecting to and Transmitting Enterprise Data Over Insecure Networks"
+      - "14.9: Conduct Role-Specific Security Awareness and Skills Training"
+
+  - id: 15
+    name: Service Provider Management
+    asset_type: Users
+    safeguard_count: 7
+    description: Manage service provider risk
+    safeguards:
+      - "15.1: Establish and Maintain an Inventory of Service Providers"
+      - "15.2: Establish and Maintain a Service Provider Management Policy"
+      - "15.3: Classify Service Providers"
+      - "15.4: Ensure Service Provider Contracts Include Security Requirements"
+      - "15.5: Assess Service Providers"
+      - "15.6: Monitor Service Providers"
+      - "15.7: Securely Decommission Service Providers"
+
+  - id: 16
+    name: Application Software Security
+    asset_type: Applications
+    safeguard_count: 14
+    description: Manage security lifecycle of in-house developed and acquired software
+    safeguards:
+      - "16.1: Establish and Maintain a Secure Application Development Process"
+      - "16.2: Establish and Maintain a Process to Accept and Address Software Vulnerabilities"
+      - "16.3: Perform Root Cause Analysis on Security Vulnerabilities"
+      - "16.4: Establish and Manage an Inventory of Third-Party Software Components"
+      - "16.5: Establish and Maintain a Secure Application Development Process"
+      - "16.6: Establish and Maintain a Severity Rating System and Process for Application Vulnerabilities"
+      - "16.7: Use Standard Hardening Configuration Templates for Application Infrastructure"
+      - "16.8: Separate Production and Non-Production Systems"
+      - "16.9: Train Developers in Application Security Concepts and Secure Coding"
+      - "16.10: Apply Secure Design Principles in Application Architectures"
+      - "16.11: Leverage Vetted Modules or Services for Application Security Components"
+      - "16.12: Implement Code-Level Security Checks"
+      - "16.13: Conduct Application Penetration Testing"
+      - "16.14: Conduct Threat Modeling"
+
+  - id: 17
+    name: Incident Response Management
+    asset_type: Users
+    safeguard_count: 9
+    description: Establish and maintain an incident response program
+    safeguards:
+      - "17.1: Designate Personnel to Manage Incident Handling"
+      - "17.2: Establish and Maintain Contact Information for Reporting Security Incidents"
+      - "17.3: Establish and Maintain an Enterprise Process for Reporting Incidents"
+      - "17.4: Establish and Maintain an Incident Response Process"
+      - "17.5: Assign Key Roles and Responsibilities"
+      - "17.6: Define Mechanisms for Communicating During Incident Response"
+      - "17.7: Conduct Routine Incident Response Exercises"
+      - "17.8: Conduct Post-Incident Reviews"
+      - "17.9: Establish and Maintain Security Incident Thresholds"
+
+  - id: 18
+    name: Penetration Testing
+    asset_type: Network
+    safeguard_count: 5
+    description: Test the effectiveness and resiliency of security controls
+    safeguards:
+      - "18.1: Establish and Maintain a Penetration Testing Program"
+      - "18.2: Perform Periodic External Penetration Tests"
+      - "18.3: Remediate Penetration Test Findings"
+      - "18.4: Validate Security Measures"
+      - "18.5: Perform Periodic Internal Penetration Tests"
+
+cis_benchmarks_coverage:
+  cloud:
+    aws:
+      profile: CIS Amazon Web Services Foundations Benchmark
+      version: v3.0.0
+      categories: [IAM, Logging, Monitoring, Networking]
+      key_sections:
+        - Identity and Access Management (AWS Config Rules, CloudTrail, IAM policies)
+        - Storage (S3 Block Public Access, bucket encryption, versioning)
+        - Logging (CloudTrail multi-region, S3 access logs, VPC flow logs)
+        - Monitoring (GuardDuty, Security Hub, Config, CloudWatch alarms)
+        - Networking (VPC flow logs, network ACLs, security groups)
+    azure:
+      profile: CIS Microsoft Azure Foundations Benchmark
+      version: v2.1.0
+      categories: [Identity, Storage, Compute, Networking, Monitoring]
+      key_sections:
+        - Identity and Access Management (MFA, PIM, conditional access)
+        - Microsoft Defender for Cloud (Azure Defender plans, Azure Policy)
+        - Storage Accounts (secure transfer, encryption, network rules)
+        - SQL Databases (auditing, threat detection, TDE, firewall rules)
+        - Key Vault (soft delete, purge protection, logging)
+        - Networking (NSG flow logs, DDoS Protection, WAF)
+    gcp:
+      profile: CIS Google Cloud Platform Foundation Benchmark
+      version: v2.0.0
+      categories: [IAM, Logging, Networking, Compute, Storage, BigQuery]
+      key_sections:
+        - Identity and Access Management (service account keys, primitive roles)
+        - Logging and Monitoring (audit logs, log sinks, alerting policies)
+        - Virtual Machines (shielded VMs, OS Login, serial port access)
+        - Cloud Storage (uniform bucket-level access, retention policies)
+        - Cloud SQL (SSL enforcement, automated backups)
+        - BigQuery (dataset encryption, authorized views)
+        - Kubernetes Engine (private clusters, shielded nodes, network policies)
+
+  operating_systems:
+    windows:
+      - CIS Microsoft Windows 11 Enterprise Benchmark
+      - CIS Microsoft Windows 10 Enterprise Benchmark
+      - CIS Microsoft Windows Server 2022 Benchmark
+      - CIS Microsoft Windows Server 2019 Benchmark
+    linux:
+      - CIS Red Hat Enterprise Linux 9 Benchmark
+      - CIS Red Hat Enterprise Linux 8 Benchmark
+      - CIS Ubuntu Linux 22.04 LTS Benchmark
+      - CIS Ubuntu Linux 20.04 LTS Benchmark
+      - CIS Debian Linux 12 Benchmark
+      - CIS Amazon Linux 2023 Benchmark
+      - CIS CentOS Linux 8 Benchmark
+
+  containers:
+    kubernetes:
+      name: CIS Kubernetes Benchmark v1.7.0
+      key_areas:
+        - Master Node Configuration
+        - Worker Node Configuration
+        - etcd Security
+        - Control Plane Components
+        - Pod Security Standards
+        - RBAC and Service Accounts
+        - Network Policies
+        - Secrets Management
+        - Image Security and Admission Control
+    docker:
+      name: CIS Docker Benchmark v1.8.0
+      key_areas:
+        - Host Configuration
+        - Docker Daemon Configuration
+        - Docker Daemon Configuration Files
+        - Container Images and Build Files
+        - Container Runtime
+        - Docker Security Operations
+        - Docker Swarm Configuration
+
+  databases:
+    - CIS Oracle Database 19c Benchmark
+    - CIS Microsoft SQL Server 2022 Benchmark
+    - CIS PostgreSQL 16 Benchmark
+    - CIS MySQL Enterprise Edition 8.0 Benchmark

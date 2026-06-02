@@ -1,0 +1,247 @@
+# Defensive Security Methodologies Reference
+# CyberSec Reporting Engine
+# Covers Defense-in-Depth, Detection Engineering, Security Architecture
+
+metadata:
+  domain: Defensive Security
+  frameworks:
+    - Defense-in-Depth (layered security model)
+    - Detection Engineering Lifecycle
+    - Security Architecture (SABSA, TOGAF Security)
+    - MITRE D3FEND (defensive countermeasures)
+  last_updated: "2025-01"
+
+defense_in_depth:
+  name: Defense-in-Depth Architecture
+  description: Layered security model ensuring no single point of failure in security controls
+
+  layers:
+    - layer: 1
+      name: Physical Security
+      controls:
+        - Access control systems (badge readers, biometrics)
+        - CCTV and surveillance monitoring
+        - Mantrap and airlock entry points
+        - Rack and cage locks in data centers
+        - Environmental monitoring (temperature, humidity, water)
+      assessment_questions:
+        - Are all critical facilities protected by multi-factor physical access?
+        - Is physical access logged and audited?
+        - Are visitor escorts enforced?
+
+    - layer: 2
+      name: Identity and Access Management
+      controls:
+        - Multi-factor authentication (FIDO2, TOTP, Push)
+        - Single sign-on (SSO) with federation
+        - Role-based access control (RBAC)
+        - Privileged Access Management (PAM)
+        - Just-in-time (JIT) access provisioning
+        - Regular access reviews and certifications
+      assessment_questions:
+        - Is MFA enforced for all remote access and admin accounts?
+        - Are privileged accounts vaulted with automatic rotation?
+        - Is access removed within 24 hours of termination?
+
+    - layer: 3
+      name: Perimeter Security
+      controls:
+        - Next-generation firewall (NGFW) with layer 7 inspection
+        - Intrusion Prevention System (IPS/IDS)
+        - Web Application Firewall (WAF)
+        - DDoS mitigation
+        - DMZ network segmentation
+        - VPN with MFA enforcement
+      assessment_questions:
+        - Are egress firewall rules as restrictive as ingress?
+        - Is NGFW SSL/TLS inspection enabled?
+        - Are IDS/IPS signatures updated automatically?
+
+    - layer: 4
+      name: Network Security
+      controls:
+        - Network segmentation (VLANs, microsegmentation)
+        - Network Access Control (NAC / 802.1X)
+        - Internal firewalls between trust zones
+        - East-west traffic monitoring
+        - Encrypted protocols (TLS 1.3, SSHv2, IPsec)
+        - DNS security (DNSSEC, DNS filtering)
+      assessment_questions:
+        - Is lateral movement restricted between segments?
+        - Are management interfaces on separate VLANs?
+        - Is all internal traffic monitored?
+
+    - layer: 5
+      name: Endpoint Security
+      controls:
+        - Endpoint Detection and Response (EDR)
+        - Host-based firewall with default-deny inbound
+        - Application whitelisting (AppLocker, WDAC)
+        - Full disk encryption (BitLocker, LUKS)
+        - USB device control policy
+        - Host intrusion detection/prevention (HIDS/HIPS)
+      assessment_questions:
+        - Is EDR deployed on 100% of endpoints?
+        - Are endpoints hardened per CIS benchmarks?
+        - Is tamper protection enabled on security tools?
+
+    - layer: 6
+      name: Application Security
+      controls:
+        - Secure SDLC with security gates
+        - SAST in CI/CD pipeline (Semgrep, CodeQL)
+        - DAST for deployed applications (ZAP, Burp)
+        - Software Composition Analysis (SCA) / SBOM
+        - Container image scanning (Trivy, Grype)
+        - Runtime application self-protection (RASP)
+      assessment_questions:
+        - Is security testing automated in CI/CD?
+        - Are all dependencies tracked in an SBOM?
+        - Are CVEs remediated within SLA timelines?
+
+    - layer: 7
+      name: Data Security
+      controls:
+        - Data classification and labeling
+        - Data Loss Prevention (DLP) - network and endpoint
+        - Encryption at rest (AES-256) and in transit (TLS 1.3)
+        - Database activity monitoring
+        - Rights management (IRM/DRM)
+        - Secure data disposal and media sanitization
+      assessment_questions:
+        - Is sensitive data classified and labeled?
+        - Are DLP policies enforced for PII, PHI, PCI?
+        - Is encryption key management centralized (KMS/HSM)?
+
+    - layer: 8
+      name: Security Monitoring and Operations
+      controls:
+        - Centralized log management (SIEM)
+        - Security Orchestration, Automation and Response (SOAR)
+        - 24/7 Security Operations Center (SOC)
+        - Threat intelligence integration (TIP)
+        - User and Entity Behavior Analytics (UEBA)
+        - Incident response playbooks and runbooks
+      assessment_questions:
+        - Is all critical log data ingested into SIEM?
+        - Are detection rules mapped to MITRE ATT&CK?
+        - Is Mean Time to Detect (MTTD) tracked?
+
+detection_engineering:
+  name: Detection Engineering Lifecycle
+  description: Continuous cycle of building, testing, and improving security detections
+
+  phases:
+    - phase: 1
+      name: Requirements Gathering
+      activities:
+        - Review threat intelligence (APT TTPs, trending attack patterns)
+        - Analyze past incident data for detection gaps
+        - Review MITRE ATT&CK coverage gaps
+        - Prioritize techniques by risk to organization
+        - Map detection requirements to available log sources
+      deliverables:
+        - Detection gap analysis report
+        - Prioritized detection backlog
+        - Log source coverage matrix
+
+    - phase: 2
+      name: Detection Development
+      activities:
+        - Write Sigma rules for cross-platform portability
+        - Convert Sigma to platform-specific queries (Splunk SPL, Elastic KQL, Sentinel KQL)
+        - Develop correlation rules for multi-stage attacks
+        - Implement threshold-based and anomaly-based rules
+        - Add enrichment and context to alerts
+      deliverables:
+        - Sigma rules in version control
+        - Platform-specific detection content
+        - Documentation for each rule (purpose, ATT&CK mapping, false positive notes)
+
+    - phase: 3
+      name: Validation and Testing
+      activities:
+        - Execute Atomic Red Team tests against new rules
+        - Run purple team exercises for critical detections
+        - Verify detection across multiple log sources
+        - Tune thresholds to minimize false positives
+        - Validate alert routing and notification
+      deliverables:
+        - Atomic test results
+        - Detection coverage ATT&CK Navigator heatmap
+        - False positive baseline report
+
+    - phase: 4
+      name: Deployment
+      activities:
+        - Promote rules from dev to production
+        - Enable alerting with proper severity classification
+        - Configure alert enrichment and deduplication
+        - Document SOP/runbook for each alert in SOAR
+        - Train SOC analysts on new detections
+      deliverables:
+        - Deployed detection rules
+        - Alert severity matrix
+        - Incident response runbooks
+
+    - phase: 5
+      name: Operations and Tuning
+      activities:
+        - Monitor rule performance (false positive rate)
+        - Review and tune thresholds monthly
+        - Deprecate rules with low signal-to-noise
+        - Update rules for new adversary TTPs
+        - Track Mean Time to Detect (MTTD)
+      deliverables:
+        - Monthly detection coverage report
+        - Rule tuning log
+        - ATT&CK coverage improvement tracking
+
+security_architecture:
+  name: Security Architecture Framework
+  methods:
+    - name: SABSA (Sherwood Applied Business Security Architecture)
+      layers:
+        - Business View: Contextual security architecture aligned to business goals
+        - Architect's View: Conceptual security architecture
+        - Designer's View: Logical security architecture
+        - Builder's View: Physical security architecture
+        - Tradesman's View: Component security architecture
+        - Service Manager's View: Operational security architecture
+
+    - name: TOGAF Security Architecture
+      phases:
+        - Architecture Vision
+        - Business Architecture
+        - Information Systems Architecture
+        - Technology Architecture
+        - Opportunities and Solutions
+        - Migration Planning
+        - Implementation Governance
+        - Architecture Change Management
+
+    - name: CISA Zero Trust Maturity Model
+      pillars: [Identity, Device, Network, Application/Workload, Data]
+      maturity_levels: [Traditional, Initial, Advanced, Optimal]
+
+  architecture_principles:
+    - Principle of Least Privilege
+    - Defense in Depth (no single point of failure)
+    - Secure by Default and by Design
+    - Fail Secure (default deny)
+    - Economy of Mechanism (keep it simple)
+    - Complete Mediation (check every access)
+    - Open Design (avoid security through obscurity)
+    - Separation of Privilege (multi-party control)
+    - Psychological Acceptability (usable security)
+    - Work Factor (raise attacker cost)
+
+  architecture_review_checklist:
+    - Is the network segmented into trust zones?
+    - Are all data flows documented and justified?
+    - Is authentication centralized (IdP/SSO)?
+    - Are encryption standards up to date (TLS 1.3, AES-256)?
+    - Are secrets stored in a secrets manager (not in config/code)?
+    - Is logging comprehensive and centralized?
+    - Are backup and DR plans tested?
+    - Are termination points secured (API gateway, reverse proxy)?

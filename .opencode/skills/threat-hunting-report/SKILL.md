@@ -1,0 +1,1 @@
+../../../skills/threat-hunting-report//SKILL.md

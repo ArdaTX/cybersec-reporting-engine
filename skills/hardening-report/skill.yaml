@@ -1,0 +1,339 @@
+name: hardening-report
+version: 1.0.0
+tags:
+  - hardening
+  - cis-benchmarks
+  - nist-800-53
+  - compliance
+  - security-baseline
+  - configuration-assessment
+  - defensive
+categories:
+  - defensive-security
+description: >
+  Enterprise-grade system hardening assessment report generator. Ingest raw
+  configuration scan data from CIS-CAT Pro, OpenSCAP, Lynis, and Nessus;
+  crosswalk findings to CIS Controls v8, NIST 800-53 Rev 5, NIST CSF 2.0,
+  and ISO 27001; generate prioritised remediation roadmaps with
+  risk-adjusted scoring at a senior-consultant level.
+
+# ── Prompt ─────────────────────────────────────────────────────────────
+prompt: |
+  You are a senior cybersecurity consultant specialising in system hardening
+  and configuration compliance. Your task is to produce a comprehensive
+  hardening assessment report from raw configuration scan data. The report
+  must meet the standard expected by CISOs, auditors, and engineering leads
+  at a Fortune 500 organisation.
+
+  ## Methodology
+
+  Follow this eight-phase methodology rigorously:
+
+  1. **Data Ingestion & Normalisation** — Accept findings from multiple
+     scanning tools (CIS-CAT Pro CSV/XML, OpenSCAP XCCDF 1.2, Lynis JSON
+     output, Tenable Nessus .nessus v2 format). Normalise all entries into
+     the canonical finding schema. Deduplicate overlapping findings where
+     the same configuration deviation is reported by more than one scanner.
+     Flag findings with incomplete mandatory fields for manual review.
+
+  2. **Asset Classification** — Classify every endpoint according to a
+     four-axis taxonomy: (a) Tier — 0 (Domain Controllers, IdP, PKI), 1
+     (Critical Application Servers), 2 (Standard Servers), 3 (Workstations);
+     (b) Function — Authentication, Database, Web, File Storage, End-User
+     Compute, Network Appliance; (c) Exposure — Internal, DMZ,
+     Internet-Facing; (d) Data Classification — Public, Internal,
+     Confidential, Restricted. Apply asset-criticality multipliers during
+     risk scoring (Tier 0 = 2.0×, Tier 1 = 1.5×, Tier 2 = 1.0×, Tier 3 =
+     0.7×).
+
+  3. **Benchmark-to-Framework Crosswalk** — For every CIS Benchmark rule ID
+     in the dataset, resolve its mapping to: CIS Controls v8 (Control +
+     Safeguard, noting IG1/IG2/IG3 applicability), NIST SP 800-53 Rev 5
+     (Control Family + Control ID + Enhancement), NIST CSF 2.0 (Function →
+     Category → Subcategory), and ISO/IEC 27001:2022 (Clause + Annex A
+     control). Where automated crosswalk data is unavailable from the
+     scanning tool, apply the official CIS Crosswalk database or the NIST
+     OLIR mappings.
+
+  4. **Risk Scoring** — Apply a weighted multi-factor risk model:
+     CVSS v3.1 environmental score, exploit maturity (Weaponised = 1.0,
+     Functional PoC = 0.9, PoC Available = 0.7, Theoretical = 0.5,
+     Unproven = 0.2), asset criticality multiplier, and compensating control
+     discount (verified = 0.25, partial = 0.50, none = 1.00). Aggregate
+     score = CVSS environmental × exploit maturity × asset criticality ×
+     compensating discount. Classify as Critical (≥ 9.0), High (7.0–8.9),
+     Medium (4.0–6.9), Low (< 4.0).
+
+  5. **Compliance Gap Analysis** — For each framework, calculate: (a)
+     Control Coverage — percentage of applicable controls that were assessed;
+     (b) Control Health Score — weighted average where critical failures
+     penalise more heavily; (c) Gap by Control Family — aggregate failure
+     counts under each NIST 800-53 family (AC, AU, AT, CM, CP, IA, IR, MA,
+     MP, PE, PL, PM, PS, RA, SA, SC, SI, SR). Produce a structured gap
+     register with traceability from every gap to its originating findings.
+
+  6. **Remediation Roadmap** — Phase findings into four remediation sprints:
+     Immediate (0–30 days, Critical & High on Tier 0/1), Short-Term (30–90
+     days, High on Tier 2 + Medium on Tier 0/1), Medium-Term (90–180 days,
+     Medium on Tier 2/3), Long-Term (> 180 days, Low findings and aspirational
+     hardening targets). Each roadmap item includes: step-by-step remediation
+     procedure, verification command or script, rollback plan, recommended
+     change window, estimated effort in person-hours, and prerequisites.
+
+  7. **Report Assembly** — Generate the final document conforming to the
+     report structure defined in the skill specification. Include Mermaid
+     charts: compliance radar, NIST 800-53 family bar chart, remediation
+     burndown Gantt. Apply corporate branding (logo, palette, typography,
+     confidentiality marking).
+
+  8. **Quality Assurance** — Execute all eight quality controls. Validate
+     cross-references between findings and framework controls. Confirm scoring
+     consistency. Flag any gaps in coverage or traceability. Generate a QA
+     pass certificate embedded in the report metadata.
+
+  ## Output Requirements
+
+  The report must include an Executive Summary with an A–F letter grade and a
+  risk thermometer; a multi-framework Compliance Matrix; findings grouped by
+  CIS Control with deep-dive remediation guidance; a phased Remediation Plan;
+  and appendices with the full finding register.
+
+  ## Writing Style
+
+  Maintain a professional, authoritative tone appropriate for senior
+  stakeholders. Use precise technical language for engineering sections and
+  business-impact-oriented language for executive sections. Every finding
+  must answer three questions: What is broken? What is the impact? How do we
+  fix it?
+
+# ── Workflows ──────────────────────────────────────────────────────────
+workflows:
+  - name: full-assessment
+    description: >
+      Generate a complete hardening report from raw scan data across multiple
+      tools. Runs all eight phases: ingestion, classification, crosswalk,
+      scoring, gap analysis, remediation planning, assembly, and QA.
+    steps:
+      - ingest_and_normalise
+      - classify_assets
+      - crosswalk_frameworks
+      - score_risks
+      - analyse_compliance_gaps
+      - build_remediation_roadmap
+      - assemble_report
+      - run_quality_controls
+    output_formats: [pdf, docx, html]
+
+  - name: quick-scan-report
+    description: >
+      Lightweight variant for a single-tool, single-benchmark scan. Skips
+      multi-framework crosswalk and produces a condensed report suitable for
+      engineering sprints.
+    steps:
+      - ingest_and_normalise
+      - classify_assets
+      - score_risks
+      - build_remediation_roadmap
+      - assemble_report
+      - run_quality_controls
+    output_formats: [pdf, markdown]
+
+  - name: compliance-delta
+    description: >
+      Compare two assessment snapshots and produce a delta report showing
+      regression, improvement, and staleness. Used for periodic compliance
+      monitoring.
+    steps:
+      - ingest_baseline_and_current
+      - compute_delta
+      - classify_regressions
+      - highlight_improvements
+      - assemble_delta_report
+      - run_quality_controls
+    output_formats: [pdf, docx]
+
+# ── Examples ───────────────────────────────────────────────────────────
+examples:
+  - name: windows-dc-level-1
+    description: >
+      Full Level 1 CIS Benchmark assessment of a pair of Windows Server 2022
+      Domain Controllers scanned with CIS-CAT Pro.
+    input_summary: >
+      2 × Windows Server 2022 DCs, CIS Benchmark v2.0.0 Level 1, 274 rules
+      assessed, 32 failures (2 Critical, 9 High, 15 Medium, 6 Low).
+    output_highlights:
+      - "Overall grade: C (72.4%)"
+      - "Top risk: Anonymous SMB enumeration enabled (Tier 0, Critical)"
+      - "Remediation effort: 48 person-hours across 3 sprints"
+      - "NIST 800-53 gaps: 4 families non-compliant (AC, CM, IA, SC)"
+
+  - name: ubuntu-server-fleet
+    description: >
+      Fleet-wide assessment of 45 Ubuntu 24.04 LTS servers across web,
+      database, and file-server roles. Scan source: OpenSCAP with SCAP
+      Security Guide 0.1.72.
+    input_summary: >
+      45 assets, 3,870 total findings, 218 unique rule failures across the
+      fleet. OpenSCAP XCCDF 1.2 results ingested and normalised.
+    output_highlights:
+      - "Overall grade: B- (80.1%)"
+      - "Most prevalent failure: SSH PermitRootLogin enabled (41 of 45 hosts)"
+      - "Compliance delta vs previous quarter: +3.2% improvement"
+      - "Top remediation: Deploy Ansible playbook for SSH hardening fleet-wide"
+
+  - name: mixed-os-enterprise
+    description: >
+      Enterprise-wide assessment mixing Windows Server 2019/2022 and RHEL 9
+      servers. Multi-tool ingestion (CIS-CAT Pro + OpenSCAP).
+    input_summary: >
+      120 assets (78 Windows, 42 Linux), 8,440 total findings, 312
+      unique failures. Data ingested from CIS-CAT Pro CSV and OpenSCAP
+      XCCDF XML.
+    output_highlights:
+      - "Overall grade: C+ (68.7%)"
+      - "Windows compliance: 71.2% — Linux compliance: 64.8%"
+      - "Critical: 6 findings across 4 Tier 0 assets"
+      - "Executive recommendation: Establish standardised OS hardening baselines via GPO and Ansible"
+
+# ── Output Formats ─────────────────────────────────────────────────────
+output_formats:
+  - name: pdf
+    description: >
+      Print-ready PDF generated via LaTeX (XeLaTeX engine). Includes vector
+      graphics, embedded fonts, clickable table of contents, and
+      confidentiality watermark. Suitable for board-level distribution.
+    template: hardening_report.latex
+
+  - name: docx
+    description: >
+      Editable Microsoft Word document generated via python-docx. Preserves
+      table formatting, heading hierarchy, and branding. Suitable for
+      collaborative editing and client delivery.
+    template: hardening_report.docx.jinja2
+
+  - name: html
+    description: >
+      Self-contained HTML5 document with embedded CSS and Mermaid.js for
+      interactive chart rendering. Includes collapsible finding sections
+      and filterable finding register. Suitable for internal portal hosting.
+    template: hardening_report.html.jinja2
+
+  - name: markdown
+    description: >
+      Plain Markdown suitable for git-based documentation workflows, wiki
+      publishing, or conversion to other formats via Pandoc. Mermaid
+      diagrams rendered as code blocks.
+    template: hardening_report.md.jinja2
+
+# ── Validation Rules ───────────────────────────────────────────────────
+validation_rules:
+  - id: VR-001
+    name: mandatory-fields-populated
+    description: >
+      Every finding record must have non-null values for: asset_hostname,
+      rule_id, rule_title, severity, status, actual_value, expected_value,
+      and remediation_procedure.
+    severity: error
+    applies_to: [full-assessment, quick-scan-report, compliance-delta]
+
+  - id: VR-002
+    name: severity-enum-valid
+    description: >
+      The severity field must be one of: Critical, High, Medium, Low.
+      Case-insensitive matching is applied during normalisation.
+    severity: error
+    applies_to: [full-assessment, quick-scan-report]
+
+  - id: VR-003
+    name: status-enum-valid
+    description: >
+      The status field must be one of: Pass, Fail, Manual, Error,
+      Not Applicable. Case-insensitive matching applied.
+    severity: error
+    applies_to: [full-assessment, quick-scan-report, compliance-delta]
+
+  - id: VR-004
+    name: tier-in-range
+    description: >
+      Asset tier must be an integer in the range 0–3 inclusive.
+    severity: error
+    applies_to: [full-assessment, quick-scan-report]
+
+  - id: VR-005
+    name: function-enum-valid
+    description: >
+      Asset function must be one of: Authentication, Database, Web, File,
+      End-User Compute, Network Appliance, or a custom value prefixed with
+      'custom:'.
+    severity: warning
+    applies_to: [full-assessment, quick-scan-report]
+
+  - id: VR-006
+    name: framework-crosswalk-completeness
+    description: >
+      Every finding with a non-null cis_control reference must also specify
+      the corresponding nist_800_53, nist_csf, and iso_27001 crosswalk
+      values after the crosswalk phase completes.
+    severity: warning
+    applies_to: [full-assessment]
+
+  - id: VR-007
+    name: duplicate-rule-per-asset
+    description: >
+      No asset may have two findings with the same benchmark name and rule_id
+      unless they belong to different scan profiles. Duplicates trigger a
+      deduplication warning.
+    severity: warning
+    applies_to: [full-assessment, quick-scan-report]
+
+  - id: VR-008
+    name: risk-score-range
+    description: >
+      Aggregate risk scores must fall within 0.0–10.0. Scores outside this
+      range indicate a calculation error in the scoring engine.
+    severity: error
+    applies_to: [full-assessment, quick-scan-report]
+
+  - id: VR-009
+    name: remediation-for-critical-high
+    description: >
+      Every finding with severity Critical or High must have a non-empty
+      remediation_procedure and verification_command. Missing remediation
+      guidance on high-severity findings triggers an error.
+    severity: error
+    applies_to: [full-assessment, quick-scan-report]
+
+  - id: VR-010
+    name: asset-coverage-minimum
+    description: >
+      Every asset in the ingestion manifest must appear in at least one
+      benchmark section of the findings list. Assets scanned but returning
+      zero findings indicate a scanner configuration problem.
+    severity: warning
+    applies_to: [full-assessment, quick-scan-report]
+
+  - id: VR-011
+    name: compliance-traceability
+    description: >
+      For every framework control marked Non-Compliant in the compliance
+      matrix, at least one finding with a matching crosswalk reference must
+      exist with status Fail.
+    severity: error
+    applies_to: [full-assessment]
+
+  - id: VR-012
+    name: logo-file-exists
+    description: >
+      The branding logo path must resolve to an existing file on disk with
+      a supported format (PNG, SVG, or JPEG). Missing logos are replaced
+      with a placeholder but trigger a warning.
+    severity: warning
+    applies_to: [full-assessment, quick-scan-report, compliance-delta]
+
+  - id: VR-013
+    name: confidentiality-marking-required
+    description: >
+      Reports containing Critical or High findings on Tier 0 assets must
+      carry at minimum an 'INTERNAL' confidentiality marking.
+    severity: warning
+    applies_to: [full-assessment, quick-scan-report]

@@ -1,0 +1,372 @@
+# NIST Standards Knowledge Base Reference
+# CyberSec Reporting Engine
+# Covers NIST CSF 2.0, 800-53 Rev 5, 800-61, 800-86, 800-115
+
+metadata:
+  organization: National Institute of Standards and Technology (NIST)
+  url: https://www.nist.gov/cyberframework
+  last_updated: "2025-01"
+
+nist_csf_2_0:
+  functions:
+    - id: GV
+      name: Govern
+      description: Establish and monitor the organization's cybersecurity risk management strategy
+      categories:
+        - GV.OC: Organizational Context
+        - GV.RM: Risk Management Strategy
+        - GV.RR: Roles, Responsibilities, and Authorities
+        - GV.PO: Policy
+        - GV.OV: Oversight
+        - GV.SC: Supply Chain Risk Management
+
+    - id: ID
+      name: Identify
+      description: Develop organizational understanding to manage cybersecurity risk
+      categories:
+        - ID.AM: Asset Management
+        - ID.RA: Risk Assessment
+        - ID.IM: Improvement
+
+    - id: PR
+      name: Protect
+      description: Implement safeguards to ensure delivery of critical services
+      categories:
+        - PR.AA: Identity Management, Authentication, and Access Control
+        - PR.AT: Awareness and Training
+        - PR.DS: Data Security
+        - PR.PS: Platform Security
+        - PR.IR: Technology Infrastructure Resilience
+
+    - id: DE
+      name: Detect
+      description: Develop and implement activities to identify cybersecurity events
+      categories:
+        - DE.CM: Continuous Monitoring
+        - DE.AE: Adverse Event Analysis
+
+    - id: RS
+      name: Respond
+      description: Take action regarding a detected cybersecurity incident
+      categories:
+        - RS.MA: Incident Management
+        - RS.AN: Incident Analysis
+        - RS.CO: Incident Response Reporting and Communication
+        - RS.MI: Incident Mitigation
+
+    - id: RC
+      name: Recover
+      description: Restore capabilities or services impaired by an incident
+      categories:
+        - RC.RP: Incident Recovery Plan Execution
+        - RC.CO: Incident Recovery Communication
+
+  implementation_tiers:
+    - id: Tier 1
+      name: Partial
+    - id: Tier 2
+      name: Risk Informed
+    - id: Tier 3
+      name: Repeatable
+    - id: Tier 4
+      name: Adaptive
+
+nist_800_53_rev5:
+  control_families:
+    - id: AC
+      name: Access Control
+      control_count: 25
+      description: Limit system access to authorized users, processes, and devices
+      key_controls: [AC-2 Account Management, AC-3 Access Enforcement, AC-6 Least Privilege, AC-17 Remote Access]
+
+    - id: AT
+      name: Awareness and Training
+      control_count: 6
+      description: Ensure personnel are trained on security risks
+      key_controls: [AT-2 Literacy Training and Awareness, AT-3 Role-based Training]
+
+    - id: AU
+      name: Audit and Accountability
+      control_count: 16
+      description: Create, protect, and retain system audit records
+      key_controls: [AU-2 Event Logging, AU-3 Content of Audit Records, AU-6 Audit Record Review, AU-12 Audit Record Generation]
+
+    - id: CA
+      name: Assessment, Authorization, and Monitoring
+      control_count: 9
+      description: Evaluate security controls and authorize system operations
+      key_controls: [CA-2 Control Assessments, CA-7 Continuous Monitoring, CA-8 Penetration Testing]
+
+    - id: CM
+      name: Configuration Management
+      control_count: 14
+      description: Establish and maintain baseline configurations
+      key_controls: [CM-2 Baseline Configuration, CM-6 Configuration Settings, CM-7 Least Functionality, CM-8 System Component Inventory]
+
+    - id: CP
+      name: Contingency Planning
+      control_count: 13
+      description: Maintain plans for emergency operations
+      key_controls: [CP-2 Contingency Plan, CP-4 Contingency Plan Testing, CP-9 System Backup, CP-10 System Recovery and Reconstitution]
+
+    - id: IA
+      name: Identification and Authentication
+      control_count: 12
+      description: Verify the identity of users, processes, or devices
+      key_controls: [IA-2 Identification and Authentication, IA-2(1) MFA for Privileged, IA-2(2) MFA for Non-privileged, IA-5 Authenticator Management]
+
+    - id: IR
+      name: Incident Response
+      control_count: 10
+      description: Establish incident handling capability
+      key_controls: [IR-1 Policy and Procedures, IR-2 Incident Response Training, IR-4 Incident Handling, IR-6 Incident Reporting]
+
+    - id: MA
+      name: Maintenance
+      control_count: 6
+      description: Perform regular system maintenance
+      key_controls: [MA-2 Controlled Maintenance, MA-4 Nonlocal Maintenance]
+
+    - id: MP
+      name: Media Protection
+      control_count: 8
+      description: Protect digital and physical media
+      key_controls: [MP-2 Media Access, MP-4 Media Storage, MP-6 Media Sanitization, MP-7 Media Use]
+
+    - id: PE
+      name: Physical and Environmental Protection
+      control_count: 23
+      description: Protect physical resources and infrastructure
+      key_controls: [PE-3 Physical Access Control, PE-6 Monitoring Physical Access, PE-8 Visitor Access Records]
+
+    - id: PL
+      name: Planning
+      control_count: 11
+      description: Plan security architecture and operations
+      key_controls: [PL-2 System Security Plan, PL-8 Security and Privacy Architectures]
+
+    - id: PM
+      name: Program Management
+      control_count: 30
+      description: Manage information security program
+      key_controls: [PM-5 System Inventory, PM-9 Risk Management Strategy, PM-30 Continuous Monitoring Strategy]
+
+    - id: PS
+      name: Personnel Security
+      control_count: 9
+      description: Manage personnel risk
+      key_controls: [PS-3 Personnel Screening, PS-4 Personnel Termination, PS-5 Personnel Transfer]
+
+    - id: PT
+      name: PII Processing and Transparency
+      control_count: 8
+      description: Manage personally identifiable information
+      key_controls: [PT-2 Authority to Process PII, PT-3 PII Processing Purposes, PT-7 Specific Categories of PII]
+
+    - id: RA
+      name: Risk Assessment
+      control_count: 10
+      description: Assess and manage organizational risk
+      key_controls: [RA-3 Risk Assessment, RA-5 Vulnerability Monitoring and Scanning, RA-7 Risk Response]
+
+    - id: SA
+      name: System and Services Acquisition
+      control_count: 22
+      description: Procure and develop secure systems
+      key_controls: [SA-8 Security Engineering Principles, SA-10 Developer Configuration Management, SA-11 Developer Testing and Evaluation, SA-15 Development Process/Standards/Tools, SA-22 Unsupported System Components]
+
+    - id: SC
+      name: System and Communications Protection
+      control_count: 51
+      description: Protect communications and system boundaries
+      key_controls: [SC-7 Boundary Protection, SC-8 Transmission Confidentiality and Integrity, SC-12 Cryptographic Key Management, SC-13 Cryptographic Protection, SC-28 Protection of Information at Rest]
+
+    - id: SI
+      name: System and Information Integrity
+      control_count: 23
+      description: Maintain system and information integrity
+      key_controls: [SI-2 Flaw Remediation, SI-3 Malicious Code Protection, SI-4 System Monitoring, SI-7 Software/Firmware/Information Integrity]
+
+    - id: SR
+      name: Supply Chain Risk Management
+      control_count: 12
+      description: Manage supply chain risks
+      key_controls: [SR-2 Supply Chain Risk Management Plan, SR-3 Supply Chain Controls and Processes, SR-6 Supplier Assessments and Reviews]
+
+nist_800_61_rev2:
+  incident_response_phases:
+    - phase: 1
+      name: Preparation
+      activities:
+        - Develop incident response policy and plan
+        - Establish IR team and assign roles
+        - Acquire IR tools and resources
+        - Conduct training and exercises
+        - Implement preventative measures (firewalls, patching, endpoint protection)
+      deliverables:
+        - Incident Response Plan document
+        - IR team contact list and escalation matrix
+        - Jump kit (forensic tools, clean media, cables)
+        - Tabletop exercise results
+      tools:
+        - SIEM platform (Splunk, Elastic, Sentinel)
+        - EDR solution (CrowdStrike, Microsoft Defender, SentinelOne)
+        - Forensic toolkit (FTK Imager, Volatility, KAPE)
+        - Ticketing system (Jira, ServiceNow, TheHive)
+
+    - phase: 2
+      name: Detection and Analysis
+      activities:
+        - Identify incident indicators (precursors and indicators)
+        - Correlate events from multiple sources
+        - Determine incident scope and impact
+        - Document incident timeline
+        - Notify appropriate stakeholders
+      deliverables:
+        - Incident classification (severity, type, priority)
+        - Initial incident report
+        - Evidence log with chain of custody
+      tools:
+        - Log analysis platform (Splunk, ELK, Sentinel)
+        - Network traffic analysis (Wireshark, Zeek)
+        - Threat intelligence platforms (MISP, OpenCTI)
+        - IOC enrichment (VirusTotal, AbuseIPDB)
+
+    - phase: 3
+      name: Containment, Eradication, and Recovery
+      activities:
+        - Contain the incident (network isolation, account disablement)
+        - Gather and preserve forensic evidence
+        - Eradicate threat (malware removal, patching, credential reset)
+        - Restore systems from clean backups
+        - Validate system integrity before restoration
+        - Monitor for residual adversary activity
+      deliverables:
+        - Containment strategy and execution log
+        - Eradication validation report
+        - System recovery checklist
+        - Post-recovery monitoring report
+      tools:
+        - EDR for isolation and remediation
+        - Backup and recovery systems (Veeam, Rubrik)
+        - Vulnerability scanner for validation (Nessus, Qualys)
+        - Configuration management (Ansible, Terraform)
+
+    - phase: 4
+      name: Post-Incident Activity
+      activities:
+        - Conduct post-incident review (lessons learned)
+        - Document root cause analysis
+        - Update IR playbooks and procedures
+        - Generate incident report with recommendations
+        - Track remediation items to closure
+        - Share threat intelligence internally and externally
+      deliverables:
+        - Post-incident review report
+        - Updated IR plan and playbooks
+        - Remediation tracking plan
+        - Threat intelligence advisory (if applicable)
+
+nist_800_86:
+  forensics_principles:
+    - principle: Evidence Integrity
+      description: Maintain cryptographic integrity of forensic evidence through hash verification
+      practices:
+        - Hash all acquired evidence (SHA-256 or better)
+        - Document chain of custody throughout evidence lifecycle
+        - Use write blockers during acquisition
+        - Validate forensic tool output
+
+    - principle: Data Collection Order
+      description: Collect evidence in order of volatility
+      order:
+        - 1: Memory (volatile) - RAM dumps, running processes, network connections
+        - 2: Network state - ARP cache, routing tables, active connections
+        - 3: Running processes - process lists, open files, loaded modules
+        - 4: System state - logged-on users, system time, configuration
+        - 5: Disk images - forensic images of storage media
+        - 6: Backups and logs - archived data, log files, external media
+
+    - principle: Documentation
+      description: Thoroughly document all forensic activities
+      practices:
+        - Record date/time of each action (UTC)
+        - Document tool name, version, and commands used
+        - Photograph physical evidence in original location
+        - Note any system state changes caused by investigation
+        - Maintain investigation log with timestamps
+
+    - principle: Tool Validation
+      description: Ensure forensic tools produce reliable results
+      practices:
+        - Use court-accepted or peer-reviewed tools
+        - Verify tool output against known datasets
+        - Document tool validation methodology
+        - Use multiple tools for critical findings (cross-validation)
+
+nist_800_115:
+  testing_methodology:
+    - phase: 1
+      name: Planning
+      activities:
+        - Define scope and objectives
+        - Identify target systems and networks
+        - Obtain proper authorization (Rules of Engagement)
+        - Establish testing schedule and coordinated contacts
+      deliverables:
+        - Test Plan
+        - Rules of Engagement document
+        - Authorization letter
+
+    - phase: 2
+      name: Discovery
+      activities:
+        - Passive reconnaissance (OSINT, DNS, public records)
+        - Active network scanning (Nmap, Nessus)
+        - Vulnerability scanning and enumeration
+        - Service fingerprinting and banner grabbing
+      techniques:
+        - Network port scanning (TCP, UDP)
+        - Service version detection
+        - OS fingerprinting
+        - Web application crawling and spidering
+      tools:
+        - Nmap, Masscan (port scanning)
+        - Nessus, Qualys, OpenVAS (vulnerability scanning)
+        - Nikto, Burp Suite, ZAP (web application scanning)
+        - theHarvester, DNSRecon (reconnaissance)
+
+    - phase: 3
+      name: Attack
+      activities:
+        - Exploit identified vulnerabilities
+        - Password attacks (brute force, credential stuffing)
+        - Social engineering (phishing, vishing)
+        - Web application exploitation (XSS, SQLi, CSRF)
+        - Privilege escalation and lateral movement
+      techniques:
+        - Exploit public-facing applications
+        - Brute force and password spraying
+        - Phishing and spearphishing
+        - Session hijacking and replay attacks
+        - Post-exploitation (persistence, lateral movement)
+      tools:
+        - Metasploit Framework
+        - Cobalt Strike (authorized)
+        - Hydra (password attacks)
+        - Impacket suite
+        - BloodHound (AD enumeration)
+        - Mimikatz (credential extraction)
+
+    - phase: 4
+      name: Reporting
+      activities:
+        - Document findings with severity ratings
+        - Map findings to CVSS and MITRE ATT&CK
+        - Provide remediation recommendations
+        - Conduct out-brief with stakeholders
+      deliverables:
+        - Executive summary report
+        - Technical findings report
+        - Remediation roadmap
+        - Risk assessment update

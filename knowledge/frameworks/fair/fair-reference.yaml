@@ -1,0 +1,179 @@
+# FAIR Risk Framework Knowledge Base Reference
+# CyberSec Reporting Engine
+# Factor Analysis of Information Risk (FAIR)
+
+metadata:
+  framework: FAIR (Factor Analysis of Information Risk)
+  maintainer: FAIR Institute
+  url: https://www.fairinstitute.org
+  standard: "OWAS Open Group Standard O-RA (Risk Analysis) and O-RT (Risk Taxonomy)"
+  last_updated: "2025-01"
+
+fair_taxonomy:
+  risk:
+    definition: The probable frequency and probable magnitude of future loss
+    components:
+      - Loss Event Frequency
+      - Loss Magnitude
+
+  loss_event_frequency:
+    definition: The probable frequency, within a given timeframe, that loss will occur
+    sub_components:
+      - name: Threat Event Frequency (TEF)
+        definition: The probable frequency that a threat agent will act against an asset
+        sub_factors:
+          - Contact Frequency (how often threat agent contacts asset)
+          - Probability of Action (probability agent acts against asset once contact occurs)
+
+      - name: Vulnerability (Vuln)
+        definition: The probability that an asset will be unable to resist a threat agent's actions
+        sub_factors:
+          - Threat Capability (TCap) - capability level of the threat agent
+          - Control Strength (CS) - effectiveness of controls in resisting the threat
+          - Derivation: Vuln = f(TCap, CS)
+
+      - name: Loss Event Frequency (LEF)
+        definition: The result of Threat Event Frequency and Vulnerability
+        formula: LEF = TEF * Vuln
+
+  loss_magnitude:
+    definition: The probable magnitude of loss resulting from a loss event
+    sub_components:
+      - name: Primary Loss Magnitude (PLM)
+        definition: Losses directly attributed to the loss event (primary stakeholder)
+        loss_forms:
+          - Productivity Loss (reduced operational capacity)
+          - Response Cost (internal incident response costs)
+          - Replacement Cost (asset replacement value)
+          - Fines and Judgments (legal and regulatory penalties)
+          - Competitive Advantage Loss (market position erosion)
+
+      - name: Secondary Loss Magnitude (SLM)
+        definition: Losses from secondary stakeholder reactions
+        loss_forms:
+          - Customer Response Loss (customer churn)
+          - Reputation Loss (brand damage, reduced new business)
+          - Regulatory Response Loss (increased oversight costs)
+          - Supplier/Partner Response Loss (disrupted relationships)
+
+      - name: Loss Event Magnitude (LEM)
+        definition: Sum of primary and secondary loss magnitudes
+        formula: LEM = PLM + SLM
+
+quantitative_risk_formula:
+  annualized_loss_expectancy:
+    formula: "Risk = LEF * LEM"
+    alternatives:
+      - "Annualized Loss Expectancy (ALE) = Annual Rate of Occurrence (ARO) * Single Loss Expectancy (SLE)"
+      - "Value at Risk (VaR) = Maximum expected loss at given confidence level"
+
+  confidence_levels:
+    - rating: Low
+      confidence: 30%
+      description: Little direct evidence (expert opinion, analogy)
+    - rating: Medium
+      confidence: 60%
+      description: Some direct evidence (internal data, industry reports)
+    - rating: High
+      confidence: 90%
+      description: Strong direct evidence (measured data, validated models)
+
+  measurement_scale:
+    - type: Ordinal
+      description: Ordered values (Low/Medium/High)
+    - type: Cardinal
+      description: Numerical values with units (dollars, hours, counts)
+
+risk_scenario_examples:
+  - name: Ransomware Attack on Critical Systems
+    threat_community: Cybercriminals / Ransomware-as-a-Service affiliates
+    threat_type: Malicious (intentional)
+    asset: Production database servers and file shares
+    effect: Data encrypted, systems unavailable
+    tef_estimation:
+      rationale: "Industry data shows 70% of organizations experienced ransomware in past 2 years"
+      min: 0.50
+      most_likely: 0.75
+      max: 1.00
+    vulnerability_estimation:
+      rationale: "Current EDR coverage is 85% effective; backup validation occurs quarterly; patching SLA is 30 days"
+      min: 0.10
+      most_likely: 0.25
+      max: 0.40
+    lef_calculation:
+      min: 0.05
+      most_likely: 0.19
+      max: 0.40
+    loss_magnitude_estimation:
+      primary:
+        productivity: {min: 500000, most_likely: 1500000, max: 3000000}
+        response: {min: 250000, most_likely: 500000, max: 1000000}
+        replacement: {min: 100000, most_likely: 300000, max: 500000}
+      secondary:
+        reputation: {min: 100000, most_likely: 750000, max: 2000000}
+        fines: {min: 0, most_likely: 250000, max: 1000000}
+    ale_estimation:
+      min: "$52,500"
+      most_likely: "$636,500"
+      max: "$2,600,000"
+
+  - name: Cloud Credential Leak via Code Repository
+    threat_community: External threat actors scanning public repositories
+    threat_type: Malicious (intentional)
+    asset: AWS access keys with S3 read/write permissions
+    effect: Unauthorized data access and exfiltration
+    tef_estimation:
+      rationale: "Automated credential scanning occurs continuously on public repos"
+      min: 0.80
+      most_likely: 0.95
+      max: 1.00
+    vulnerability_estimation:
+      rationale: "Secret scanning is deployed in CI/CD; developer training exists; GitGuardian monitoring active"
+      min: 0.05
+      most_likely: 0.15
+      max: 0.25
+    lef_calculation:
+      min: 0.04
+      most_likely: 0.14
+      max: 0.25
+    loss_magnitude_estimation:
+      primary:
+        response: {min: 50000, most_likely: 150000, max: 250000}
+        fines: {min: 0, most_likely: 100000, max: 500000}
+      secondary:
+        reputation: {min: 0, most_likely: 250000, max: 500000}
+    ale_estimation:
+      min: "$2,000"
+      most_likely: "$70,000"
+      max: "$312,500"
+
+  - name: Insider Data Exfiltration
+    threat_community: Disgruntled employee with elevated privileges
+    threat_type: Malicious (intentional)
+    asset: Customer PII database
+    effect: Data breach with regulatory notification requirements
+    tef_estimation:
+      rationale: "Employee turnover rate ~10%; 1% of departing employees act maliciously"
+      min: 0.005
+      most_likely: 0.02
+      max: 0.05
+    vulnerability_estimation:
+      rationale: "DLP tooling covers endpoints; access reviews quarterly; privileged activity not real-time monitored"
+      min: 0.20
+      most_likely: 0.40
+      max: 0.60
+    lef_calculation:
+      min: 0.001
+      most_likely: 0.008
+      max: 0.030
+    loss_magnitude_estimation:
+      primary:
+        response: {min: 100000, most_likely: 300000, max: 500000}
+        fines: {min: 0, most_likely: 500000, max: 2500000}
+      secondary:
+        customer_loss: {min: 0, most_likely: 1000000, max: 3000000}
+        reputation: {min: 0, most_likely: 500000, max: 1500000}
+    ale_estimation:
+      min: "$100"
+      most_likely: "$18,400"
+      max: "$225,000"

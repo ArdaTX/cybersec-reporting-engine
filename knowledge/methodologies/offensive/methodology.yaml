@@ -1,0 +1,229 @@
+# Offensive Security Methodologies Reference
+# CyberSec Reporting Engine
+# Covers PTES, OSSTMM, OWASP Testing Guide, and Red Team methodologies
+
+metadata:
+  domain: Offensive Security
+  frameworks:
+    - PTES (Penetration Testing Execution Standard)
+    - OSSTMM (Open Source Security Testing Methodology Manual)
+    - OWASP Testing Guide v4
+    - MITRE ATT&CK (Red Team operations)
+  last_updated: "2025-01"
+
+ptes:
+  name: Penetration Testing Execution Standard
+  url: http://www.pentest-standard.org
+
+  phases:
+    - phase: 1
+      name: Pre-engagement Interactions
+      activities:
+        - Define scope, objectives, and constraints
+        - Establish Rules of Engagement (ROE)
+        - Identify emergency contacts and escalation procedures
+        - Set testing window and authorized targets
+        - Sign NDAs and liability agreements
+        - Determine reporting format and deliverables
+      deliverables:
+        - Signed Rules of Engagement document
+        - Statement of Work (SOW)
+        - Authorization letter
+        - Emergency contact sheet
+
+    - phase: 2
+      name: Intelligence Gathering
+      activities:
+        - Open Source Intelligence (OSINT) collection
+        - DNS enumeration and zone transfer attempts
+        - WHOIS and reverse WHOIS lookups
+        - Certificate Transparency log analysis
+        - Social media and employee profiling
+        - Physical location reconnaissance
+        - Job posting analysis for technology stack
+        - Document metadata extraction (FOCA, exiftool)
+      deliverables:
+        - OSINT report with target profile
+        - DNS/subdomain enumeration list
+        - Technology stack fingerprint
+        - External attack surface map
+      tools:
+        - theHarvester, Recon-ng (OSINT)
+        - subfinder, amass, DNSRecon (DNS enumeration)
+        - Shodan, Censys, ZoomEye (asset discovery)
+        - Maltego (graph-based intelligence)
+        - crt.sh, CertSpotter (certificate transparency)
+
+    - phase: 3
+      name: Threat Modeling
+      activities:
+        - Identify business-critical assets
+        - Map threat actors relevant to the organization
+        - Define attack scenarios and TTPs
+        - Prioritize testing based on risk
+      deliverables:
+        - Threat model document
+        - Prioritized attack scenarios
+        - Asset criticality matrix
+      tools:
+        - MITRE ATT&CK Navigator (TTP mapping)
+        - OWASP Threat Dragon (application threat modeling)
+        - Microsoft Threat Modeling Tool (STRIDE)
+
+    - phase: 4
+      name: Vulnerability Analysis
+      activities:
+        - Port scanning and service discovery
+        - Automated vulnerability scanning
+        - Manual vulnerability validation
+        - Web application crawling and scanning
+        - Configuration review
+        - Default credential testing
+      deliverables:
+        - Port scan results (Nmap XML)
+        - Vulnerability scan report (Nessus, OpenVAS)
+        - Validated vulnerability list with CVSS scores
+        - False positive elimination log
+      tools:
+        - Nmap, Masscan (port scanning)
+        - Nessus, Qualys, OpenVAS (vulnerability scanning)
+        - Burp Suite, OWASP ZAP (web application scanning)
+        - Nikto (web server scanning)
+        - nuclei (template-based scanning)
+
+    - phase: 5
+      name: Exploitation
+      activities:
+        - Exploit identified vulnerabilities
+        - Password attacks (brute force, credential stuffing, spraying)
+        - Social engineering (phishing, vishing, physical)
+        - Man-in-the-middle attacks (ARP spoofing, SSL stripping)
+        - Client-side exploitation (drive-by, malicious documents)
+      deliverables:
+        - Exploitation log with evidence (screenshots, console output)
+        - Compromised systems list
+        - Obtained credentials (sanitized)
+        - Exploit artifacts for reproduction
+      tools:
+        - Metasploit Framework (exploitation)
+        - Cobalt Strike (C2 operations - authorized)
+        - Impacket suite (Windows network exploitation)
+        - Burp Suite Intruder (web exploitation)
+        - sqlmap (SQL injection)
+        - Responder (LLMNR/NBT-NS/mDNS poisoning)
+
+    - phase: 6
+      name: Post-Exploitation
+      activities:
+        - Privilege escalation (local and domain)
+        - Credential dumping and reuse
+        - Lateral movement
+        - Persistence establishment
+        - Data exfiltration simulation
+        - Cleanup and log removal
+        - Maintain access through pivot points
+      deliverables:
+        - Privilege escalation paths discovered
+        - Lateral movement map
+        - Data access report (types of accessible data, not actual extraction)
+        - Persistence mechanisms deployed (and removed)
+      tools:
+        - BloodHound / SharpHound (AD attack paths)
+        - Mimikatz (credential extraction)
+        - CrackMapExec (lateral movement)
+        - PowerSploit / Empire (post-exploitation)
+        - Covenant / Sliver (C2 frameworks)
+        - LinPEAS / WinPEAS (privilege escalation enumeration)
+
+    - phase: 7
+      name: Reporting
+      activities:
+        - Compile findings with evidence
+        - Map vulnerabilities to frameworks (CVSS, ATT&CK, CWE)
+        - Develop remediation recommendations
+        - Create executive summary
+        - Conduct report review and QA
+        - Present findings to stakeholders
+      deliverables:
+        - Executive summary (non-technical)
+        - Technical findings report
+        - Remediation roadmap with priorities
+        - Raw evidence files (encrypted delivery)
+      quality_gates:
+        - All findings validated (no false positives)
+        - Each finding has CVSS v4.0 score
+        - Each finding mapped to MITRE ATT&CK where applicable
+        - Remediation steps actionable and prioritized
+        - Report reviewed by second tester
+
+osstmm:
+  name: Open Source Security Testing Methodology Manual
+  url: https://www.isecom.org/osstmm.html
+  channels:
+    - name: Human Security
+      areas:
+        - Social Engineering assessment
+        - Physical security assessment
+        - User awareness evaluation
+    - name: Physical Security
+      areas:
+        - Perimeter security inspection
+        - Access control review
+        - Environmental controls audit
+    - name: Wireless Communications
+      areas:
+        - WiFi security assessment (WPA2/WPA3)
+        - Bluetooth security review
+        - NFC/RFID testing
+        - Wireless IDS evaluation
+    - name: Telecommunications
+      areas:
+        - VoIP security assessment
+        - PBX security review
+        - Teleconferencing security
+    - name: Data Networks
+      areas:
+        - Network segmentation testing
+        - Firewall rule audit
+        - NAC bypass testing
+        - VLAN hopping assessment
+    - name: Trust Metrics (RAV)
+      areas:
+        - OPSEC review
+        - Privacy assessment
+        - Legal compliance validation
+        - Visibility analysis
+
+owasp_testing:
+  methodology: OWASP Web Security Testing Guide (WSTG)
+  phases:
+    - phase: 1
+      name: Information Gathering
+      tests: [Web server fingerprinting, application discovery, content review, entry point identification]
+    - phase: 2
+      name: Configuration Management Testing
+      tests: [Infrastructure config, platform config, file handling, HTTP methods, HSTS, admin interfaces]
+    - phase: 3
+      name: Identity Management Testing
+      tests: [Role definitions, registration, provisioning, account enumeration, password policy]
+    - phase: 4
+      name: Authentication Testing
+      tests: [Credential transport, default credentials, lockout, bypass, remember-me, browser cache]
+    - phase: 5
+      name: Authorization Testing
+      tests: [Path traversal, authorization bypass, privilege escalation, IDOR]
+    - phase: 6
+      name: Session Management Testing
+      tests: [Schema analysis, cookie attributes, fixation, CSRF, logout, timeout]
+    - phase: 7
+      name: Input Validation Testing
+      tests: [XSS, SQLi, LDAPi, ORMi, XMLi, SSIi, XPathi, code injection, buffer overflow, HTTP splitting]
+    - phase: 8
+      name: Cryptography Testing
+      tests: [TLS/SSL, padding oracle, unencrypted channels, weak algorithms]
+    - phase: 9
+      name: Business Logic Testing
+      tests: [Data validation, forged requests, integrity, timing, workflow circumvention, file upload]
+    - phase: 10
+      name: Client-Side Testing
+      tests: [DOM XSS, JavaScript, HTML injection, URL redirect, CORS, WebSocket, localStorage]

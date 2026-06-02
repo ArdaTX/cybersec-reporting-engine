@@ -1,0 +1,120 @@
+# =============================================================================
+# CyberSec Reporting Engine - Default Configuration
+# =============================================================================
+# This file is read by the CLI and orchestrator. Override per-project by
+# placing a .cybersecrc.yaml in your project root.
+# =============================================================================
+
+# --- Metadata defaults (injected into all reports) ---------------------------
+metadata:
+  author: "Security Assessment Team"
+  classification: "CONFIDENTIAL"
+  # classification options:
+  #   UNCLASSIFIED, CONFIDENTIAL, SECRET, TOP SECRET
+  #   TLP:CLEAR, TLP:GREEN, TLP:AMBER, TLP:RED
+
+# --- Output configuration ----------------------------------------------------
+output:
+  # Formats to generate: md, html, pdf, docx
+  formats:
+    - md
+    - html
+    - pdf
+
+  # Output directory
+  directory: "./output"
+
+  # Create a ZIP package with all generated files
+  createPackage: true
+
+  # HTML theme (default, dark, corporate, military)
+  theme: default
+
+  # PDF page size (a4, letter, legal, a3)
+  pageSize: a4
+
+  # PDF orientation (false = portrait, true = landscape)
+  landscape: false
+
+  # PDF margins
+  margin: "20mm"
+
+# --- Markdown generator settings ---------------------------------------------
+markdown:
+  # Directory containing markdown templates
+  templateDir: "./templates"
+
+# --- HTML generator settings -------------------------------------------------
+html:
+  # Default theme
+  theme: default
+
+  # Enable interactive features
+  interactive: true
+  search: true
+  collapsibleSections: true
+  filterableTables: true
+
+  # Include KPI widgets on executive summary
+  showKpiWidgets: true
+
+# --- PDF generator settings --------------------------------------------------
+pdf:
+  pageSize: a4
+  landscape: false
+  printBackground: true
+  # Display header/footer with classification and page numbers
+  displayHeaderFooter: true
+  # Generate PDF bookmarks from headings
+  outline: true
+
+# --- DOCX generator settings -------------------------------------------------
+docx:
+  # Font configuration
+  fontBody: "Calibri"
+  fontHeading: "Calibri Light"
+  fontMono: "Consolas"
+  fontSizeBody: 11
+
+  # Page margins in centimetres
+  pageMarginCm: 2.54
+
+  # Include cover page
+  coverPage: true
+
+  # Include table of contents
+  tableOfContents: true
+
+# --- Python path for DOCX generation -----------------------------------------
+pythonPath: "python3"
+
+# --- Severity levels and colors ----------------------------------------------
+severity:
+  critical:
+    label: "CRITICAL"
+    color: "#DC2626"
+    priority: 1
+  high:
+    label: "HIGH"
+    color: "#EA580C"
+    priority: 2
+  medium:
+    label: "MEDIUM"
+    color: "#CA8A04"
+    priority: 3
+  low:
+    label: "LOW"
+    color: "#16A34A"
+    priority: 4
+  info:
+    label: "INFO"
+    color: "#2563EB"
+    priority: 5
+
+# --- Template variables (available in markdown templates) ---------------------
+variables:
+  companyName: "CyberSec Inc."
+  reportType: "Security Assessment"
+  confidentialityNotice: >
+    This document contains confidential and proprietary information.
+    Unauthorized distribution is prohibited.

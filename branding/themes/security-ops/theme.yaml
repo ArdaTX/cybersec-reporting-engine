@@ -1,0 +1,164 @@
+# =============================================================================
+# Security Ops Theme — CyberSec Reporting Engine
+# SOC-optimized theme with high alert-visibility colors, dense data layouts,
+# and rapid-scan readability for operational security teams.
+# =============================================================================
+name: "Security Operations"
+id: security-ops
+version: 1.0.0
+description: "SOC-optimized theme with high alert-visibility colors and dense data layouts for operational security teams"
+
+colors:
+  primary: "#1a1f2e"
+  primary_light: "#252b3d"
+  primary_dark: "#111520"
+  secondary: "#2a3040"
+  secondary_light: "#363d52"
+  accent: "#10b981"
+  accent_dark: "#059669"
+  accent_light: "#34d399"
+  accent_secondary: "#6366f1"
+  accent_secondary_dark: "#4f46e5"
+  accent_secondary_light: "#818cf8"
+
+  text_primary: "#e5e7eb"
+  text_secondary: "#9ca3af"
+  text_muted: "#6b7280"
+  text_inverse: "#1a1f2e"
+
+  background: "#0f1319"
+  background_alt: "#141923"
+  surface: "#1a1f2e"
+  surface_elevated: "#1f2538"
+  surface_overlay: "rgba(26, 31, 46, 0.97)"
+
+  border: "#2d3448"
+  border_light: "#232838"
+  border_focus: "#6366f1"
+
+  divider: "#232838"
+
+  severity:
+    critical: "#ef4444"
+    critical_bg: "rgba(239, 68, 68, 0.18)"
+    critical_border: "rgba(239, 68, 68, 0.50)"
+    high: "#f97316"
+    high_bg: "rgba(249, 115, 22, 0.18)"
+    high_border: "rgba(249, 115, 22, 0.50)"
+    medium: "#eab308"
+    medium_bg: "rgba(234, 179, 8, 0.18)"
+    medium_border: "rgba(234, 179, 8, 0.50)"
+    low: "#22c55e"
+    low_bg: "rgba(34, 197, 94, 0.18)"
+    low_border: "rgba(34, 197, 94, 0.50)"
+    info: "#3b82f6"
+    info_bg: "rgba(59, 130, 246, 0.18)"
+    info_border: "rgba(59, 130, 246, 0.50)"
+
+  status:
+    success: "#22c55e"
+    warning: "#eab308"
+    error: "#ef4444"
+    pending: "#6b7280"
+    in_progress: "#3b82f6"
+    neutral: "#9ca3af"
+
+  alert:
+    critical_flash: "#ef4444"
+    critical_text: "#fecaca"
+    high_flash: "#f97316"
+    high_text: "#fed7aa"
+    medium_flash: "#eab308"
+    medium_text: "#fef08a"
+    low_flash: "#22c55e"
+    low_text: "#bbf7d0"
+    ack: "#6b7280"
+    ack_text: "#d1d5db"
+
+  chart:
+    series_1: "#ef4444"
+    series_2: "#f97316"
+    series_3: "#eab308"
+    series_4: "#22c55e"
+    series_5: "#3b82f6"
+    series_6: "#8b5cf6"
+    series_7: "#ec4899"
+    series_8: "#14b8a6"
+    grid: "#232838"
+    axis: "#6b7280"
+    tooltip_bg: "#1f2538"
+    tooltip_text: "#e5e7eb"
+
+  link: "#818cf8"
+  link_hover: "#a5b4fc"
+
+typography:
+  headings: "Inter, system-ui, -apple-system, sans-serif"
+  body: "Inter, system-ui, -apple-system, sans-serif"
+  code: "JetBrains Mono, ui-monospace, SFMono-Regular, monospace"
+  sizes:
+    h1: "26px"
+    h2: "22px"
+    h3: "18px"
+    h4: "15px"
+    body: "13px"
+    small: "11px"
+    caption: "10px"
+    overline: "9px"
+  weights:
+    light: 300
+    regular: 400
+    medium: 500
+    semibold: 600
+    bold: 700
+  line_heights:
+    heading: 1.25
+    body: 1.5
+    compact: 1.15
+
+spacing:
+  unit: 4
+  xs: "2px"
+  sm: "4px"
+  md: "8px"
+  lg: "12px"
+  xl: "16px"
+  xxl: "24px"
+  section: "32px"
+
+borders:
+  radius_sm: "3px"
+  radius_md: "5px"
+  radius_lg: "7px"
+  radius_xl: "10px"
+  radius_full: "9999px"
+
+shadows:
+  sm: "0 1px 2px rgba(0, 0, 0, 0.35)"
+  md: "0 3px 6px rgba(0, 0, 0, 0.45)"
+  lg: "0 8px 20px rgba(0, 0, 0, 0.55)"
+  xl: "0 16px 40px rgba(0, 0, 0, 0.65)"
+
+animation:
+  transition_fast: "100ms ease"
+  transition_normal: "200ms ease"
+  transition_slow: "350ms ease"
+
+icons:
+  set: "lucide"
+  size_sm: "12px"
+  size_md: "16px"
+  size_lg: "20px"
+
+page:
+  max_width: "100%"
+  content_width: "100%"
+  margin: "0"
+  padding: "16px"
+
+print:
+  page_size: "A4"
+  margin_top: "12mm"
+  margin_bottom: "12mm"
+  margin_left: "10mm"
+  margin_right: "10mm"

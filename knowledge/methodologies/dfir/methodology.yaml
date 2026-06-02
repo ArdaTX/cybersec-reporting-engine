@@ -1,0 +1,224 @@
+# Digital Forensics & Incident Response (DFIR) Methodologies Reference
+# CyberSec Reporting Engine
+# Covers NIST 800-61, SANS PICERL, SANS DFIR, and Forensics Methodologies
+
+metadata:
+  domain: Digital Forensics and Incident Response
+  frameworks:
+    - NIST SP 800-61 Rev 2 (Computer Security Incident Handling Guide)
+    - SANS PICERL (Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned)
+    - SANS DFIR (Digital Forensics and Incident Response)
+    - NIST SP 800-86 (Guide to Integrating Forensic Techniques into Incident Response)
+  last_updated: "2025-01"
+
+sans_picerl:
+  name: SANS Incident Response Process (PICERL)
+  description: Six-phase incident response lifecycle
+
+  phases:
+    - phase: 1
+      name: Preparation
+      description: Establish and train IR team; acquire tools; define processes
+      activities:
+        - Define IR team roles (Incident Commander, Technical Lead, Communications Lead, Legal)
+        - Establish escalation matrix and on-call rotations
+        - Build and maintain IR jump kit (forensic tools, write blockers, clean media)
+        - Deploy and test monitoring infrastructure (SIEM, EDR, NDR)
+        - Conduct tabletop exercises for ransomware, data breach, APT scenarios
+        - Establish external contacts (law enforcement, IR retainer, PR firm)
+        - Document and test IR playbooks for common incident types
+        - Ensure logging coverage across all critical systems
+      deliverables:
+        - Incident Response Plan document
+        - IR Team RACI matrix
+        - Jump kit inventory and test log
+        - Exercise after-action reports
+        - Third-party retainer agreements
+      quality_gates:
+        - IR plan reviewed and signed off annually
+        - Tabletop exercise completed within last 6 months
+        - Jump kit tested quarterly
+        - All IR team members have trained on role
+
+    - phase: 2
+      name: Identification
+      description: Detect, validate, and classify the incident
+      activities:
+        - Analyze SIEM alerts and correlate events
+        - Validate incident vs false positive
+        - Determine initial scope (affected systems, users, data)
+        - Establish incident timeline (first observed, attack vector)
+        - Classify severity (Critical, High, Medium, Low)
+        - Notify IR team via established escalation channels
+        - Preserve volatile evidence (memory dumps, network state)
+        - Open incident ticket and start documentation
+      deliverables:
+        - Incident declaration with classification
+        - Initial incident report
+        - Timeline of known events
+        - Evidence preservation log
+      tools:
+        - SIEM (Splunk, Elastic, Sentinel) for event correlation
+        - EDR (CrowdStrike, MDE, SentinelOne) for endpoint telemetry
+        - Capture tools (FTK Imager, KAPE, Velociraptor) for evidence acquisition
+        - Threat intel platforms (VirusTotal, MISP, OpenCTI) for IOC enrichment
+
+    - phase: 3
+      name: Containment
+      description: Stop the incident from spreading; limit damage
+      activities:
+        - Short-term containment: isolate affected systems (network segmentation, disable accounts)
+        - Long-term containment: apply temporary fixes to allow business operations
+        - Patch or block attack vector
+        - Reset compromised credentials
+        - Block malicious IPs/domains at firewall/proxy
+        - Deploy additional monitoring for the incident
+        - Preserve forensic evidence before system changes
+      deliverables:
+        - Containment action log
+        - Network isolation map
+        - Credential reset log
+        - Forensic image acquisition log (with hash verification)
+      strategies:
+        - network_isolation: Remove system from network (switch ACL, unplug)
+        - account_disabling: Disable compromised accounts in directory
+        - service_suspension: Stop affected services
+        - cloud_isolation: Apply IAM deny policies, revoke sessions
+
+    - phase: 4
+      name: Eradication
+      description: Remove the threat from the environment
+      activities:
+        - Identify root cause and initial access vector
+        - Remove malware and persistence mechanisms
+        - Deploy clean system image or rebuild from trusted media
+        - Apply patches for exploited vulnerabilities
+        - Harden configurations per CIS benchmarks
+        - Validate no adversary activity remains (re-scan, hunt)
+        - Update detection rules based on identified TTPs
+        - Reset all credentials potentially compromised
+      deliverables:
+        - Root cause analysis document
+        - Malware analysis report (if applicable)
+        - Eradication validation report
+        - Updated hardening baselines
+      tools:
+        - EDR for endpoint remediation and malware removal
+        - IOC scanner (Loki, Thor) for residual artifact detection
+        - Vulnerability scanner (Nessus, Qualys) for patch validation
+        - YARA rules for hunting residual malware
+
+    - phase: 5
+      name: Recovery
+      description: Restore systems to normal operation
+      activities:
+        - Restore systems from verified clean backups
+        - Validate data integrity of restored systems
+        - Bring systems online in controlled, monitored manner
+        - Monitor for any signs of re-infection (minimum 2 weeks)
+        - Confirm business operations have resumed normally
+        - Return to normal security monitoring posture
+        - Communicate recovery status to stakeholders
+      deliverables:
+        - System restoration log
+        - Backup integrity validation report
+        - Post-recovery monitoring report (2 weeks)
+        - Business resumption confirmation
+
+    - phase: 6
+      name: Lessons Learned
+      description: Analyze the incident to improve future response
+      activities:
+        - Conduct post-incident review meeting within 2 weeks
+        - Document what went well and what did not
+        - Identify root cause and contributing factors
+        - Update IR playbooks and procedures
+        - Implement new controls to prevent recurrence
+        - Track all action items to closure
+        - Share sanitized threat intelligence with community
+        - Update risk assessment with new threat data
+      deliverables:
+        - Lessons Learned report
+        - Updated IR plan and playbooks
+        - Remediation action tracker
+        - Threat intelligence report (sanitized)
+        - Executive summary for leadership
+
+sans_dfir:
+  name: SANS DFIR Forensics Methodology
+  description: Systematic approach to digital evidence collection and analysis
+
+  phases:
+    - phase: 1
+      name: Evidence Acquisition
+      activities:
+        - Identify sources of evidence (disks, memory, logs, cloud)
+        - Acquire forensically sound images (write-blocked, hashed)
+        - Capture volatile data in order of volatility (memory first, then disks)
+        - Collect network logs, firewall logs, proxy logs
+        - Capture cloud evidence (snapshots, audit logs, API records)
+        - Document chain of custody for all evidence
+      order_of_volatility:
+        - "1: CPU registers and cache (negligible; not feasible)"
+        - "2: RAM / memory dumps (seconds to minutes)"
+        - "3: Network state (ARP tables, active connections, routing tables)"
+        - "4: Running processes (process list, open files, loaded DLLs)"
+        - "5: Disk partitions and file systems (minutes to hours)"
+        - "6: Remote logs and monitoring data"
+        - "7: Physical configuration and network topology"
+      tools:
+        - FTK Imager, dd, dcfldd (disk imaging)
+        - Magnet RAM Capture, WinPmem, LiME (memory acquisition)
+        - KAPE, Velociraptor (targeted triage collection)
+        - LiME (Linux memory acquisition)
+
+    - phase: 2
+      name: Evidence Preservation
+      activities:
+        - Generate cryptographic hashes of all evidence (SHA-256)
+        - Store original evidence on write-protected media
+        - Create working copies for analysis
+        - Maintain detailed chain of custody documentation
+        - Store evidence in physically secured location
+        - Implement access control for forensic workstations
+
+    - phase: 3
+      name: Analysis
+      activities:
+        - Timeline reconstruction (filesystem, event logs, registry, browser)
+        - File system analysis (MFT, $UsnJrnl, $LogFile for NTFS)
+        - Memory analysis (processes, network connections, injected code)
+        - Registry analysis (recently used, persistence, user activity)
+        - Event log analysis (Windows Event Logs, syslog)
+        - Browser history and cache analysis
+        - Email and communication analysis
+        - Artifact correlation across sources
+      tools:
+        - Autopsy, The Sleuth Kit (filesystem analysis)
+        - Volatility 3 (memory analysis)
+        - Plaso / log2timeline (super-timeline creation)
+        - Zimmerman tools (Registry Explorer, MFTECmd, PECmd, LECmd)
+        - Hindsight (browser forensics)
+        - Chainsaw, Hayabusa (event log analysis)
+
+    - phase: 4
+      name: Reporting
+      activities:
+        - Document all findings with supporting evidence
+        - Create timeline visualization
+        - Map findings to MITRE ATT&CK techniques
+        - Provide expert opinion on root cause and impact
+        - Prepare report for legal if needed
+      deliverables:
+        - Forensic analysis report
+        - Timeline of attacker activity
+        - Evidence inventory with chain of custody
+        - Executive summary
+
+nist_800_61_phases:
+  note: Already covered in detail in nist-reference.yaml; summarized here for completeness
+  phases_short:
+    - Preparation
+    - Detection and Analysis
+    - Containment, Eradication, and Recovery
+    - Post-Incident Activity

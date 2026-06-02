@@ -1,0 +1,43 @@
+{
+  "name": "CyberSec Reporting Engine - Dev",
+  "build": {
+    "dockerfile": "../Dockerfile.dev",
+    "context": ".."
+  },
+  "runArgs": [
+    "--init"
+  ],
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ],
+  "postCreateCommand": "npm install && python3 -m pip install -r requirements.txt 2>/dev/null; echo 'Dev environment ready!'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "yzhang.markdown-all-in-one",
+        "bierner.markdown-mermaid",
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "files.exclude": {
+          "node_modules": true,
+          ".venv": true
+        },
+        "markdown.preview.breaks": true
+      }
+    }
+  },
+  "remoteUser": "developer",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace"
+}

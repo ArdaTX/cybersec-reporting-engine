@@ -1,0 +1,473 @@
+# MITRE ATT&CK v16 Knowledge Base Reference
+# CyberSec Reporting Engine
+# Covers Enterprise, Cloud, and Active Directory techniques
+
+metadata:
+  framework: MITRE ATT&CK
+  version: v16
+  domain: Enterprise
+  last_updated: "2025-01"
+  url: https://attack.mitre.org
+
+tactics:
+  - id: TA0043
+    name: Reconnaissance
+    description: Gathering information to plan future adversary operations
+    kill_chain_phase: Reconnaissance
+
+  - id: TA0042
+    name: Resource Development
+    description: Establishing resources to support operations
+    kill_chain_phase: Weaponization
+
+  - id: TA0001
+    name: Initial Access
+    description: Gaining an initial foothold within a network
+    kill_chain_phase: Delivery / Exploitation
+
+  - id: TA0002
+    name: Execution
+    description: Running malicious code on systems
+    kill_chain_phase: Exploitation / Installation
+
+  - id: TA0003
+    name: Persistence
+    description: Maintaining access across restarts and credential changes
+    kill_chain_phase: Installation
+
+  - id: TA0004
+    name: Privilege Escalation
+    description: Gaining higher-level permissions
+    kill_chain_phase: Installation
+
+  - id: TA0005
+    name: Defense Evasion
+    description: Avoiding detection and security controls
+    kill_chain_phase: Installation / C2
+
+  - id: TA0006
+    name: Credential Access
+    description: Stealing account credentials
+    kill_chain_phase: Installation / C2
+
+  - id: TA0007
+    name: Discovery
+    description: Learning about the target environment
+    kill_chain_phase: C2 / Actions on Objectives
+
+  - id: TA0008
+    name: Lateral Movement
+    description: Moving through the environment
+    kill_chain_phase: C2 / Actions on Objectives
+
+  - id: TA0009
+    name: Collection
+    description: Gathering data of interest
+    kill_chain_phase: Actions on Objectives
+
+  - id: TA0011
+    name: Command and Control
+    description: Communicating with compromised systems
+    kill_chain_phase: C2
+
+  - id: TA0010
+    name: Exfiltration
+    description: Stealing data from the network
+    kill_chain_phase: Actions on Objectives
+
+  - id: TA0040
+    name: Impact
+    description: Manipulating, interrupting, or destroying systems and data
+    kill_chain_phase: Actions on Objectives
+
+top_techniques:
+  - id: T1566
+    name: Phishing
+    tactic: Initial Access
+    sub_techniques: [T1566.001, T1566.002, T1566.003]
+    description: Adversaries send phishing messages to gain access to victim systems
+    detection:
+      - Monitor email gateway for suspicious attachments and links
+      - Enable DMARC/DKIM/SPF validation
+      - Inspect SSL/TLS traffic for malicious domains
+      - User behavior analytics for anomalous login patterns
+
+  - id: T1059
+    name: Command and Scripting Interpreter
+    tactic: Execution
+    sub_techniques: [T1059.001, T1059.003, T1059.004, T1059.005, T1059.006, T1059.007, T1059.008]
+    description: Adversaries abuse command and script interpreters to execute commands, scripts, or binaries
+    detection:
+      - Enable PowerShell Script Block Logging (Event 4104)
+      - Monitor for suspicious command-line arguments
+      - Detect encoded commands and download cradles
+      - Audit process creation with Sysmon Event ID 1
+
+  - id: T1055
+    name: Process Injection
+    tactic: [Defense Evasion, Privilege Escalation]
+    sub_techniques: [T1055.001, T1055.002, T1055.003, T1055.004, T1055.005, T1055.008, T1055.009, T1055.011, T1055.012, T1055.013, T1055.014, T1055.015]
+    description: Adversaries inject code into processes to evade process-based defenses and elevate privileges
+    detection:
+      - Sysmon Event ID 8 (CreateRemoteThread)
+      - Sysmon Event ID 10 (ProcessAccess)
+      - EDR behavioral detection for abnormal inter-process memory operations
+      - Monitor for suspicious DLL loads
+
+  - id: T1003
+    name: OS Credential Dumping
+    tactic: Credential Access
+    sub_techniques: [T1003.001, T1003.002, T1003.003, T1003.004, T1003.005, T1003.006, T1003.007, T1003.008]
+    description: Adversaries attempt to dump credentials from OS components
+    detection:
+      - Monitor for LSASS.EXE access (Windows Event 4656, 4663)
+      - Detect Mimikatz signatures in memory
+      - Alert on SAM/SYSTEM registry hive access
+      - Monitor NTDS.dit access on domain controllers
+
+  - id: T1486
+    name: Data Encrypted for Impact
+    tactic: Impact
+    description: Adversaries encrypt data on target systems to interrupt availability
+    detection:
+      - File integrity monitoring for mass file modifications
+      - Entropy analysis of file writes
+      - Monitor vssadmin and wmic shadow copy deletion
+      - Canary files / honeypot directories
+
+  - id: T1078
+    name: Valid Accounts
+    tactic: [Defense Evasion, Persistence, Privilege Escalation, Initial Access]
+    sub_techniques: [T1078.001, T1078.002, T1078.003, T1078.004]
+    description: Adversaries use compromised credentials to access systems
+    detection:
+      - Monitor for impossible travel / geo-anomalous logins
+      - Detect access from unusual time patterns
+      - Alert on service account interactive logons
+      - Azure AD Identity Protection risk detections
+
+  - id: T1027
+    name: Obfuscated Files or Information
+    tactic: Defense Evasion
+    sub_techniques: [T1027.001, T1027.002, T1027.003, T1027.004, T1027.005, T1027.006, T1027.007, T1027.008, T1027.009, T1027.010, T1027.011, T1027.013]
+    description: Adversaries attempt to make an executable or file difficult to discover or analyze
+    detection:
+      - Entropy analysis of files and scripts
+      - YARA rules for known packer signatures
+      - Base64 content detection in scripts
+      - Behavioral analysis of deobfuscation runtime
+
+  - id: T1071
+    name: Application Layer Protocol
+    tactic: [Command and Control, Exfiltration]
+    sub_techniques: [T1071.001, T1071.002, T1071.003, T1071.004, T1071.005]
+    description: Adversaries communicate using common application layer protocols to blend in
+    detection:
+      - Network traffic analysis for anomalous protocol usage
+      - DNS query entropy monitoring
+      - Beaconing detection via connection interval analysis
+      - JA3/JA3S fingerprinting
+
+  - id: T1547
+    name: Boot or Logon Autostart Execution
+    tactic: [Persistence, Privilege Escalation]
+    sub_techniques: [T1547.001, T1547.002, T1547.003, T1547.004, T1547.005, T1547.006, T1547.007, T1547.008, T1547.009, T1547.010, T1547.012, T1547.013, T1547.014, T1547.015]
+    description: Adversaries configure system settings to execute programs at boot or logon
+    detection:
+      - Monitor registry Run keys (Sysmon Event 13)
+      - Audit startup folder writes
+      - Review scheduled task creation (Windows Event 4698)
+      - Monitor systemd service unit creation on Linux
+
+  - id: T1562
+    name: Impair Defenses
+    tactic: Defense Evasion
+    sub_techniques: [T1562.001, T1562.002, T1562.003, T1562.004, T1562.006, T1562.007, T1562.008, T1562.009, T1562.010]
+    description: Adversaries disable or modify security tools to avoid detection
+    detection:
+      - Monitor Windows Event 1102 (Audit log cleared)
+      - Alert on service stop events for security tools
+      - Detect AMSI/ETW tampering
+      - Monitor Defender exclusions registry changes
+
+  - id: T1210
+    name: Exploitation of Remote Services
+    tactic: [Lateral Movement, Initial Access]
+    description: Adversaries exploit remote services to gain access or move laterally
+    detection:
+      - Network IDS/IPS signatures for known exploits
+      - Monitor for anomalous service scan patterns
+      - Patch management compliance monitoring
+      - Vulnerability scanner integration with SIEM
+
+  - id: T1047
+    name: Windows Management Instrumentation
+    tactic: Execution
+    description: Adversaries abuse WMI for execution and lateral movement
+    detection:
+      - Sysmon Event ID 19, 20, 21 for WMI persistence
+      - Monitor WMI process creation (WmiPrvSE.exe child processes)
+      - Detect remote WMI connections (DCOM port 135)
+      - Audit WMI activity via Microsoft-Windows-WMI-Activity/Operational log
+
+  - id: T1574
+    name: Hijack Execution Flow
+    tactic: [Persistence, Privilege Escalation, Defense Evasion]
+    sub_techniques: [T1574.001, T1574.002, T1574.004, T1574.005, T1574.006, T1574.007, T1574.008, T1574.009, T1574.010, T1574.011, T1574.012, T1574.013, T1574.014]
+    description: Adversaries hijack the way OS runs programs
+    detection:
+      - Detect DLL side-loading via Sysmon Event 7
+      - Monitor service binary path changes
+      - Alert on creation of files in system search order paths
+      - Inspect PATH environment variable modifications
+
+  - id: T1098
+    name: Account Manipulation
+    tactic: [Persistence, Privilege Escalation]
+    description: Adversaries manipulate accounts to maintain access
+    detection:
+      - Monitor group membership changes (Windows Event 4728, 4732, 4756)
+      - Detect shadow admin creation via SIDHistory injection
+      - Alert on Azure AD role assignment changes
+      - Audit OAuth application consent grants
+
+  - id: T1110
+    name: Brute Force
+    tactic: Credential Access
+    sub_techniques: [T1110.001, T1110.002, T1110.003, T1110.004]
+    description: Adversaries use brute force techniques to gain access
+    detection:
+      - Monitor failed authentication thresholds (Event 4625)
+      - Detect password spraying (many accounts, low attempts)
+      - Azure AD sign-in logs for repeated failures
+      - GeoIP diversity analysis for attack sources
+
+  - id: T1018
+    name: Remote System Discovery
+    tactic: Discovery
+    description: Adversaries attempt to discover remote systems on the network
+    detection:
+      - Network flow analysis for internal port scanning
+      - Monitor Net commands and nslookup usage
+      - Detect ARP sweep activity
+      - Monitor DNS server query logs for internal zone enumeration
+
+  - id: T1041
+    name: Exfiltration Over C2 Channel
+    tactic: Exfiltration
+    description: Adversaries steal data over their C2 channel
+    detection:
+      - Network traffic volume anomaly detection
+      - Outbound data transfer size thresholding
+      - Protocol-aware data egress detection
+      - DLP inline inspection for sensitive data patterns
+
+  - id: T1053
+    name: Scheduled Task/Job
+    tactic: [Execution, Persistence, Privilege Escalation]
+    sub_techniques: [T1053.001, T1053.002, T1053.003, T1053.005, T1053.006, T1053.007]
+    description: Adversaries abuse task scheduling functionality for execution and persistence
+    detection:
+      - Monitor Task Scheduler logs (Windows Event 4698, 4702)
+      - Alert on tasks running from temp directories
+      - Inspect cron jobs on Linux (crontab -l)
+      - Audit systemd timer creation
+
+  - id: T1190
+    name: Exploit Public-Facing Application
+    tactic: Initial Access
+    description: Adversaries exploit vulnerabilities in internet-facing applications
+    detection:
+      - WAF log analysis for exploit patterns
+      - Web server access log anomaly detection
+      - Vulnerability scanner integration
+      - Application error rate monitoring
+
+  - id: T1040
+    name: Network Sniffing
+    tactic: [Credential Access, Discovery]
+    description: Adversaries sniff network traffic to capture credentials and information
+    detection:
+      - Detect promiscuous mode network interfaces
+      - Monitor for packet capture tools (tcpdump, Wireshark)
+      - Switch port security / NAC enforcement
+      - ARP spoofing detection (ARPWatch)
+
+  - id: T1555
+    name: Credentials from Password Stores
+    tactic: Credential Access
+    sub_techniques: [T1555.001, T1555.002, T1555.003, T1555.004, T1555.005, T1555.006]
+    description: Adversaries search for credentials stored by OS or applications
+    detection:
+      - Monitor access to browser password databases
+      - Detect keychain/keyring enumeration
+      - Alert on Credential Manager API abuse
+      - Audit cloud secret manager access logs
+
+  - id: T1204
+    name: User Execution
+    tactic: Execution
+    sub_techniques: [T1204.001, T1204.002, T1204.003]
+    description: Adversaries rely on user actions for execution
+    detection:
+      - Macro execution monitoring in Office documents
+      - Email attachment sandbox detonation
+      - User awareness training and simulation tracking
+      - Detect execution from download directories
+
+  - id: T1552
+    name: Unsecured Credentials
+    tactic: Credential Access
+    sub_techniques: [T1552.001, T1552.002, T1552.003, T1552.004, T1552.005, T1552.006, T1552.007, T1552.008]
+    description: Adversaries search compromised systems for unsecured credentials
+    detection:
+      - Secret scanning in code repositories
+      - Configuration file audit for hardcoded credentials
+      - Monitor access to bash_history, .env files
+      - Cloud metadata endpoint call monitoring
+
+  - id: T1016
+    name: System Network Configuration Discovery
+    tactic: Discovery
+    description: Adversaries gather network configuration information
+    detection:
+      - Monitor ipconfig/ifconfig command usage
+      - Detect ARP table enumeration commands
+      - Alert on route table queries
+      - Baseline normal network administration activity
+
+  - id: T1518
+    name: Software Discovery
+    tactic: Discovery
+    description: Adversaries enumerate installed software for vulnerability research
+    detection:
+      - Monitor registry queries to HKLM\Software\Microsoft\Windows\CurrentVersion\Uninstall
+      - Detect dpkg/rpm query commands on Linux
+      - Alert on package manager enumeration
+      - Baseline asset inventory for drift detection
+
+  - id: T1082
+    name: System Information Discovery
+    tactic: Discovery
+    description: Adversaries gather detailed system information
+    detection:
+      - Monitor systeminfo, uname command usage
+      - Detect hostname, whoami, env enumeration
+      - Sysmon Event ID 1 for discovery tool execution
+      - Correlation of rapid information gathering sequences
+
+attack_scenarios:
+  ransomware:
+    name: Ransomware Attack Chain
+    techniques:
+      - T1190  # Exploit Public-Facing Application (or T1566 Phishing)
+      - T1059  # PowerShell execution for staging
+      - T1003  # Credential dumping for lateral movement
+      - T1018  # Remote system discovery
+      - T1021  # Remote Services (SMB/RDP)
+      - T1486  # Data encrypted for impact
+      - T1490  # Inhibit system recovery
+
+  apt_espionage:
+    name: APT Espionage Campaign
+    techniques:
+      - T1566.001  # Spearphishing attachment
+      - T1204.002  # Malicious file execution
+      - T1071.001  # C2 over HTTPS
+      - T1082      # System info discovery
+      - T1018      # Remote system discovery
+      - T1003      # Credential dumping
+      - T1021.002  # SMB lateral movement
+      - T1074      # Data staging
+      - T1041      # Exfiltration over C2
+
+  supply_chain:
+    name: Software Supply Chain Attack
+    techniques:
+      - T1195.002  # Compromise software supply chain
+      - T1072      # Software deployment tools
+      - T1059      # Command execution
+      - T1071      # C2 over application protocol
+      - T1562      # Disable security tools
+      - T1041      # Exfiltration
+
+  insider_threat:
+    name: Insider Data Theft
+    techniques:
+      - T1078      # Valid accounts
+      - T1530      # Data from cloud storage
+      - T1048      # Exfiltration over alternative protocol
+      - T1059      # Scripting for mass download
+      - T1562      # Log clearing
+      - T1070      # Indicator removal
+
+cloud_techniques:
+  aws:
+    - id: T1525
+      name: Implant Internal Image
+      description: Deploying malicious AMIs or container images
+    - id: T1530
+      name: Data from Cloud Storage
+      description: Accessing S3 buckets for data collection
+    - id: T1526
+      name: Cloud Service Discovery
+      description: Enumerating AWS services via API
+    - id: T1613
+      name: Container Administration Command
+      description: Abusing ECS/EKS for container access
+    - id: T1619
+      name: Cloud Storage Bucket Discovery
+      description: Discovering S3 buckets for access
+
+  azure:
+    - id: T1527
+      name: Application Access Token
+      description: Stealing OAuth tokens and refresh tokens
+    - id: T1616
+      name: "Account Manipulation: Device Registration"
+      description: Registering attacker devices in Azure AD
+    - id: T1528
+      name: Steal Application Access Token
+      description: Token theft from Azure AD applications
+
+  gcp:
+    - id: T1525
+      name: Implant Internal Image
+      description: Malicious Compute Engine images
+    - id: T1530
+      name: Data from Cloud Storage
+      description: GCS bucket enumeration and access
+    - id: T1526
+      name: Cloud Service Discovery
+      description: GCP API enumeration via gcloud
+
+active_directory_techniques:
+  - id: T1003.006
+    name: DCSync
+    description: Replicating directory data from domain controllers
+    detection:
+      - Monitor Event ID 4662 for DS-Replication-Get-Changes
+      - Alert on non-DC accounts requesting replication
+  - id: T1558.001
+    name: Golden Ticket
+    description: Forging Kerberos TGTs with stolen krbtgt hash
+    detection:
+      - Monitor TGT lifetime anomalies (>10 hours)
+      - Detect RC4 encryption downgrade (0x17)
+      - Krbtgt account password change auditing
+  - id: T1558.003
+    name: Kerberoasting
+    description: Requesting TGS tickets for offline cracking
+    detection:
+      - Monitor Event ID 4769 for RC4 encryption type
+      - Detect high volume TGS requests from single source
+  - id: T1098
+    name: Account Manipulation - SID History Injection
+    description: Injecting privileged SIDs into user tokens
+    detection:
+      - Audit SIDHistory attribute changes (Event 4765, 4766)
+  - id: T1558.002
+    name: Silver Ticket
+    description: Forging service tickets for specific services
+    detection:
+      - Monitor Event ID 4769 for anomalous service ticket requests

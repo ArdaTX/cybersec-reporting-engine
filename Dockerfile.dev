@@ -1,0 +1,88 @@
+# =============================================================================
+# CyberSec Reporting Engine — Development Dockerfile
+# =============================================================================
+# Purpose: Reproducible development environment for AI coding agents
+#          (Claude Code, OpenCode, Codex) and manual development.
+#
+# Usage:
+#   docker build -t cybersec-reporting-engine-dev -f Dockerfile.dev .
+#   docker run -it --rm -v $(pwd):/workspace cybersec-reporting-engine-dev bash
+#
+# Inside the container:
+#   cd /workspace
+#   cybersec-report --version
+#   cybersec-report generate ...
+# =============================================================================
+
+FROM node:20-bookworm-slim
+
+LABEL org.opencontainers.image.title="CyberSec Reporting Engine - Dev Environment"
+LABEL org.opencontainers.image.description="Reproducible development environment for the CyberSec Reporting Engine CLI tool"
+LABEL org.opencontainers.image.version="1.0.0"
+
+# ── Prevent interactive prompts ──────────────────────────────────────────────
+ENV DEBIAN_FRONTEND=noninteractive
+
+# ── Install system dependencies ──────────────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Python for DOCX generation
+    python3 \
+    python3-venv \
+    python3-pip \
+    python3-docx \
+    # Git for version control
+    git \
+    git-lfs \
+    # Chromium for Puppeteer/PDF generation
+    chromium \
+    chromium-common \
+    chromium-sandbox \
+    chromium-driver \
+    fonts-liberation \
+    fonts-dejavu-core \
+    # Puppeteer system dependencies
+    libnss3 \
+    libnspr4 \
+    libatk1.0-0t64 \
+    libatk-bridge2.0-0t64 \
+    libcups2t64 \
+    libdrm2 \
+    libxkbcommon0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libasound2t64 \
+    # curl, wget for debugging
+    curl \
+    wget \
+    # Cleanup
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# ── Create a non-root user ───────────────────────────────────────────────────
+RUN useradd -m -u 1000 -s /bin/bash developer \
+    && mkdir -p /workspace \
+    && chown developer:developer /workspace
+
+# ── Puppeteer configuration ──────────────────────────────────────────────────
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV CYBERSEC_DEV_MODE=true
+
+# ── Install Python dependencies globally (for DOCX) ───────────────────────────
+RUN python3 -m pip install --no-cache-dir --upgrade pip \
+    && python3 -m pip install --no-cache-dir python-docx
+
+# ── Configure Git to trust the workspace ─────────────────────────────────────
+RUN git config --global safe.directory /workspace
+
+# ── Switch to non-root user ──────────────────────────────────────────────────
+USER developer
+WORKDIR /workspace
+
+# ── Default command ──────────────────────────────────────────────────────────
+CMD ["/bin/bash"]

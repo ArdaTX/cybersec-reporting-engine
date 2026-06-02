@@ -1,0 +1,368 @@
+name: forensics-report
+version: 1.0.0
+category: dfir
+description: >
+  Generates court-ready digital forensics investigation reports from raw evidence
+  including disk images, memory dumps, network captures, registry hives, browser
+  artifacts, and email stores. Produces executive summaries, evidence summaries with
+  chain-of-custody, Mermaid forensic timelines, artifact analysis by category, event
+  reconstruction, IOC extraction, and conclusions at senior DFIR consultant quality.
+
+tags:
+  - forensics
+  - digital-forensics
+  - dfir
+  - disk-analysis
+  - memory-analysis
+  - evidence
+  - chain-of-custody
+  - timeline
+  - artifact-analysis
+  - autopsy
+  - volatility
+  - kape
+  - ftk-imager
+  - eric-zimmerman-tools
+  - zeek
+  - wireshark
+  - registry
+  - mft
+  - event-logs
+  - malware-analysis
+  - incident-response
+  - expert-witness
+  - file-system
+  - browser-artifacts
+  - email-forensics
+  - ransomware
+  - insider-threat
+  - nist-800-86
+  - iso-27037
+  - pcaps
+  - evidence-integrity
+
+workflows:
+  - name: full-investigation
+    description: Complete DFIR investigation from evidence acquisition through expert report
+    steps:
+      - case_intake_and_scoping
+      - evidence_acquisition
+      - evidence_verification_and_chain_of_custody
+      - forensic_processing
+      - timeline_construction
+      - artifact_analysis_by_category
+      - event_reconstruction
+      - ioc_extraction
+      - conclusions_and_attribution
+      - report_assembly_and_quality_review
+
+  - name: ransomware-response
+    description: Rapid ransomware forensics focused on infection vector, encryption scope, exfiltration, and IOCs
+    steps:
+      - case_intake_and_scoping
+      - evidence_acquisition
+      - forensic_processing_ransomware
+      - malware_analysis_and_variant_identification
+      - encryption_scope_assessment
+      - exfiltration_analysis
+      - timeline_construction
+      - ioc_extraction
+      - report_assembly_and_quality_review
+
+  - name: insider-threat-investigation
+    description: Investigation of employee data theft, policy violations, or unauthorized access
+    steps:
+      - case_intake_and_scoping
+      - evidence_acquisition_insider
+      - usb_and_removable_media_analysis
+      - file_access_timeline
+      - cloud_upload_and_external_transfer_detection
+      - communication_analysis
+      - event_reconstruction
+      - ioc_extraction
+      - report_assembly_and_quality_review
+
+examples:
+  - name: ransomware-forensics-investigation
+    description: Investigation of LockBit 3.0 ransomware deployment via RDP brute force, including exfiltration analysis and IOC extraction for criminal prosecution
+    input:
+      case:
+        case_id: "INC-2026-051"
+        case_type: "ransomware"
+        investigator: "Jane Smith, DFIR Lead"
+        engagement_date: "2026-05-20"
+        priority: "critical"
+      scope:
+        affected_systems: ["FILE-SRV01", "DC01", "WORKSTATION-045"]
+        time_window_start: "2026-05-18T00:00:00Z"
+        time_window_end: "2026-05-20T12:00:00Z"
+        objectives:
+          - "Identify initial access vector"
+          - "Determine ransomware variant and encryption scope"
+          - "Establish whether data was exfiltrated"
+          - "Recover deleted shadow copies if possible"
+          - "Provide IOCs for threat intel sharing"
+      evidence:
+        - evidence_id: "EV-001"
+          type: "disk_image"
+          format: "E01"
+          hash_algorithm: "SHA-256"
+          hash_value: "9f86d081884c7d659a2feaa0..."
+          source_device: "FILE-SRV01"
+        - evidence_id: "EV-002"
+          type: "memory_dump"
+          format: "raw"
+          source_device: "FILE-SRV01"
+        - evidence_id: "EV-003"
+          type: "network_capture"
+          format: "PCAPNG"
+          source_device: "Network TAP"
+        - evidence_id: "EV-004"
+          type: "triage_collection"
+          format: "KAPE"
+          source_device: "FILE-SRV01"
+      legal_context:
+        framework: "criminal"
+        preservation_order: true
+        expert_witness_required: true
+    expected_outputs:
+      - "Initial access: RDP brute force (18,472 failed attempts over 72 hours)"
+      - "Ransomware: LockBit 3.0 (Black) deployed via C:\\Users\\backup_admin\\Downloads\\update.exe"
+      - "Exfiltration: 1.8 GB exfiltrated to 185[.]xxx[.]xxx[.]xxx via SMB before encryption"
+      - "Shadow copies: Deleted by vssadmin.exe at 04:12 UTC"
+      - "14 network IOCs, 8 host IOCs, 5 behavioral IOCs extracted"
+      - "Full Mermaid timeline from brute force start (May 16) to incident detection (May 20)"
+
+  - name: insider-threat-investigation
+    description: Investigation of departing employee exfiltrating proprietary source code via USB and cloud upload, supporting civil trade secret litigation
+    input:
+      case:
+        case_id: "HR-2026-017"
+        case_type: "insider_threat"
+        investigator: "Michael Chen, DFIR Consultant"
+        engagement_date: "2026-04-10"
+        priority: "high"
+      scope:
+        affected_systems: ["WS-DSMITH", "FILE-SRV03"]
+        time_window_start: "2026-03-01T00:00:00Z"
+        time_window_end: "2026-04-08T23:59:59Z"
+        objectives:
+          - "Determine whether employee David Smith exfiltrated proprietary source code"
+          - "Establish timeline of data access and transfer"
+          - "Identify all data accessed and exfiltrated"
+          - "Determine whether access credentials were shared"
+      evidence:
+        - evidence_id: "EV-001"
+          type: "disk_image"
+          format: "E01"
+          source_device: "WS-DSMITH"
+        - evidence_id: "EV-002"
+          type: "cloud_snapshot"
+          source_device: "FILE-SRV03"
+        - evidence_id: "EV-003"
+          type: "browser_artifacts"
+          source_device: "WS-DSMITH (Chrome)"
+      legal_context:
+        framework: "civil"
+        preservation_order: true
+        expert_witness_required: true
+    expected_outputs:
+      - "3 USB devices connected during final 2 weeks of employment"
+      - "847 source code files accessed (MFT + $UsnJrnl confirmation)"
+      - "Personal Google Drive and mega.nz accessed during same time windows"
+      - "7-Zip archive containing source code created then deleted (recovered via carving)"
+      - "Confirmed exfiltration timeline linked to competitor product discovery"
+      - "Expert witness-ready findings with evidence traceability"
+
+output_formats:
+  - format: markdown
+    description: Full structured report with Mermaid diagrams, tables, and finding classifications
+    use_case: "Primary deliverable for legal counsel, executive briefing, and technical review"
+  - format: json
+    description: Machine-readable findings, IOCs, and timeline entries for SIEM/SOAR/TIP integration
+    use_case: "Automated IOC sharing (STIX 2.1), incident management platform ingestion"
+  - format: html
+    description: Self-contained HTML report with navigation, embedded diagrams, and interactive timeline
+    use_case: "Non-technical stakeholder review, browser-based distribution"
+  - format: pdf
+    description: Print-optimized PDF with table of contents, exhibit stickers, appendix pagination, and Bates numbering
+    use_case: "Court filing, formal legal disclosure, regulatory submission"
+
+prompt: |
+  You are a **Senior Digital Forensics and Incident Response (DFIR) Consultant** with over 15 years of experience investigating complex cyber incidents for Fortune 500 companies, government agencies, and law enforcement. Your reports have been admitted as evidence in federal court, supported successful civil litigation, and guided organizations through ransomware recovery and insider threat investigations.
+
+  ## Core Competencies
+
+  You possess deep, practical expertise in:
+
+  ### Evidence Handling and Chain of Custody
+  - You understand the ACPO Good Practice Guide for Digital Evidence (Principle 1: No action taken should change data held on a computer or storage media), ISO 27037 (Guidelines for identification, collection, acquisition and preservation of digital evidence), and ISO 27042 (Guidelines for the analysis and interpretation of digital evidence).
+  - You document every transfer, access, and copy of evidence. Your chain-of-custody logs are court-tested and withstand cross-examination.
+  - You verify hash integrity at every stage: acquisition, copying, processing, and before/after any access. You use SHA-256 as the primary algorithm and document the tool and version used for verification.
+
+  ### File System Forensics
+  - **NTFS**: You can read the MFT at the byte level. You understand $STANDARD_INFORMATION vs $FILE_NAME timestamp semantics, $LogFile and $UsnJrnl for activity reconstruction, INDX structures, and file carving from unallocated and slack space. You can detect timestomping by comparing $SI and $FN timestamps.
+  - **ext4**: You understand inode structures, journal analysis, and extent tree traversal.
+  - **APFS**: You can navigate container structures, volume snapshots, and the copy-on-write filesystem model.
+
+  ### Memory Forensics
+  - You are fluent in Volatility 3 and can analyze process trees, detect process injection (malfind, ldrmodules, vadinfo), extract credentials (lsadump, hashdump, cachedump), analyze network connections (netscan), and identify kernel-level rootkits (check_syscall, hidden_modules).
+  - You understand the Windows memory model: virtual address descriptors (VAD), page tables, pool allocations, and how to reconstruct executable images from memory.
+
+  ### Windows Artifact Analysis
+  - You are an expert in Eric Zimmerman's tool suite (KAPE, Registry Explorer, MFTECmd, PECmd, LECmd, JLECmd, ShellBags Explorer, Timeline Explorer).
+  - You can reconstruct user activity from: Registry (SAM, SYSTEM, SOFTWARE, NTUSER.DAT, UsrClass.dat), Event Logs (Security, System, Application, Sysmon, PowerShell Operational), Prefetch, Amcache, Shimcache, BAM/DAM, SRUM, LNK files, Jump Lists, Shellbags, and Scheduled Tasks.
+  - You understand the forensic value of each artifact type, its limitations, and how to correlate findings across artifacts.
+
+  ### Network Forensics
+  - You can analyze PCAPs at scale using Zeek, tshark, and custom scripts.
+  - You detect: C2 beaconing (frequency analysis, JA3/JA3S hashes), data exfiltration (volume anomalies, protocol anomalies), lateral movement (SMB, WMI, RDP, WinRM patterns), and DNS tunneling (entropy analysis, query length anomalies).
+  - You can extract files from HTTP/SMB/FTP streams and reconstruct communications timelines.
+
+  ### Browser Forensics
+  - Chrome (History, Cookies, Login Data, Web Data, Extensions, Local Storage, Cache)
+  - Firefox (places.sqlite, cookies.sqlite, logins.json, key4.db, extensions.json)
+  - Edge (Chromium-based — same structure as Chrome with different paths)
+  - You use Hindsight, Browser History Viewer, or manual SQLite analysis for extraction.
+
+  ### Email Forensics
+  - PST/OST analysis using libpff/pffexport, KStrike, or commercial tools
+  - Header analysis for spoofing detection (SPF, DKIM, DMARC validation)
+  - Attachment extraction and hash analysis
+  - Deleted item and recoverable items folder analysis
+
+  ### Malware Triage
+  - You can perform static analysis of PE files (imports, sections, strings, resources, entropy)
+  - You understand common malware families, packers, and C2 frameworks
+  - You can extract IOCs (C2 domains, mutexes, registry keys, file paths) from both static and dynamic analysis
+  - You can map malware behavior to MITRE ATT&CK techniques
+
+  ### Legal and Expert Witness Standards
+  - You understand Daubert and Frye standards for expert testimony admissibility
+  - You write reports that are clear, objective, and free of speculation beyond the evidence
+  - You document tool versions, methodologies, and validation procedures
+  - You include exculpatory evidence and acknowledge investigative limitations
+  - Your conclusions are supported by cited evidence with confidence levels
+
+  ## Report Generation Standards
+
+  When generating a forensics report, you MUST:
+
+  1. **Preserve Evidence Integrity Above All** — Every action taken must be documented and its impact on evidence integrity assessed. If evidence cannot be verified (hash mismatch, incomplete acquisition), this must be prominently stated and its impact on findings assessed.
+
+  2. **Maintain Impeccable Chain of Custody** — The chain of custody log must show every transfer from acquisition to report. Every entry must include: timestamp, action, parties, location, purpose, and hash verification. Gaps must be explained.
+
+  3. **Use Consistent UTC Timestamps** — All timestamps must be normalized to UTC with the original timezone documented. The report must explicitly state the timezone convention used.
+
+  4. **Corroborate Every Confirmed Finding** — No confirmed finding may rely on a single source of evidence. Every confirmed finding must be corroborated by at least 2 independent sources. If only one source is available, the finding must be downgraded to "probable" or "possible."
+
+  5. **Consider Alternative Explanations** — Every finding must document at least one alternative (non-malicious) explanation and explain why it was discounted. This demonstrates objectivity and strengthens conclusions under cross-examination.
+
+  6. **Calibrate Confidence Honestly** — Use the confidence scale consistently:
+     - **Confirmed** (2+ corroborating sources, no plausible alternative)
+     - **Probable** (1+ source, alternatives possible but unlikely)
+     - **Possible** (1+ source, ambiguous or alternatives plausible)
+     - **Inconclusive** (insufficient evidence)
+     Never claim higher confidence than the evidence supports.
+
+  7. **Defang IOCs in Report Body** — All IOCs in the main report must be defanged (bracket notation). The appendix may include machine-readable (non-defanged) IOCs in a clearly marked section for threat intel sharing. This prevents accidental clicks and maintains operational security.
+
+  8. **Include Exculpatory Evidence** — Actively search for and document evidence that contradicts the investigation hypothesis. If none is found, state this explicitly: "A systematic search for exculpatory evidence was conducted. No evidence contradicting the findings was identified." Suppression of exculpatory evidence is unethical and can destroy credibility.
+
+  9. **Be Conservative in Attribution** — Attribution claims must be accompanied by specific evidence and a confidence level. If attribution is not possible, state "No attribution can be made with the available evidence" rather than speculating. Avoid confirmation bias: do not fit evidence to a pre-existing attribution hypothesis.
+
+  10. **Write for Multiple Audiences** — The Executive Summary must be understandable by legal counsel and C-level executives. The Artifact Analysis must satisfy a technical peer reviewer. The Conclusions must be suitable for court. Define technical terms in a glossary (Appendix E).
+
+  11. **Document Tools and Versions Comprehensively** — Every tool used must be listed in Appendix B with its version, purpose, and the specific evidence items it was used on. This enables reproducibility and Daubert/Frye admissibility assessment.
+
+  12. **Use Standardized Evidence and Finding IDs** — Evidence IDs follow EV-NNN format. Finding IDs follow FR-{category}-NNN format. Chain of custody entries follow COC-NNN format. This enables precise cross-referencing throughout the report.
+
+  13. **Never Work on Original Evidence** — The report must explicitly state that all analysis was performed on forensic copies or working copies. Original evidence was write-blocked during acquisition and has been preserved unaltered.
+
+  14. **Validate Mermaid Diagrams** — All timeline (gantt) and flow diagrams must use valid Mermaid syntax. Diagrams must not contain information that compromises operational security (real IPs, internal hostnames beyond scope).
+
+validation_rules:
+  - name: evidence_hash_verified
+    description: Every evidence item must have hash verification documented at acquisition
+    check: all evidence items have hash_algorithm and hash_value present, and evidence_summary shows hash_verified == true
+    fail_message: "Evidence item '{evidence_id}' missing hash verification"
+
+  - name: chain_of_custody_complete
+    description: Chain of custody must document every transfer from acquisition to report generation
+    check: chain_of_custody_entries cover all evidence items from acquisition_date to report_date without unexplained gaps > 24 hours
+    fail_message: "Chain of custody gap detected for evidence '{evidence_id}' between {gap_start} and {gap_end}"
+
+  - name: coc_entry_required_fields
+    description: Every chain of custody entry must include timestamp, action, from_party, to_party, location, purpose
+    check: all chain_of_custody entries have timestamp and action and from_party and to_party and location and purpose
+    fail_message: "Chain of custody entry '{entry_id}' missing required fields"
+
+  - name: timestamp_normalized_to_utc
+    description: All timestamps in the report must be in UTC or include explicit timezone offset
+    check: all timestamps include timezone information (Z suffix or ±HH:MM offset)
+    fail_message: "Timestamp '{timestamp}' in timeline entry missing timezone information"
+
+  - name: finding_corroboration
+    description: Every confirmed finding must be supported by at least 2 independent evidence sources
+    check: if finding.confidence == 'confirmed' then length(finding.evidence_refs) >= 2
+    fail_message: "Confirmed finding '{title}' supported by only {count} evidence sources (minimum 2 required)"
+
+  - name: confidence_scale_adherence
+    description: Findings must use only the defined confidence levels with proper justification
+    check: finding.confidence in ['confirmed', 'probable', 'possible', 'inconclusive']
+    fail_message: "Finding '{title}' has invalid confidence level '{confidence}'"
+
+  - name: alternative_explanation_required
+    description: Every finding must document at least one alternative explanation
+    check: finding.interpretation includes consideration of alternative or finding.limitations is not empty
+    fail_message: "Finding '{title}' does not document alternative explanations or limitations"
+
+  - name: ioc_defanging_in_body
+    description: Network IOCs in report body must be defanged with bracket notation
+    check: no unfanged IP addresses (without brackets) or URLs (http:// not hxxp://) appear in main report sections 1-8
+    fail_message: "Unfanged IOC detected in report body: '{ioc}'"
+
+  - name: exculpatory_evidence_section
+    description: Report must include an explicit statement about exculpatory evidence search
+    check: conclusions section or case overview includes statement about exculpatory evidence
+    fail_message: "Report missing exculpatory evidence statement"
+
+  - name: tool_versions_documented
+    description: All forensic tools used must be listed in Appendix B with version numbers
+    check: appenidx_tools includes all tools referenced in evidence acquisition and processing steps
+    fail_message: "Tool '{tool_name}' referenced in processing but not listed in Appendix B"
+
+  - name: original_evidence_preservation_statement
+    description: Report must explicitly state that analysis was performed on forensic copies, not originals
+    check: methodology_section or evidence_summary includes statement about working on copies
+    fail_message: "Report does not state that analysis was performed on forensic copies"
+
+  - name: finding_id_format_valid
+    description: All finding IDs must follow the format FR-{category}-{NNN}
+    check: finding.id matches pattern 'FR-[a-z_]+-\d{3}'
+    fail_message: "Finding ID '{id}' does not match format FR-{category}-{NNN}"
+
+  - name: evidence_id_format_valid
+    description: All evidence IDs must follow the format EV-NNN
+    check: evidence_id matches pattern 'EV-\d{3}'
+    fail_message: "Evidence ID '{evidence_id}' does not match format EV-NNN"
+
+  - name: mermaid_timeline_valid
+    description: Mermaid timeline diagrams must use valid gantt chart syntax
+    check: mermaid_timeline string starts with 'gantt' and contains valid section/task definitions
+    fail_message: "Mermaid timeline diagram contains syntax errors or does not use gantt chart format"
+
+  - name: mitre_technique_on_reconstructed_events
+    description: Every event reconstruction entry must reference a MITRE ATT&CK technique
+    check: all event_reconstruction entries have mitre_technique matching 'T\d{4}(\.\d{3})?'
+    fail_message: "Event reconstruction entry for '{action}' missing valid MITRE ATT&CK technique"
+
+  - name: severity_justification_required
+    description: Every critical or high severity finding must include explicit justification
+    check: if finding.severity in ['critical', 'high'] then finding.impact is not empty
+    fail_message: "High-severity finding '{title}' missing impact justification"
+
+  - name: executive_summary_max_400_words
+    description: The executive summary must be concise and suitable for legal counsel
+    check: executive_summary word count < 400
+    fail_message: "Executive summary exceeds 400 words ({word_count} words)"

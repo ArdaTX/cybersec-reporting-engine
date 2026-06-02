@@ -1,0 +1,388 @@
+name: threat-hunting-report
+version: 1.0.0
+category: defensive
+description: >
+  Generate comprehensive threat hunting reports aligned with the MITRE ATT&CK framework, TAHITI
+  methodology, MITRE D3FEND countermeasures, and the Cyber Kill Chain. Produces analyst-to-CISO
+  deliverables documenting hypothesis-driven hunt campaigns, detection gap analysis, coverage
+  delta calculations, and actionable detection engineering recommendations. Designed for SOC
+  leads, detection engineers, and threat intelligence teams conducting proactive adversarial
+  hunting operations.
+
+standards:
+  - MITRE ATT&CK v16
+  - TAHITI (Targeted Attack Hunting Integrating Threat Intelligence)
+  - MITRE D3FEND
+  - Cyber Kill Chain (Lockheed Martin)
+  - NIST SP 800-53 (SI-4, AU-6)
+
+tags:
+  - threat-hunting
+  - hunting
+  - hypothesis-driven
+  - mitre-attack
+  - detection-engineering
+  - soc
+  - blue-team
+  - d3fend
+  - tahiti
+  - coverage-gap
+  - sigma
+  - kql
+  - spl
+  - defender
+  - sentinel
+
+prompt: >
+  You are a senior threat hunter and detection engineering lead with 15+ years of experience
+  conducting advanced threat hunting operations for Fortune 500 SOCs, national CERTs, and managed
+  detection and response (MDR) providers. Your expertise includes APT hunting across Windows,
+  Linux, macOS, and cloud environments (AWS, Azure, GCP); C2 beacon detection using statistical
+  analysis; living-off-the-land binary (LOLBin) hunting; memory-resident malware detection;
+  and cloud persistence hunting. You are fluent in SPL, KQL, EQL, and Sigma rule authoring,
+  and you have built detection engineering pipelines that process 100B+ events/day.
+
+  You are now tasked with producing a comprehensive threat hunting report for a hypothesis-driven
+  hunt campaign. Your report will be read by the SOC Director, Detection Engineering Lead, CISO,
+  and potentially shared with industry ISACs for sector-wide threat intelligence collaboration.
+  The report must demonstrate methodological rigor, analytical depth, and actionable detection
+  engineering outcomes.
+
+  Follow the 9-step workflow precisely: (1) Hunt Campaign Scoping & Hypothesis Formulation using
+  the TAHITI framework mapping each hypothesis through Threat Actor → Attack Pattern → Observable
+  Artifact → Data Source → Analytics dimensions, ensuring every hypothesis is falsifiable;
+  (2) Data Source Inventory & Coverage Assessment cataloging all available telemetry sources
+  with quality and retention assessments; (3) Hunt Query Development & Execution across SIEM,
+  data lake, and endpoint query engines with iterative refinement; (4) Findings Triage & Validation
+  classifying results as True Positive, Benign True Positive, or False Positive with evidence-based
+  validation methodology; (5) TTP Attribution & Adversary Profiling mapping validated findings
+  to MITRE ATT&CK techniques and known threat actor groups; (6) Detection Gap Analysis identifying
+  ATT&CK techniques without detection coverage and prioritizing by feasibility and adversary
+  prevalence; (7) Detection Engineering Recommendations specifying Sigma rules, SIEM correlation
+  searches, EDR policies, and network signatures mapped to D3FEND countermeasures; (8) Coverage
+  Delta & Metrics Calculation quantifying pre-hunt vs post-hunt coverage improvement with
+  ATT&CK Navigator comparison layers; (9) Report Assembly & Delivery with executive summary,
+  heatmaps, and actionable recommendations.
+
+  Apply the hunting-specific JSON schemas for hypotheses (with TAHITI mapping, falsifiable criteria,
+  and priority), findings (with TTP attribution, IOC linkage, validation methodology, and confidence
+  scoring), and detection gaps (with data source availability, detection feasibility, D3FEND
+  mapping, and risk scenario).
+
+  The report must follow the structured format: Executive Summary (key findings, coverage delta,
+  critical gaps), Hunting Campaign Overview (scope, hypotheses, methodology, team), Hypotheses
+  Tested (per-hypothesis detail with TAHITI mapping and outcomes), Findings (TPs with TTP mapping
+  and IOCs, BTPs, FP analysis), Detection Gaps Identified (prioritized register with coverage
+  heatmap), New Detections Created (Sigma rules, SIEM queries, EDR policies with D3FEND mapping),
+  MITRE ATT&CK Coverage Delta (pre/post comparison with Navigator layers), and Recommendations
+  (immediate IR actions, short-term detection engineering, medium-term capability development,
+  long-term strategic investments).
+
+  Pass all 8 quality controls: hypothesis falsifiability (every hypothesis has a specific
+  falsifiable criterion), TAHITI completeness (all five dimensions populated), ATT&CK mapping
+  (every finding mapped to a technique ID), validation evidence (every TP has methodology and
+  evidence references), IOC traceability (IOCs traceable to source data), detection gap data
+  (availability and feasibility rated per gap), metric calculation accuracy (coverage percentages
+  correctly computed), and peer review (second hunter/engineer sign-off).
+
+  Use Mermaid diagrams throughout: xychart-beta for ATT&CK coverage by tactic, pie charts for
+  hypothesis outcomes and finding TTP distribution, and flowcharts for hunt workflow.
+
+  Your output must be production-quality, reflecting the rigor of a $400/hr+ threat hunting
+  consultant. Every finding must be evidence-backed. Every gap must be quantified. Every
+  detection recommendation must be specific enough to implement directly.
+
+workflows:
+  - name: full-hunt-campaign-report
+    description: >
+      Generate a complete threat hunting report for a defined hunt campaign. Covers all 9 workflow
+      steps from hypothesis formulation through coverage delta calculation and detection engineering
+      recommendations.
+    steps:
+      - step: hunt_scoping
+        description: Define hunt campaign scope and formulate TAHITI-mapped hypotheses
+        required_inputs:
+          - campaign_name (string)
+          - hunt_period (object: start_date, end_date)
+          - hunt_team (array of objects: name, role, specialization)
+          - environment_scope (string: environment description and coverage)
+          - data_sources (array of strings)
+          - hypotheses (array of hypothesis schema objects)
+        outputs:
+          - hunt_scoping_document (YAML)
+          - hypothesis_register (JSON)
+          - tahiti_mapping_matrix (JSON)
+        example: |
+          campaign_name: "APT29 O365 Cloud Persistence Hunt Q2 2026"
+          hunt_period:
+            start_date: "2026-03-01"
+            end_date: "2026-05-31"
+          hunt_team:
+            - name: "Alex Hunter"
+              role: "Hunt Lead"
+              specialization: "Cloud Threat Hunting"
+            - name: "Maria Analyst"
+              role: "Senior Threat Hunter"
+              specialization: "APT & Nation-State"
+          environment_scope: "M365 E5 tenant (tenant-id: contoso.onmicrosoft.com), Azure AD, Defender for Cloud Apps, Exchange Online"
+          data_sources:
+            - "Azure AD Audit Logs → Microsoft Sentinel"
+            - "M365 Unified Audit Log → Microsoft Sentinel"
+            - "Microsoft Defender for Cloud Apps Alerts"
+            - "Exchange Online Admin Audit Log"
+          hypotheses:
+            - id: HYP-001
+              title: "APT29-style O365 OAuth application consent grant abuse"
+              tahiti_mapping:
+                threat_actor: "APT29 (Midnight Blizzard)"
+                attack_pattern: "Abuse OAuth application consent grants for cloud persistence"
+                observable_artifact: "New OAuth application consent grant events for non-Microsoft verified publisher apps"
+                data_source: "Azure AD Audit Logs (Consent to application events) → Sentinel"
+                analytics: "KQL query filtering ApplicationConsent events with non-verified PublisherName and high-risk permissions"
+              attck_techniques: ["T1098.001"]
+              falsifiable_criterion: "Zero non-Microsoft publisher consent grants detected in the 90-day hunt window"
+              priority: critical
+
+      - step: hypothesis_validation_collection
+        description: Execute hunt queries and collect results per hypothesis
+        required_inputs:
+          - hunt_queries (array of objects: hypothesis_id, query_text, query_language, data_source, execution_timestamp, raw_result_count)
+          - query_refinements (array of objects: hypothesis_id, original_query, refined_query, refinement_rationale)
+        outputs:
+          - query_execution_log (JSON)
+          - refinement_log (JSON)
+
+      - step: findings_triage
+        description: Triage, validate, and classify hunt findings
+        required_inputs:
+          - raw_findings (array of hunt finding schema objects)
+          - validation_evidence (array of objects: finding_id, evidence_type, evidence_description, evidence_reference)
+        outputs:
+          - findings_register (JSON)
+          - validation_evidence_log (JSON)
+          - false_positive_analysis (YAML)
+
+      - step: ttp_attribution
+        description: Map findings to ATT&CK techniques and attribute to threat actors
+        required_inputs:
+          - validated_findings (array of hunt finding objects with finding_type=true_positive)
+          - threat_intel_context (object: relevant threat actor profiles, recent campaign intelligence)
+        outputs:
+          - ttp_attribution_matrix (JSON)
+          - attck_navigator_layer_findings (JSON)
+          - adversary_behavioral_profile (YAML, if novel cluster identified)
+
+      - step: detection_gap_analysis
+        description: Identify ATT&CK techniques without detection coverage
+        required_inputs:
+          - current_detection_inventory (array of objects: technique_id, detection_name, detection_type, coverage_level)
+          - attck_technique_scope (array of technique IDs in scope)
+        outputs:
+          - detection_gap_register (JSON)
+          - coverage_heatmap_data (JSON)
+          - gap_prioritization_matrix (YAML)
+
+      - step: detection_engineering_recommendations
+        description: Specify detection content for findings and gaps
+        required_inputs:
+          - detection_requests (array of objects: gap_id or finding_id, detection_type, description, logic, data_source, d3fend_technique)
+        outputs:
+          - detection_engineering_backlog (JSON)
+          - sigma_rule_specs (array of YAML strings)
+          - d3fend_mapping (JSON)
+
+      - step: coverage_delta_calculation
+        description: Calculate pre/post hunt coverage delta and metrics
+        required_inputs:
+          - pre_hunt_coverage (object: technique_id → coverage_level)
+          - new_detections (array of technique coverage additions)
+        outputs:
+          - coverage_delta_report (JSON)
+          - attck_navigator_comparison_layer (JSON)
+          - metrics_dashboard (YAML)
+
+      - step: findings_reporting
+        description: Document findings with full detail for SOC handoff
+        required_inputs:
+          - report_sections (object: executive_summary, findings_detail, gap_analysis, recommendations)
+        outputs:
+          - findings_report (Markdown)
+
+      - step: report_assembly
+        description: Assemble final report with all sections, diagrams, and QC sign-off
+        required_inputs:
+          - delivery_recipients (array of objects)
+        outputs:
+          - final_threat_hunting_report (Markdown/PDF)
+          - executive_briefing (Markdown)
+          - attck_navigator_layer_files (ZIP)
+          - qc_checklist (YAML)
+
+  - name: apthunt-campaign
+    description: >
+      Specialized workflow for APT-focused hunt campaigns. Extends the full hunt workflow with
+      APT-specific fields including threat actor profile integration, C2 infrastructure analysis,
+      and multi-phase campaign correlation.
+    steps:
+      - step: apt_threat_intel_integration
+        description: Integrate APT threat intelligence profiles into hypothesis formulation
+        required_inputs:
+          - apt_group_profiles (array of objects: group_name, aliases, mitre_groups_id, associated_techniques, toolset, infrastructure_patterns, targeting_sectors)
+          - recent_intel (array of objects: source, date, summary, iocs, techniques)
+        outputs:
+          - apt_hypothesis_register (JSON with APT profile enrichment per hypothesis)
+
+      - step: infrastructure_pivot_analysis
+        description: Analyze C2 infrastructure and pivot to identify additional compromised assets
+        required_inputs:
+          - c2_indicators (array of objects: ip, domain, ja3_hash, jarm_hash, certificate_serial)
+          - network_flow_data (array of connection records from Zeek/NetFlow)
+        outputs:
+          - infrastructure_map (JSON)
+          - pivoted_assets (array of potentially compromised assets)
+
+      - step: multi_phase_campaign_correlation
+        description: Correlate findings across multiple hunt campaigns to identify multi-phase APT operations
+        required_inputs:
+          - previous_campaign_findings (array from prior hunts)
+          - current_campaign_findings (array)
+        outputs:
+          - campaign_correlation_matrix (JSON)
+          - unified_attack_timeline (Mermaid Gantt)
+
+  - name: quick-response-hypothesis-hunt
+    description: >
+      Accelerated workflow for a single-hypothesis hunt in response to emerging threat intelligence,
+      zero-day exploitation, or sector-wide alerting. Compressed from 9 steps to 5 steps with
+      emphasis on speed while maintaining analytical rigor.
+    steps:
+      - step: rapid_scoping
+        description: Scope a single hypothesis with minimal overhead
+        required_inputs:
+          - trigger_intel (object: source, date, summary, techniques, urgency)
+          - single_hypothesis (hypothesis schema object)
+          - data_sources_available (array of strings)
+        outputs:
+          - rapid_hunt_scope (YAML)
+
+      - step: rapid_query_execution
+        description: Execute and refine queries with urgency
+        required_inputs:
+          - queries (array)
+        outputs:
+          - query_results (JSON)
+
+      - step: rapid_findings_validation
+        description: Triage findings with accelerated validation
+        required_inputs:
+          - findings (array)
+        outputs:
+          - validated_findings (JSON)
+
+      - step: rapid_gap_assessment
+        description: Quick detection gap assessment for the specific technique
+        required_inputs:
+          - technique_id (string)
+        outputs:
+          - gap_assessment (YAML)
+
+      - step: rapid_recommendation
+        description: Immediate action recommendation memo
+        required_inputs:
+          - findings_summary (object)
+        outputs:
+          - rapid_response_memo (Markdown)
+
+examples:
+  - name: apt29-o365-cloud-persistence-hunt
+    scenario: >
+      Multinational corporation SOC conducts a 90-day hypothesis-driven hunt for APT29 TTPs
+      targeting M365/Azure AD. 12 hypotheses tested across cloud persistence, token theft,
+      OAuth abuse, and mailbox exfiltration domains. 4 hypotheses validated, 7 invalidated,
+      2 inconclusive. 8 new detections created. Coverage improved from 38% to 57%.
+    expected_outputs:
+      - Executive summary with 4 validated hypotheses and coverage delta
+      - Hypothesis register with TAHITI mapping (all 12 hypotheses)
+      - Validated findings: unauthorized OAuth consent, anomalous mailbox permissions, Graph API enumeration, Azure Automation persistence
+      - ATT&CK coverage heatmap: pre-hunt vs post-hunt by tactic
+      - Detection gap register: 14 gaps prioritized by feasibility and adversary prevalence
+      - 8 new detection specifications (4 Sigma, 2 KQL, 2 MDE custom detection)
+      - Mermaid pie chart: hypothesis outcomes distribution
+      - Mermaid xychart-beta: ATT&CK coverage by tactic (pre vs post)
+      - D3FEND countermeasure cross-reference for all recommended detections
+
+  - name: iab-ransomware-precursor-hunt
+    scenario: >
+      Proactive ransomware precursor hunt targeting IAB TTPs across 90-day pre-encryption window.
+      9 hypotheses across endpoint (Sysmon/CrowdStrike), network (Zeek), and identity (Windows
+      Event Logs/Azure AD) domains. Cobalt Strike beacon and LSASS credential dumping discovered —
+      neither triggered existing detections. Findings immediately escalated to IR. 10 new detections
+      created.
+    expected_outputs:
+      - Executive summary with critical finding escalation note
+      - Finding FND-001: Cobalt Strike HTTPS beacon (14-day dwell time, 12.7% jitter) → Incident declared
+      - Finding FND-002: LSASS credential dumping from admin account → Incident declared
+      - "Detection gap root cause: jitter-based beacon evasion (gap: jitter >10% not covered), admin account whitelist bypass"
+      - 5 Sigma rules, 3 Zeek signatures, 2 CrowdStrike IOA rules specified
+      - Mermaid pie chart: finding severity distribution
+      - D3FEND mappings: D3-SYSM (System Monitoring), D3-PA (Process Analysis), D3-NTA (Network Traffic Analysis)
+      - Pre-hunt vs post-hunt coverage for ransomware-relevant techniques (Initial Access, Execution, Persistence, C2)
+
+formats:
+  - markdown_report:
+      description: Rich Markdown hunt report with Mermaid diagrams, ATT&CK heatmaps, and query library
+      template: threat_hunting_report.md.j2
+  - pdf_report:
+      description: Print-ready PDF with header/footer, classification banners, and technique index
+      template: threat_hunting_report.tex.j2
+  - json_structured:
+      description: Machine-readable JSON for SIEM/SOAR ingestion and ATT&CK Navigator layer generation
+      template: threat_hunting_report.json.j2
+  - soc_handoff:
+      description: Condensed findings-only format for IR team handoff (findings + IOCs + immediate actions)
+      template: threat_hunting_soc_handoff.md.j2
+
+validation_rules:
+  - rule: hypothesis_falsifiable
+    description: Every hypothesis must include a non-empty falsifiable_criterion field specifying what would disprove it
+    severity: error
+
+  - rule: tahiti_dimensions_complete
+    description: Every hypothesis must populate all five TAHITI dimensions — threat_actor, attack_pattern, observable_artifact, data_source, and analytics
+    severity: error
+
+  - rule: finding_attck_mapped
+    description: Every finding must be mapped to at least one valid MITRE ATT&CK technique ID
+    severity: error
+
+  - rule: true_positive_validated
+    description: Every finding classified as true_positive must include a non-empty validation_methodology field
+    severity: error
+
+  - rule: ioc_traceable
+    description: All IOCs extracted from findings must include source_reference and first_seen timestamp
+    severity: error
+
+  - rule: detection_gap_feasibility_rated
+    description: Every detection gap must include detection_feasibility (high|medium|low) and data_source_availability (available|partial|unavailable) ratings
+    severity: error
+
+  - rule: coverage_percentage_valid
+    description: ATT&CK coverage percentages must be between 0 and 100 and must match the raw count of covered techniques divided by total techniques in scope
+    severity: error
+
+  - rule: d3fend_mapped
+    description: Every recommended detection should include a D3FEND countermeasure reference where applicable
+    severity: warning
+
+  - rule: hunt_query_captured
+    description: All hunt queries executed must be captured in the query library with query text, rationale, and execution timestamp
+    severity: warning
+
+  - rule: peer_review_signoff
+    description: Final report must include a peer review sign-off from a second threat hunter or detection engineer not involved in the primary hunt
+    severity: warning
+
+  - rule: document_id_convention
+    description: Report must have a document ID following the convention THR-YYYY-MMDD-NNN
+    severity: error

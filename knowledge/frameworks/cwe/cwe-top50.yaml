@@ -1,0 +1,360 @@
+# CWE Top 50 Most Dangerous Software Weaknesses (2024)
+# CyberSec Reporting Engine
+# Based on CWE Top 25 + additional critical weaknesses
+
+metadata:
+  organization: MITRE Corporation
+  framework: Common Weakness Enumeration (CWE)
+  url: https://cwe.mitre.org/top25/
+  year: 2024
+
+top_50_cwes:
+  - id: CWE-79
+    name: Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)
+    severity: Medium to High
+    cvss_avg: 6.1
+    languages: [JavaScript, PHP, Java, Python, C#]
+    platforms: [Web applications, APIs]
+
+  - id: CWE-787
+    name: Out-of-bounds Write
+    severity: High to Critical
+    cvss_avg: 9.8
+    languages: [C, C++, Assembly]
+    platforms: [Operating systems, embedded systems, IoT devices]
+
+  - id: CWE-89
+    name: Improper Neutralization of Special Elements used in an SQL Command (SQL Injection)
+    severity: High to Critical
+    cvss_avg: 9.8
+    languages: [PHP, Java, Python, C#, Ruby, Go]
+    platforms: [Web applications, databases]
+
+  - id: CWE-416
+    name: Use After Free
+    severity: High
+    cvss_avg: 8.8
+    languages: [C, C++]
+    platforms: [Browsers, operating systems, embedded systems]
+
+  - id: CWE-78
+    name: Improper Neutralization of Special Elements used in an OS Command (OS Command Injection)
+    severity: Critical
+    cvss_avg: 9.8
+    languages: [PHP, Python, Ruby, Node.js, Perl]
+    platforms: [Web applications, network devices]
+
+  - id: CWE-20
+    name: Improper Input Validation
+    severity: Variable
+    cvss_avg: 7.5
+    languages: [All]
+    platforms: [All]
+
+  - id: CWE-125
+    name: Out-of-bounds Read
+    severity: High
+    cvss_avg: 7.5
+    languages: [C, C++]
+    platforms: [Operating systems, applications]
+
+  - id: CWE-22
+    name: Improper Limitation of a Pathname to a Restricted Directory (Path Traversal)
+    severity: High
+    cvss_avg: 7.5
+    languages: [PHP, Java, Python, Node.js, C#]
+    platforms: [Web applications, file servers]
+
+  - id: CWE-352
+    name: Cross-Site Request Forgery (CSRF)
+    severity: Medium to High
+    cvss_avg: 6.5
+    languages: [All web languages]
+    platforms: [Web applications]
+
+  - id: CWE-434
+    name: Unrestricted Upload of File with Dangerous Type
+    severity: High to Critical
+    cvss_avg: 9.8
+    languages: [PHP, Java, Python, Node.js, C#]
+    platforms: [Web applications]
+
+  - id: CWE-476
+    name: NULL Pointer Dereference
+    severity: Medium
+    cvss_avg: 5.9
+    languages: [C, C++]
+    platforms: [Operating systems, applications]
+
+  - id: CWE-287
+    name: Improper Authentication
+    severity: High to Critical
+    cvss_avg: 9.8
+    languages: [All]
+    platforms: [Web applications, APIs, networks]
+
+  - id: CWE-190
+    name: Integer Overflow or Wraparound
+    severity: High
+    cvss_avg: 8.8
+    languages: [C, C++, Java, C#, Rust]
+    platforms: [All platforms]
+
+  - id: CWE-502
+    name: Deserialization of Untrusted Data
+    severity: High to Critical
+    cvss_avg: 9.8
+    languages: [Java, Python, PHP, Ruby, C#, Node.js]
+    platforms: [Web applications, APIs]
+
+  - id: CWE-77
+    name: Improper Neutralization of Special Elements used in a Command (Command Injection)
+    severity: Critical
+    cvss_avg: 9.8
+    languages: [Python, PHP, Ruby, Node.js]
+    platforms: [Web applications, scripts]
+
+  - id: CWE-862
+    name: Missing Authorization
+    severity: High
+    cvss_avg: 9.1
+    languages: [All]
+    platforms: [Web applications, APIs, databases]
+
+  - id: CWE-276
+    name: Incorrect Default Permissions
+    severity: Medium
+    cvss_avg: 5.5
+    languages: [All]
+    platforms: [Operating systems, cloud, containers]
+
+  - id: CWE-200
+    name: Exposure of Sensitive Information to an Unauthorized Actor
+    severity: Medium to High
+    cvss_avg: 6.5
+    languages: [All]
+    platforms: [All]
+
+  - id: CWE-522
+    name: Insufficiently Protected Credentials
+    severity: High
+    cvss_avg: 8.4
+    languages: [All]
+    platforms: [All systems]
+
+  - id: CWE-732
+    name: Incorrect Permission Assignment for Critical Resource
+    severity: Medium to High
+    cvss_avg: 7.8
+    languages: [All]
+    platforms: [Operating systems, applications]
+
+  - id: CWE-611
+    name: Improper Restriction of XML External Entity Reference (XXE)
+    severity: High to Critical
+    cvss_avg: 9.1
+    languages: [Java, C#, PHP, Python]
+    platforms: [XML parsers, SOAP services]
+
+  - id: CWE-94
+    name: Improper Control of Generation of Code (Code Injection)
+    severity: Critical
+    cvss_avg: 9.8
+    languages: [Python, JavaScript, PHP, Ruby, Perl]
+    platforms: [Web applications]
+
+  - id: CWE-798
+    name: Use of Hard-coded Credentials
+    severity: Critical
+    cvss_avg: 9.8
+    languages: [All]
+    platforms: [All systems, IoT, mobile]
+
+  - id: CWE-400
+    name: Uncontrolled Resource Consumption
+    severity: Medium to High
+    cvss_avg: 7.5
+    languages: [All]
+    platforms: [All networked systems]
+
+  - id: CWE-918
+    name: Server-Side Request Forgery (SSRF)
+    severity: High to Critical
+    cvss_avg: 9.1
+    languages: [PHP, Java, Python, Node.js, Ruby]
+    platforms: [Web applications, cloud services]
+
+  - id: CWE-119
+    name: Improper Restriction of Operations within the Bounds of a Memory Buffer
+    severity: High to Critical
+    cvss_avg: 9.8
+    languages: [C, C++]
+    platforms: [Operating systems, embedded]
+
+  - id: CWE-306
+    name: Missing Authentication for Critical Function
+    severity: Critical
+    cvss_avg: 9.8
+    languages: [All]
+    platforms: [APIs, web applications, IoT]
+
+  - id: CWE-362
+    name: Concurrent Execution using Shared Resource with Improper Synchronization (Race Condition)
+    severity: Medium to High
+    cvss_avg: 7.0
+    languages: [C, C++, Java, C#, Go]
+    platforms: [All multi-threaded applications]
+
+  - id: CWE-269
+    name: Improper Privilege Management
+    severity: High
+    cvss_avg: 8.8
+    languages: [All]
+    platforms: [Operating systems, applications]
+
+  - id: CWE-863
+    name: Incorrect Authorization
+    severity: High
+    cvss_avg: 9.1
+    languages: [All]
+    platforms: [Web applications, APIs]
+
+  - id: CWE-532
+    name: Insertion of Sensitive Information into Log File
+    severity: Medium
+    cvss_avg: 5.3
+    languages: [All]
+    platforms: [All]
+
+  - id: CWE-327
+    name: Use of a Broken or Risky Cryptographic Algorithm
+    severity: High
+    cvss_avg: 7.5
+    languages: [All]
+    platforms: [All]
+
+  - id: CWE-601
+    name: URL Redirection to Untrusted Site (Open Redirect)
+    severity: Medium
+    cvss_avg: 5.4
+    languages: [All web languages]
+    platforms: [Web applications]
+
+  - id: CWE-134
+    name: Use of Externally-Controlled Format String
+    severity: High
+    cvss_avg: 9.8
+    languages: [C, C++]
+    platforms: [Applications, services]
+
+  - id: CWE-319
+    name: Cleartext Transmission of Sensitive Information
+    severity: High
+    cvss_avg: 7.5
+    languages: [All]
+    platforms: [Mobile apps, web applications]
+
+  - id: CWE-252
+    name: Unchecked Return Value
+    severity: Medium
+    cvss_avg: 6.3
+    languages: [C, C++]
+    platforms: [Operating systems, applications]
+
+  - id: CWE-295
+    name: Improper Certificate Validation
+    severity: Medium to High
+    cvss_avg: 6.5
+    languages: [Java, Kotlin, Swift, C#]
+    platforms: [Mobile apps, APIs]
+
+  - id: CWE-311
+    name: Missing Encryption of Sensitive Data
+    severity: High
+    cvss_avg: 7.5
+    languages: [All]
+    platforms: [Mobile, IoT, cloud]
+
+  - id: CWE-426
+    name: Untrusted Search Path
+    severity: High
+    cvss_avg: 7.8
+    languages: [C, C++, C#]
+    platforms: [Windows, Linux]
+
+  - id: CWE-843
+    name: Access of Resource Using Incompatible Type (Type Confusion)
+    severity: High
+    cvss_avg: 8.8
+    languages: [C, C++]
+    platforms: [Browsers, applications]
+
+  - id: CWE-754
+    name: Improper Check for Unusual or Exceptional Conditions
+    severity: Medium
+    cvss_avg: 5.3
+    languages: [All]
+    platforms: [All]
+
+  - id: CWE-665
+    name: Improper Initialization
+    severity: Medium
+    cvss_avg: 5.5
+    languages: [C, C++]
+    platforms: [Operating systems, embedded]
+
+  - id: CWE-770
+    name: Allocation of Resources Without Limits or Throttling
+    severity: Medium to High
+    cvss_avg: 7.5
+    languages: [All]
+    platforms: [APIs, network services]
+
+  - id: CWE-704
+    name: Incorrect Type Conversion or Cast
+    severity: Medium
+    cvss_avg: 5.5
+    languages: [C, C++, Java, C#]
+    platforms: [Applications]
+
+  - id: CWE-346
+    name: Origin Validation Error
+    severity: Medium to High
+    cvss_avg: 7.5
+    languages: [All web languages]
+    platforms: [Web applications, APIs]
+
+  - id: CWE-835
+    name: Loop with Unreachable Exit Condition (Infinite Loop)
+    severity: Medium
+    cvss_avg: 5.9
+    languages: [All]
+    platforms: [All]
+
+  - id: CWE-459
+    name: Incomplete Cleanup
+    severity: Medium
+    cvss_avg: 5.5
+    languages: [C, C++]
+    platforms: [Operating systems, applications]
+
+  - id: CWE-668
+    name: Exposure of Resource to Wrong Sphere
+    severity: Medium
+    cvss_avg: 6.5
+    languages: [All]
+    platforms: [Web applications, cloud, containers]
+
+  - id: CWE-347
+    name: Improper Verification of Cryptographic Signature
+    severity: High
+    cvss_avg: 9.1
+    languages: [Java, C#, Python]
+    platforms: [All]
+
+  - id: CWE-285
+    name: Improper Authorization
+    severity: High
+    cvss_avg: 9.1
+    languages: [All]
+    platforms: [Web applications, APIs, databases]

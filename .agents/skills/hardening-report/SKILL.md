@@ -1,0 +1,1 @@
+../../../skills/hardening-report//SKILL.md

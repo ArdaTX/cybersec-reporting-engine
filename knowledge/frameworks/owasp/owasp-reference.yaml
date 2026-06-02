@@ -1,0 +1,413 @@
+# OWASP Knowledge Base Reference
+# CyberSec Reporting Engine
+# Covers Top 10, API Top 10, ASVS, and Testing Guide
+
+metadata:
+  organization: OWASP Foundation
+  url: https://owasp.org
+  last_updated: "2025-01"
+
+owasp_top_10_2021:
+  - rank: A01
+    name: Broken Access Control
+    description: Restrictions on authenticated users are not properly enforced
+    cwe_ids: [CWE-200, CWE-201, CWE-352, CWE-862, CWE-863]
+    examples:
+      - Vertical privilege escalation by modifying URL parameters
+      - IDOR via predictable object identifiers
+      - Missing function-level access control on API endpoints
+      - CORS misconfiguration allowing cross-origin requests
+    remediation:
+      - Implement deny-by-default access control
+      - Enforce access control checks at the application layer
+      - Use access control models (RBAC, ABAC, ReBAC)
+      - Log and monitor access control failures
+      - Invalidate JWT tokens on logout
+
+  - rank: A02
+    name: Cryptographic Failures
+    description: Sensitive data is exposed due to weak or missing cryptography
+    cwe_ids: [CWE-259, CWE-327, CWE-331, CWE-326, CWE-319]
+    examples:
+      - Transmitting credentials over HTTP instead of HTTPS
+      - Using deprecated algorithms (MD5, SHA1, RC4, DES)
+      - Hardcoded encryption keys in source code
+      - Weak TLS configuration (TLS 1.0/1.1, weak ciphers)
+    remediation:
+      - Classify data and apply appropriate protection
+      - Encrypt data at rest (AES-256-GCM) and in transit (TLS 1.3)
+      - Use strong key management (HSM, KMS)
+      - Disable caching for sensitive responses
+      - HSTS with max-age and includeSubDomains
+
+  - rank: A03
+    name: Injection
+    description: Untrusted data is sent to an interpreter as part of a command
+    cwe_ids: [CWE-74, CWE-77, CWE-78, CWE-79, CWE-89, CWE-91, CWE-94, CWE-564, CWE-643, CWE-652, CWE-917]
+    examples:
+      - SQL injection via concatenated queries
+      - Command injection via system() calls
+      - LDAP injection in authentication filters
+      - XSS in reflected or stored user input
+      - NoSQL injection in MongoDB queries
+    remediation:
+      - Parameterized queries with prepared statements
+      - Input validation and sanitization (allowlists preferred)
+      - ORM frameworks with proper configuration
+      - Output encoding for context (HTML, JS, URL, CSS)
+      - Content Security Policy (CSP) headers
+
+  - rank: A04
+    name: Insecure Design
+    description: Application design flaws that cannot be fixed by implementation alone
+    cwe_ids: [CWE-209, CWE-256, CWE-501, CWE-522, CWE-602, CWE-642, CWE-646, CWE-653, CWE-656, CWE-657, CWE-799, CWE-807, CWE-840, CWE-841, CWE-927, CWE-1019, CWE-1041, CWE-1173]
+    examples:
+      - Allowing unlimited login attempts without rate limiting
+      - Storing plaintext passwords
+      - Trusting client-side validation only
+      - No brute force protection on password reset tokens
+    remediation:
+      - Threat modeling during design phase (STRIDE, PASTA)
+      - Secure design patterns and principles (least privilege, defense-in-depth)
+      - Security requirements as functional requirements
+      - Limit resource consumption by design
+
+  - rank: A05
+    name: Security Misconfiguration
+    description: Security hardening is missing or improperly implemented
+    cwe_ids: [CWE-11, CWE-13, CWE-15, CWE-16, CWE-260, CWE-315, CWE-520, CWE-526, CWE-537, CWE-541, CWE-547, CWE-611, CWE-776, CWE-942, CWE-1004, CWE-1035, CWE-1174]
+    examples:
+      - Default accounts and passwords still enabled
+      - Directory listing enabled on web servers
+      - Unnecessary features/ports/services enabled
+      - Cloud storage buckets with public access
+      - Verbose error messages revealing stack traces
+    remediation:
+      - Hardening guides and repeatable configuration
+      - Automated configuration scanning
+      - Minimal platform (remove unused features)
+      - Security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy)
+      - Segment application architecture
+
+  - rank: A06
+    name: Vulnerable and Outdated Components
+    description: Using components with known vulnerabilities
+    cwe_ids: [CWE-937, CWE-1035, CWE-1104]
+    examples:
+      - Unpatched web server or application framework
+      - Outdated JavaScript libraries (jQuery, AngularJS)
+      - Vulnerable container base images
+      - Unmaintained open-source dependencies
+    remediation:
+      - SBOM generation and tracking (CycloneDX, SPDX)
+      - Automated dependency scanning in CI/CD (Trivy, Snyk, Dependabot)
+      - Remove unused dependencies and features
+      - Subscribe to vulnerability alerts (CVE, GitHub Advisories)
+
+  - rank: A07
+    name: Identification and Authentication Failures
+    description: Failure to properly authenticate users
+    cwe_ids: [CWE-287, CWE-290, CWE-294, CWE-295, CWE-297, CWE-300, CWE-301, CWE-304, CWE-305, CWE-306, CWE-307, CWE-308, CWE-309, CWE-310, CWE-311, CWE-312, CWE-313, CWE-316, CWE-317, CWE-318, CWE-319, CWE-321, CWE-322, CWE-323, CWE-324, CWE-325, CWE-326, CWE-327, CWE-328, CWE-329, CWE-330, CWE-331, CWE-384]
+    examples:
+      - Permits weak or well-known passwords
+      - Session identifiers in URLs
+      - Session tokens not invalidated on logout
+      - Weak credential recovery mechanisms
+      - Missing multi-factor authentication
+    remediation:
+      - Multi-Factor Authentication (FIDO2, TOTP)
+      - Session management best practices (random, regenerated IDs)
+      - Account lockout and rate limiting
+      - Password strength and breach-checking (Have I Been Pwned API)
+
+  - rank: A08
+    name: Software and Data Integrity Failures
+    description: Failure to verify the integrity of software updates, data, and CI/CD pipelines
+    cwe_ids: [CWE-345, CWE-353, CWE-426, CWE-494, CWE-502, CWE-829, CWE-830, CWE-912, CWE-913, CWE-914, CWE-915]
+    examples:
+      - Insecure deserialization of untrusted data
+      - Unsigned software updates consumed by auto-updater
+      - CI/CD pipeline lacking artifact integrity checks
+      - Dependency confusion / typosquatting attacks
+    remediation:
+      - Digital signatures for software releases and updates
+      - Sigstore / Cosign for container image signing
+      - Verify CI/CD pipeline input and output integrity
+      - Use SLSA framework for supply chain security
+
+  - rank: A09
+    name: Security Logging and Monitoring Failures
+    description: Insufficient logging and monitoring to detect and respond to breaches
+    cwe_ids: [CWE-117, CWE-223, CWE-532, CWE-778]
+    examples:
+      - Login failures not logged or monitored
+      - Logs stored only locally
+      - No alerting thresholds for suspicious activity
+      - Logs containing sensitive data (PII, tokens, passwords)
+    remediation:
+      - Structured logging (JSON format) to centralized SIEM
+      - Audit trails for high-value transactions
+      - Automated alerting with severity classification
+      - Tamper-proof log storage with integrity verification
+      - Mean Time to Detect (MTTD) and Respond (MTTR) tracking
+
+  - rank: A10
+    name: Server-Side Request Forgery (SSRF)
+    description: Application fetches a remote resource without validating the user-supplied URL
+    cwe_ids: [CWE-918]
+    examples:
+      - Accessing cloud metadata service (169.254.169.254)
+      - Port scanning internal network through the application
+      - Reading local files via file:// protocol
+      - Blind SSRF with out-of-band detection
+    remediation:
+      - Network layer: Segment remote resource access
+      - Application layer: URL allowlist validation
+      - Deny HTTP redirects by default
+      - Disable unused URL schemas (file://, gopher://, dict://)
+      - Use IMDSv2 for AWS instances
+
+owasp_api_top_10_2023:
+  - rank: API1
+    name: Broken Object Level Authorization (BOLA)
+    description: API exposes endpoints handling object IDs without authorization checks
+    detection:
+      - Test replacing user IDs in API requests
+      - Check sequential or predictable IDs
+      - Test across different user roles
+    remediation:
+      - Implement proper authorization mechanism per endpoint
+      - Use random and unpredictable GUIDs as object IDs
+      - Test authorization with automated test cases
+
+  - rank: API2
+    name: Broken Authentication
+    description: Authentication mechanisms are improperly implemented
+    detection:
+      - Test credential stuffing resistance
+      - Check token expiration and revocation
+      - Test JWT implementation flaws
+    remediation:
+      - Implement MFA for sensitive endpoints
+      - Use short-lived access tokens with refresh token rotation
+      - Enforce rate limiting on authentication endpoints
+
+  - rank: API3
+    name: Broken Object Property Level Authorization
+    description: APIs return excessive data or accept excessive properties
+    detection:
+      - Mass assignment testing with extra fields
+      - Check response bodies for leaked data
+      - Test PATCH/PUT for property modification
+    remediation:
+      - Define and enforce schema validation on inputs and outputs
+      - Whitelist allowed properties per endpoint and role
+      - Use DTOs that exclude sensitive fields
+
+  - rank: API4
+    name: Unrestricted Resource Consumption
+    description: API allows excessive resource usage leading to DoS
+    remediation:
+      - Implement rate limiting (token bucket, sliding window)
+      - Set maximum payload size limits
+      - Enforce query depth/complexity limits in GraphQL
+      - Monitor resource usage patterns
+
+  - rank: API5
+    name: Broken Function Level Authorization
+    description: Complex access control with unclear separation of admin/user functions
+    remediation:
+      - Enforce deny-by-default access control
+      - Avoid exposing administrative endpoints at predictable URLs
+      - Test every endpoint across all roles
+
+  - rank: API6
+    name: Unrestricted Access to Sensitive Business Flows
+    description: API exposes business flows without abuse protections
+    remediation:
+      - Implement business logic abuse detection
+      - Set transaction velocity limits
+      - Anomaly detection on business flow patterns
+
+  - rank: API7
+    name: Server-Side Request Forgery (SSRF)
+    remediation:
+      - Disable HTTP redirects
+      - URL scheme whitelisting
+      - Network segmentation for internal services
+
+  - rank: API8
+    name: Security Misconfiguration
+    remediation:
+      - Harden API infrastructure (disable unnecessary HTTP methods)
+      - Proper CORS configuration
+      - Security headers enforcement
+
+  - rank: API9
+    name: Improper Inventory Management
+    rehabilitation:
+      - Maintain up-to-date API inventory (Swagger/OpenAPI)
+      - Version management and deprecation process
+      - Detect shadow/zombie APIs
+
+  - rank: API10
+    name: Unsafe Consumption of APIs
+    remediation:
+      - Validate and sanitize data from third-party APIs
+      - Apply the zero-trust principle to API consumers
+      - Monitor for data integrity issues
+
+owasp_asvs_v4:
+  categories:
+    - id: V1
+      name: Architecture, Design and Threat Modeling
+      level: L1
+    - id: V2
+      name: Authentication Verification Requirements
+      level: L1
+    - id: V3
+      name: Session Management Verification Requirements
+      level: L1
+    - id: V4
+      name: Access Control Verification Requirements
+      level: L1
+    - id: V5
+      name: Validation, Sanitization and Encoding
+      level: L1
+    - id: V6
+      name: Stored Cryptography Verification Requirements
+      level: L2
+    - id: V7
+      name: Error Handling and Logging Verification Requirements
+      level: L1
+    - id: V8
+      name: Data Protection Verification Requirements
+      level: L2
+    - id: V9
+      name: Communications Verification Requirements
+      level: L1
+    - id: V10
+      name: Malicious Code Verification Requirements
+      level: L2
+    - id: V11
+      name: Business Logic Verification Requirements
+      level: L2
+    - id: V12
+      name: Files and Resources Verification Requirements
+      level: L2
+    - id: V13
+      name: API and Web Service Verification Requirements
+      level: L2
+    - id: V14
+      name: Configuration Verification Requirements
+      level: L2
+
+owasp_testing_guide_v4:
+  phases:
+    - name: Information Gathering
+      sections:
+        - OTG-INFO-001: Conduct Search Engine Discovery
+        - OTG-INFO-002: Fingerprint Web Server
+        - OTG-INFO-003: Review Webserver Metafiles
+        - OTG-INFO-004: Enumerate Applications on Webserver
+        - OTG-INFO-005: Review Webpage Comments and Metadata
+
+    - name: Configuration and Deployment Management Testing
+      sections:
+        - OTG-CONFIG-001: Test Network/Infrastructure Configuration
+        - OTG-CONFIG-002: Test Application Platform Configuration
+        - OTG-CONFIG-003: Test File Extensions Handling
+        - OTG-CONFIG-004: Review Old/Backup Files
+        - OTG-CONFIG-005: Enumerate Admin Interfaces
+        - OTG-CONFIG-006: Test HTTP Methods
+        - OTG-CONFIG-007: Test HTTP Strict Transport Security
+        - OTG-CONFIG-008: Test RIA Cross Domain Policy
+
+    - name: Identity Management Testing
+      sections:
+        - OTG-IDENT-001: Test Role Definitions
+        - OTG-IDENT-002: Test User Registration Process
+        - OTG-IDENT-003: Test Account Provisioning Process
+        - OTG-IDENT-004: Testing for Account Enumeration
+        - OTG-IDENT-005: Testing for Weak or Unenforced Password Policy
+
+    - name: Authentication Testing
+      sections:
+        - OTG-AUTHN-001: Testing for Credentials Transported over Encrypted Channel
+        - OTG-AUTHN-002: Testing for Default Credentials
+        - OTG-AUTHN-003: Testing for Weak Lockout Mechanism
+        - OTG-AUTHN-004: Testing for Bypassing Authentication Schema
+        - OTG-AUTHN-005: Test Remember Password Functionality
+        - OTG-AUTHN-006: Testing for Browser Cache Weaknesses
+
+    - name: Authorization Testing
+      sections:
+        - OTG-AUTHZ-001: Testing Directory Traversal / File Include
+        - OTG-AUTHZ-002: Testing for Bypassing Authorization Schema
+        - OTG-AUTHZ-003: Testing for Privilege Escalation
+        - OTG-AUTHZ-004: Testing for Insecure Direct Object References
+
+    - name: Session Management Testing
+      sections:
+        - OTG-SESS-001: Testing for Session Management Schema
+        - OTG-SESS-002: Testing for Cookies Attributes
+        - OTG-SESS-003: Testing for Session Fixation
+        - OTG-SESS-004: Testing for Exposed Session Variables
+        - OTG-SESS-005: Testing for Cross Site Request Forgery
+
+    - name: Input Validation Testing
+      sections:
+        - OTG-INPVAL-001: Testing for Reflected Cross Site Scripting
+        - OTG-INPVAL-002: Testing for Stored Cross Site Scripting
+        - OTG-INPVAL-003: Testing for HTTP Verb Tampering
+        - OTG-INPVAL-004: Testing for HTTP Parameter Pollution
+        - OTG-INPVAL-005: Testing for SQL Injection
+        - OTG-INPVAL-006: Testing for LDAP Injection
+        - OTG-INPVAL-007: Testing for ORM Injection
+        - OTG-INPVAL-008: Testing for XML Injection
+        - OTG-INPVAL-009: Testing for SSI Injection
+        - OTG-INPVAL-010: Testing for XPath Injection
+        - OTG-INPVAL-011: Testing for IMAP/SMTP Injection
+        - OTG-INPVAL-012: Testing for Code Injection
+        - OTG-INPVAL-013: Testing for Command Injection
+        - OTG-INPVAL-014: Testing for Buffer Overflow
+        - OTG-INPVAL-015: Testing for Incubated Vulnerability
+        - OTG-INPVAL-016: Testing for HTTP Splitting/Smuggling
+
+    - name: Error Handling Testing
+      sections:
+        - OTG-ERR-001: Analysis of Error Codes
+        - OTG-ERR-002: Analysis of Stack Traces
+
+    - name: Cryptography Testing
+      sections:
+        - OTG-CRYPST-001: Testing for Weak SSL/TLS Ciphers
+        - OTG-CRYPST-002: Testing for Padding Oracle
+        - OTG-CRYPST-003: Testing for Sensitive Information Sent via Unencrypted Channels
+
+    - name: Business Logic Testing
+      sections:
+        - OTG-BUSLOGIC-001: Test Business Logic Data Validation
+        - OTG-BUSLOGIC-002: Test Ability to Forge Requests
+        - OTG-BUSLOGIC-003: Test Integrity Checks
+        - OTG-BUSLOGIC-004: Test for Process Timing
+        - OTG-BUSLOGIC-005: Test Number of Times Function Can Be Used
+        - OTG-BUSLOGIC-006: Testing for Circumvention of Workflows
+        - OTG-BUSLOGIC-007: Test Defenses Against Application Misuse
+        - OTG-BUSLOGIC-008: Test Upload of Unexpected File Types
+        - OTG-BUSLOGIC-009: Test Upload of Malicious Files
+
+    - name: Client Side Testing
+      sections:
+        - OTG-CLIENT-001: Testing for DOM based Cross Site Scripting
+        - OTG-CLIENT-002: Testing for JavaScript Execution
+        - OTG-CLIENT-003: Testing for HTML Injection
+        - OTG-CLIENT-004: Testing for Client Side URL Redirect
+        - OTG-CLIENT-005: Testing for CSS Injection
+        - OTG-CLIENT-006: Testing for Client Side Resource Manipulation
+        - OTG-CLIENT-007: Test Cross Origin Resource Sharing
+        - OTG-CLIENT-008: Testing for Cross Site Flashing
+        - OTG-CLIENT-009: Testing for Clickjacking
+        - OTG-CLIENT-010: Testing WebSockets
+        - OTG-CLIENT-011: Test Web Messaging
+        - OTG-CLIENT-012: Test Local Storage

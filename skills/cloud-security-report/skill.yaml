@@ -1,0 +1,402 @@
+name: cloud-security-report
+version: 1.0.0
+tags:
+  - cloud
+  - aws
+  - azure
+  - gcp
+  - cspm
+  - iam
+  - s3
+  - serverless
+  - containers
+  - kubernetes
+  - cloud-security
+categories:
+  - offensive-security
+description: >
+  Offensive-security cloud posture assessment report generator. Ingest
+  findings from ScoutSuite, Prowler, Cloudsplaining, Trivy, and CSPM
+  platforms; map exploitable misconfigurations to the MITRE ATT&CK Cloud
+  Matrix; produce attack path analyses and cloud-native remediation
+  guidance aligned with CIS Cloud Benchmarks, CSA CCM v4, and NIST 800-53.
+
+# ── Prompt ─────────────────────────────────────────────────────────────
+prompt: |
+  You are a senior offensive cloud security consultant. Your engagement is a
+  comprehensive cloud security posture assessment across AWS, Azure, and/or
+  GCP environments. You must produce a report that an adversary would fear
+  — one that exposes exactly how a threat actor would exploit the
+  misconfigurations you have found.
+
+  ## Methodology
+
+  Execute this nine-phase methodology with an adversarial mindset:
+
+  1. **Multi-Cloud Data Ingestion** — Ingest findings from the full CSPM
+     toolchain. For AWS: ScoutSuite JS, Prowler JSON/CSV, Cloudsplaining
+     JSON, Security Hub ASFF, IAM Access Analyzer findings. For Azure:
+     AzSkim JSON, Defender for Cloud recommendations, Azure AD access
+     reviews. For GCP: Forseti JSON, SCC findings, IAM Recommender output.
+     For Kubernetes: kube-bench JSON, Trivy misconfiguration reports,
+     Kubescape frameworks scan, Falco runtime alerts. For IaC: Terrascan,
+     Checkov, tfsec, KICS JSON output. Normalise all into the canonical
+     cloud finding schema. Apply smart deduplication: if three tools report
+     the same publicly exposed S3 bucket, merge into one finding annotated
+     with all source tool references.
+
+  2. **Cloud Asset Inventory** — Catalogue every discoverable resource:
+     compute (EC2/VM/GCE, Lambda/Functions, ECS tasks/AKS pods/GKE
+     workloads), storage (S3/Blob/GCS, EBS/Managed Disk/Persistent Disk,
+     RDS/CosmosDB/Cloud SQL), identity (IAM users/roles, Azure AD users/
+     service principals, GCP service accounts, federated identities,
+     workload identity configurations), network (VPCs/VNets, subnets,
+     security groups/NSGs, NACLs, load balancers, CDN distributions, WAF
+     associations), secrets management (KMS keys, Key Vault, Secret Manager,
+     Parameter Store, certificates). Flag untagged and unmanaged resources
+     as shadow cloud IT.
+
+  3. **IAM Attack Path Analysis** — Approach IAM as a privilege escalation
+     graph problem. For each principal, enumerate all permissions. Apply
+     known privilege escalation research (Rhino Security Labs AWS
+     escalation, Karl Fosaaen's Azure priv esc, GCP escalation techniques)
+     to identify exploitable chains. Build a directed graph where nodes are
+     principals/resources and edges are `Allow` permission grants. Query:
+     what is the shortest path from an externally accessible entry point
+     (public S3, compromised IAM user, leaked service account key) to full
+     administrative control? The graph is your attack path deliverable.
+
+  4. **Storage Security Assessment** — For every storage resource, evaluate:
+     (a) public access via ACLs, bucket/container policies, and IAM grants;
+     (b) encryption at rest configuration — distinguish SSE-S3/Azure-managed
+     keys from CMK/Customer-Managed Keys; (c) encryption in transit —
+     enforce TLS ≥ 1.2, HTTPS-only policies; (d) object-level logging —
+     verify CloudTrail data events, Azure Storage Analytics, GCS audit logs
+     are enabled; (e) ransomware resilience — versioning, object lock/WORM,
+     cross-region replication, and MFA Delete. Cross-reference each bucket
+     against data classification tags to identify PII/PCI/PHI exposure.
+
+  5. **Network Attack Surface Enumeration** — Adopt an external attacker's
+     perspective. From the public CIDR ranges of the organisation, perform
+     port scanning and service enumeration (in-scope, authorised). Identify
+     every open port on every security group/NSG rule permitting 0.0.0.0/0
+     ingress. Cross-reference against Shodan/ProjectDiscovery data to
+     identify services visible on the public internet. Validate that WAFs
+     (AWS WAF, Azure Front Door WAF, Cloudflare) are associated with
+     internet-facing endpoints. Check DDoS protection tier (Shield Standard
+     vs Advanced, Azure DDoS Basic vs Standard).
+
+  6. **Compute & Workload Posture** — For every compute layer service, audit
+     the following attack surface vectors: Instance Metadata Service version
+     (IMDSv2 enforced vs IMDSv1 allowed — v1 is trivially exploitable via
+     SSRF and is the single most common cloud compromise vector), container
+     privileges (privileged: true, hostNetwork, hostPID, hostIPC, CAP_SYS_ADMIN),
+     serverless execution role scoping (does the Lambda role have
+     iam:CreateUser? s3:ListAllMyBuckets?), image provenance (are images
+     pulled from public registries? is image scanning enforced?). For
+     Kubernetes specifically: audit pod security admission mode, network
+     policies, RBAC ClusterRoleBindings with `*` verbs, and secret management
+     (are secrets stored in etcd unencrypted?).
+
+  7. **MITRE ATT&CK Cloud Matrix Mapping** — Every finding must be tagged
+     with the relevant MITRE ATT&CK technique from the Cloud Matrix. Key
+     techniques to evaluate:
+     - T1525 (Implant Internal Image) — backdoored AMIs/container images
+     - T1526 (Cloud Service Discovery) — reconnaissance via cloud APIs
+     - T1530 (Data from Cloud Storage) — S3/Blob/GCS object exfiltration
+     - T1548 (Abuse Elevation Control Mechanism) — IAM privilege escalation
+     - T1552 (Unsecured Credentials) — EC2 userdata secrets, Lambda env vars
+     - T1556 (Modify Authentication Process) — cross-account role assumption
+     - T1562 (Impair Defenses) — CloudTrail/GuardDuty/Config disruption
+     - T1578 (Modify Cloud Compute Infrastructure) — snapshot exfiltration
+     - T1613 (Container and Resource Discovery) — ECR/ACR/GCR enumeration
+     - T1619 (Cloud Storage Object Discovery) — bucket enumeration
+     This mapping transforms the report from a compliance checklist into
+     a threat-informed defence document that red teams can emulate.
+
+  8. **Compliance Governance Crosswalk** — Crosswalk findings to CIS
+     Benchmarks (AWS Foundations v1.5.0, Azure Foundations v1.5.0, GCP
+     Foundations v2.0.0), CSA Cloud Controls Matrix v4.0.1 (all 17 domains),
+     NIST SP 800-53 Rev 5 (cloud-relevant families: AC, AU, CM, IA, SC, SI),
+     OWASP Cloud-Native Application Security Top 10, and PCI DSS v4.0.1
+     cloud requirements. Produce a multi-framework compliance heatmap.
+
+  9. **Remediation & Hardening Roadmap** — Produce executable remediation
+     guidance. Every Critical and High finding must include: (a) console/
+     click-ops remediation steps, (b) AWS CLI / az CLI / gcloud CLI command,
+     (c) Terraform HCL fix (or Pulumi/Bicep where principal), (d) preventative
+     control (SCP, Azure Policy, GCP Org Policy, OPA Gatekeeper constraint).
+     Phase into: Immediate (0–7 days, publicly exposed resources, privilege
+     escalation chains), Short-Term (7–30 days, encryption gaps, unrotated
+     keys, excessive privileges), Medium-Term (30–90 days, network segmentation,
+     logging enhancements), Long-Term (90+ days, landing zone refactoring,
+     zero-trust architecture migration).
+
+  ## Output Requirements
+
+  The report must open with an Executive Summary that an exhausted CISO can
+  read in 90 seconds and understand the risk posture. Every finding must be
+  offensive: start with "An attacker could..." and describe the exploit chain.
+  Include Mermaid C4 architecture diagrams showing the cloud topology with
+  security control annotations. Include an attack path graph showing the
+  shortest route from external exposure to full control.
+
+  ## Writing Style
+
+  Write with the authority of a consultant who has compromised cloud
+  environments on red teams. Executive sections use risk-centric language
+  ("catastrophic data breach", "regulatory penalty exposure"). Technical
+  sections use precise cloud-provider terminology and include copy-pasteable
+  CLI and Terraform remediation snippets. Never make a finding without
+  providing the fix.
+
+# ── Workflows ──────────────────────────────────────────────────────────
+workflows:
+  - name: full-cloud-assessment
+    description: >
+      Complete cloud security posture assessment across all configured
+      providers. Runs all nine phases and produces a comprehensive report
+      with attack path analysis, MITRE ATT&CK mapping, and multi-framework
+      compliance.
+    steps:
+      - ingest_multi_cloud_data
+      - build_asset_inventory
+      - analyse_iam_attack_paths
+      - assess_storage_security
+      - enumerate_network_attack_surface
+      - evaluate_compute_workload_posture
+      - map_to_mitre_attack_cloud
+      - crosswalk_compliance_frameworks
+      - build_remediation_roadmap
+    output_formats: [pdf, docx, html]
+
+  - name: iam-deep-dive
+    description: >
+      Focused IAM assessment with privilege escalation graph generation.
+      Suitable for engagements where identity is the primary concern
+      (token theft incident response, MFA rollout validation).
+    steps:
+      - ingest_iam_data
+      - build_principal_inventory
+      - generate_permission_matrix
+      - enumerate_escalation_paths
+      - assess_federation_risks
+      - produce_iam_report
+    output_formats: [pdf, html]
+
+  - name: container-kubernetes-assessment
+    description: >
+      Container and Kubernetes-specific security assessment. Analyses pod
+      security, network policies, RBAC, image provenance, and runtime
+      security posture across EKS, AKS, and GKE clusters.
+    steps:
+      - ingest_k8s_and_container_findings
+      - audit_cluster_rbac
+      - assess_pod_security_standards
+      - validate_network_policies
+      - scan_image_provenance
+      - evaluate_runtime_security
+      - produce_k8s_report
+    output_formats: [pdf, html, markdown]
+
+# ── Examples ───────────────────────────────────────────────────────────
+examples:
+  - name: aws-multi-account-enterprise
+    description: >
+      Full AWS multi-account assessment for a 12-account AWS Organisation
+      with Control Tower. Covers IAM privilege escalation paths, S3 public
+      exposure, IMDSv1-enabled EC2 instances, and cross-account trust
+      chain analysis.
+    input_summary: >
+      AWS Organisation with 12 accounts. ScoutSuite JS 5.12.0, Prowler
+      v4.18, Cloudsplaining 0.6.2. 4,821 resources scanned. 7 Critical,
+      34 High, 112 Medium, 89 Low findings.
+    output_highlights:
+      - "Cloud Maturity: D+ (58.3%)"
+      - "Top attack path: Developer IAM user → EC2 PassRole → Admin role → full account compromise"
+      - "3 publicly exposed S3 buckets (2 containing PII)"
+      - "28 IAM users without MFA (4 with AdministratorAccess)"
+      - "41 active access keys older than 90 days"
+      - "MITRE ATT&CK mapping: T1525, T1530, T1552, T1578"
+
+  - name: azure-hybrid-enterprise
+    description: >
+      Azure security assessment for a hybrid environment with 8
+      subscriptions, ExpressRoute connectivity to on-premises AD, and AKS
+      workloads. Service principal hygiene, NSG exposure, and Key Vault
+      access policy analysis.
+    input_summary: >
+      8 Azure subscriptions, 2 AKS clusters, 1,340 resources. AzSkim,
+      Defender for Cloud, Azure AD access reviews. 4 Critical, 21 High
+      findings.
+    output_highlights:
+      - "Cloud Maturity: C (68.1%)"
+      - "5 service principals with stale secrets (> 1 year no rotation)"
+      - "RDP (3389) exposed to internet on 3 production VMs"
+      - "AKS pods running as root with hostNetwork enabled"
+      - "12 Azure AD guest users with active access (4 unverified domains)"
+      - "Key Vault lacking network ACLs — accessible from any IP"
+
+# ── Output Formats ─────────────────────────────────────────────────────
+output_formats:
+  - name: pdf
+    description: >
+      Print-ready PDF generated via LaTeX (XeLaTeX). Syntax-highlighted code
+      blocks for CLI and Terraform snippets. Confidentiality watermark on
+      every page. Optimised for CISO and board consumption.
+    template: cloud_security_report.latex
+
+  - name: docx
+    description: >
+      Microsoft Word document with tracked-changes-ready formatting. Editable
+      tables, embedded vector charts, and client-branded cover page.
+      Preferred format for clients who need to annotate and collaborate.
+    template: cloud_security_report.docx.jinja2
+
+  - name: html
+    description: >
+      Self-contained HTML5 report with interactive Mermaid.js diagrams
+      (zoomable attack path graphs), filterable finding table (by severity,
+      provider, service, MITRE technique), and embedded CSPM tool output
+      viewer. Suitable for secure client portal delivery.
+    template: cloud_security_report.html.jinja2
+
+  - name: markdown
+    description: >
+      Plain Markdown report with Mermaid code blocks for diagrams. Suitable
+      for git-based report versioning, automated CI/CD report generation
+      pipelines, and Pandoc conversion workflows.
+    template: cloud_security_report.md.jinja2
+
+# ── Validation Rules ───────────────────────────────────────────────────
+validation_rules:
+  - id: VR-CLOUD-001
+    name: mandatory-fields-populated
+    description: >
+      Every cloud finding must have non-null: provider, service,
+      resource_arn, resource_name, category, severity, title, description,
+      impact, and remediation. Missing mandatory fields trigger a blocking
+      error.
+    severity: error
+    applies_to: [full-cloud-assessment, iam-deep-dive, container-kubernetes-assessment]
+
+  - id: VR-CLOUD-002
+    name: provider-enum-valid
+    description: >
+      The provider field must be one of: aws, azure, gcp. Findings from
+      multi-cloud tools must be split per-provider.
+    severity: error
+    applies_to: [full-cloud-assessment]
+
+  - id: VR-CLOUD-003
+    name: category-enum-valid
+    description: >
+      The category field must be one of: iam, storage, network, compute,
+      logging, encryption, secrets. Custom categories are rejected unless
+      prefixed with 'custom:'.
+    severity: error
+    applies_to: [full-cloud-assessment, iam-deep-dive, container-kubernetes-assessment]
+
+  - id: VR-CLOUD-004
+    name: severity-enum-valid
+    description: >
+      Severity must be one of: Critical, High, Medium, Low.
+      Case-insensitive normalisation applied.
+    severity: error
+    applies_to: [full-cloud-assessment, iam-deep-dive, container-kubernetes-assessment]
+
+  - id: VR-CLOUD-005
+    name: mitre-technique-required
+    description: >
+      Every finding with severity Critical or High must include a non-null
+      mitre_technique field referencing a valid MITRE ATT&CK technique ID.
+      Missing technique mappings on high-severity findings trigger an error.
+    severity: error
+    applies_to: [full-cloud-assessment]
+
+  - id: VR-CLOUD-006
+    name: shared-responsibility-assigned
+    description: >
+      Every finding must have a shared_responsibility field set to Customer,
+      Provider, or Shared. Findings without a responsibility assignment
+      cannot be actioned by the client.
+    severity: warning
+    applies_to: [full-cloud-assessment]
+
+  - id: VR-CLOUD-007
+    name: remediation-executability-critical
+    description: >
+      Every Critical finding must have a populated cli_command or
+      terraform_fix field. Findings without executable remediation are
+      not actionable and do not meet the standard of a senior consultant
+      deliverable.
+    severity: error
+    applies_to: [full-cloud-assessment]
+
+  - id: VR-CLOUD-008
+    name: account-id-consistency
+    description: >
+      All resources within a finding must belong to an account_id present
+      in the engagement scope. Resources from unscoped accounts indicate
+      a data ingestion error or scope creep and must be flagged.
+    severity: warning
+    applies_to: [full-cloud-assessment, iam-deep-dive]
+
+  - id: VR-CLOUD-009
+    name: attack-path-cycle-detection
+    description: >
+      IAM privilege escalation graphs must be checked for cycles. A cycle
+      indicates either a mutual trust configuration or a graph construction
+      error. Flag cycles for manual review.
+    severity: warning
+    applies_to: [full-cloud-assessment, iam-deep-dive]
+
+  - id: VR-CLOUD-010
+    name: public-exposure-evidence
+    description: >
+      Findings asserting public exposure (S3 public, NSG 0.0.0.0/0) must
+      include evidence in the detection.evidence field — either CLI output,
+      a screenshot reference, or a tool output excerpt. Unsubstantiated
+      public exposure claims are downgraded to a warning.
+    severity: warning
+    applies_to: [full-cloud-assessment]
+
+  - id: VR-CLOUD-011
+    name: encryption-consistency-check
+    description: >
+      If a finding asserts a resource lacks encryption and the resource type
+      has encryption enabled by default (e.g., Azure Storage since 2022),
+      verify the tool output is not a false positive. Flag for manual
+      confirmation.
+    severity: warning
+    applies_to: [full-cloud-assessment]
+
+  - id: VR-CLOUD-012
+    name: iam-permission-bloat-threshold
+    description: >
+      Any principal with more than 50 distinct IAM permissions that has no
+      login or API activity in the past 90 days must trigger a permission
+      bloat finding. This is an indicator of over-provisioning and
+      privilege creep.
+    severity: warning
+    applies_to: [full-cloud-assessment, iam-deep-dive]
+
+  - id: VR-CLOUD-013
+    name: cross-cloud-provider-parity
+    description: >
+      If the engagement scope includes multiple cloud providers, verify that
+      the same assessment categories (IAM, storage, network, compute,
+      logging) have findings for each provider. A provider with zero findings
+      in a category that was assessed indicates a potential scanner or
+      permission gap.
+    severity: warning
+    applies_to: [full-cloud-assessment]
+
+  - id: VR-CLOUD-014
+    name: logo-and-branding
+    description: >
+      Branding logo path must resolve. Confidentiality marking must be
+      present on all report pages. Reports with Critical or High findings
+      must carry a minimum of INTERNAL classification.
+    severity: warning
+    applies_to: [full-cloud-assessment, iam-deep-dive, container-kubernetes-assessment]

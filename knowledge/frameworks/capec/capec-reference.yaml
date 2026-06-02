@@ -1,0 +1,282 @@
+# CAPEC Common Attack Pattern Enumeration and Classification Reference
+# CyberSec Reporting Engine
+# Covers top attack patterns and MITRE ATT&CK mappings
+
+metadata:
+  organization: MITRE Corporation
+  framework: CAPEC (Common Attack Pattern Enumeration and Classification)
+  url: https://capec.mitre.org
+  version: "3.9"
+  last_updated: "2025-01"
+
+top_attack_patterns:
+  - id: CAPEC-66
+    name: SQL Injection
+    likelihood: High
+    severity: High
+    description: Exploit SQL injection vulnerabilities to manipulate database queries
+    attck_mapping: [T1190 Exploit Public-Facing Application]
+    cwe_mapping: [CWE-89]
+    execution_flow:
+      - Identify SQL injection entry points (forms, URL params, headers)
+      - Determine database type via error messages or time-based inference
+      - Extract data using UNION SELECT or blind techniques
+      - Escalate to command execution if database permits (e.g., xp_cmdshell, UTL_FILE)
+
+  - id: CAPEC-63
+    name: Cross-Site Scripting (XSS)
+    likelihood: High
+    severity: Medium
+    description: Inject malicious scripts into web pages viewed by other users
+    attck_mapping: [T1189 Drive-by Compromise]
+    cwe_mapping: [CWE-79]
+    execution_flow:
+      - Identify reflected input parameters
+      - Test for stored XSS in user-generated content
+      - Analyze DOM-based XSS in client-side JavaScript
+      - Craft payloads with context-appropriate encoding
+
+  - id: CAPEC-72
+    name: Buffer Overflow
+    likelihood: Medium
+    severity: High
+    description: Overflow a fixed-size buffer to corrupt adjacent memory
+    attck_mapping: [T1203 Exploitation for Client Execution]
+    cwe_mapping: [CWE-119, CWE-120, CWE-787]
+    execution_flow:
+      - Identify input handling functions that lack bounds checking
+      - Send excessively long input to trigger overflow
+      - Control EIP/RIP to redirect execution to shellcode
+      - Leverage ROP chains if DEP/NX is enabled
+
+  - id: CAPEC-85
+    name: AJAX Attacks
+    likelihood: Medium
+    severity: Medium
+    description: Exploit vulnerabilities in AJAX implementations
+    attck_mapping: []
+    cwe_mapping: [CWE-79, CWE-89]
+
+  - id: CAPEC-117
+    name: Interception
+    likelihood: Medium
+    severity: High
+    description: Intercept and potentially modify data in transit
+    attck_mapping: [T1557 Man-in-the-Middle, T1040 Network Sniffing]
+    cwe_mapping: [CWE-311, CWE-319]
+    execution_flow:
+      - Position attacker between client and server (ARP spoofing, DNS poisoning)
+      - Capture traffic (tcpdump, Wireshark, mitmproxy)
+      - Decrypt TLS-based traffic if certificate validation is weak
+      - Modify requests/responses in transit
+
+  - id: CAPEC-98
+    name: Phishing
+    likelihood: High
+    severity: High
+    description: Deceive users into revealing sensitive information via fraudulent communication
+    attck_mapping: [T1566 Phishing]
+    cwe_mapping: [CWE-200]
+    execution_flow:
+      - Register lookalike domain (typosquatting)
+      - Craft convincing email with malicious link/attachment
+      - Bypass email security filters (SPF/DKIM alignment)
+      - Harvest credentials or deliver malware payload
+
+  - id: CAPEC-10
+    name: Command Injection
+    likelihood: Medium
+    severity: High
+    description: Execute arbitrary commands on the host OS through vulnerable application
+    attck_mapping: [T1059 Command and Scripting Interpreter]
+    cwe_mapping: [CWE-77, CWE-78]
+    execution_flow:
+      - Identify parameters passed to system commands
+      - Inject command separators (;, |, &&, ||, \n)
+      - Escape input validation using encoding or obfuscation
+      - Execute arbitrary OS commands to gain shell access
+
+  - id: CAPEC-60
+    name: Session Hijacking
+    likelihood: Medium
+    severity: High
+    description: Take over authenticated user sessions by stealing session identifiers
+    attck_mapping: [T1539 Steal Web Session Cookie]
+    cwe_mapping: [CWE-287, CWE-384]
+    execution_flow:
+      - Capture session cookies via XSS or network sniffing
+      - Exploit session fixation to force known session ID
+      - Replay stolen session tokens before expiration
+      - Impersonate authenticated user
+
+  - id: CAPEC-112
+    name: Brute Force
+    likelihood: High
+    severity: Medium
+    description: Systematically try all possible values to discover authentication secrets
+    attck_mapping: [T1110 Brute Force]
+    cwe_mapping: [CWE-307, CWE-521]
+    execution_flow:
+      - Enumerate valid usernames via error messages or timing
+      - Password spraying (common passwords across many accounts)
+      - Credential stuffing (previously breached credential pairs)
+      - Dictionary and brute force attacks against single account
+
+  - id: CAPEC-116
+    name: Excavation (Data Mining)
+    likelihood: Medium
+    severity: Medium
+    description: Extract sensitive data from data sources through query and analysis
+    attck_mapping: [T1213 Data from Information Repositories]
+    cwe_mapping: [CWE-200]
+
+  - id: CAPEC-126
+    name: Path Traversal
+    likelihood: Medium
+    severity: High
+    description: Access files and directories outside the web document root
+    attck_mapping: []
+    cwe_mapping: [CWE-22, CWE-23, CWE-36]
+    execution_flow:
+      - Identify file inclusion parameters in URL/body
+      - Inject directory traversal sequences (../, ..\, encoded)
+      - Bypass path sanitization filters (encoding, double encoding)
+      - Read sensitive files (/etc/passwd, web.config, application.properties)
+
+  - id: CAPEC-125
+    name: Flooding (DoS)
+    likelihood: Medium
+    severity: Medium
+    description: Overwhelm system resources with excessive traffic
+    attck_mapping: [T1498 Network Denial of Service, T1499 Endpoint Denial of Service]
+    cwe_mapping: [CWE-400, CWE-770]
+
+  - id: CAPEC-39
+    name: Manipulating Opaque Client-based Data Tokens
+    likelihood: Medium
+    severity: High
+    description: Decode and modify client-side tokens (JWT, cookies, CSRF tokens)
+    attck_mapping: [T1606 Forge Web Credentials]
+    cwe_mapping: [CWE-327, CWE-328]
+    execution_flow:
+      - Identify opaque client tokens in requests
+      - Decode base64-encoded tokens (JWT body, cookies)
+      - Modify values to escalate privileges or bypass auth
+      - Exploit algorithm confusion (alg:none, HS256 vs RS256)
+
+  - id: CAPEC-41
+    name: Using Malicious Files
+    likelihood: High
+    severity: High
+    description: Exploit file upload functionality to deliver malicious payloads
+    attck_mapping: [T1105 Ingress Tool Transfer]
+    cwe_mapping: [CWE-434]
+    execution_flow:
+      - Upload web shell via unrestricted file upload
+      - Bypass file type validation (double extension, MIME spoofing)
+      - Exploit polyglot files that appear as images but contain code
+      - Achieve remote code execution through uploaded script
+
+  - id: CAPEC-69
+    name: Cross-Site Request Forgery (CSRF)
+    likelihood: Medium
+    severity: Medium
+    description: Force authenticated users to perform unintended actions
+    attck_mapping: []
+    cwe_mapping: [CWE-352]
+
+  - id: CAPEC-57
+    name: RESTful Web Services Scanning
+    likelihood: Medium
+    severity: Medium
+    description: Proxy API traffic and test for vulnerabilities
+    attck_mapping: [T1526 Cloud Service Discovery]
+    cwe_mapping: [CWE-200]
+
+  - id: CAPEC-103
+    name: Clickjacking
+    likelihood: Medium
+    severity: Low
+    description: Trick user into clicking hidden UI elements via transparent iframe
+    attck_mapping: []
+    cwe_mapping: [CWE-1021]
+
+  - id: CAPEC-162
+    name: Deanonymize Server Using Timing Analysis
+    likelihood: Low
+    severity: Medium
+    description: Compare timing responses to fingerprint servers and environments
+    attck_mapping: [T1592 Gather Victim Host Information]
+    cwe_mapping: [CWE-208, CWE-385]
+
+  - id: CAPEC-90
+    name: Reflection Attack in Authentication Protocol
+    likelihood: Low
+    severity: High
+    description: Reflect authentication messages back to the sender to impersonate identity
+    attck_mapping: [T1557 Man-in-the-Middle]
+    cwe_mapping: [CWE-301]
+
+  - id: CAPEC-112
+    name: Brute Force Password Cracking
+    likelihood: Medium
+    severity: Medium
+    description: Crack grabbed password hashes offline
+    attck_mapping: [T1110 Brute Force]
+    cwe_mapping: [CWE-307]
+    tools: [hashcat, john, hydra, medusa]
+
+attack_pattern_categories:
+  - category: Social Engineering
+    patterns: [CAPEC-98, CAPEC-136, CAPEC-137, CAPEC-138]
+    description: Attacks targeting human psychology rather than technical vulnerabilities
+
+  - category: Injection
+    patterns: [CAPEC-66, CAPEC-10, CAPEC-242, CAPEC-110]
+    description: Injection of malicious code or commands into application input handlers
+
+  - category: Cryptographic Attacks
+    patterns: [CAPEC-20, CAPEC-97, CAPEC-39, CAPEC-192]
+    description: Attacks targeting cryptographic implementations and protocols
+
+  - category: Protocol Manipulation
+    patterns: [CAPEC-90, CAPEC-94, CAPEC-272, CAPEC-117]
+    description: Manipulation of communication protocols to gain advantage
+
+  - category: Resource Manipulation
+    patterns: [CAPEC-125, CAPEC-126, CAPEC-132, CAPEC-167]
+    description: Exhausting or misdirecting system resources
+
+  - category: Malware
+    patterns: [CAPEC-41, CAPEC-183, CAPEC-184, CAPEC-185]
+    description: Delivery and execution of malicious software
+
+  - category: Supply Chain
+    patterns: [CAPEC-437, CAPEC-438, CAPEC-439, CAPEC-440]
+    description: Attacks exploiting trust in the software supply chain
+
+attck_capec_crosswalk:
+  - attck_id: T1566
+    capec: [CAPEC-98, CAPEC-163]
+  - attck_id: T1190
+    capec: [CAPEC-66, CAPEC-126]
+  - attck_id: T1059
+    capec: [CAPEC-10, CAPEC-88]
+  - attck_id: T1189
+    capec: [CAPEC-63, CAPEC-592]
+  - attck_id: T1203
+    capec: [CAPEC-72, CAPEC-100]
+  - attck_id: T1110
+    capec: [CAPEC-112, CAPEC-49]
+  - attck_id: T1557
+    capec: [CAPEC-117, CAPEC-94]
+  - attck_id: T1539
+    capec: [CAPEC-60]
+  - attck_id: T1105
+    capec: [CAPEC-41]
+  - attck_id: T1498
+    capec: [CAPEC-125, CAPEC-469]
+  - attck_id: T1040
+    capec: [CAPEC-117, CAPEC-158]
+  - attck_id: T1606
+    capec: [CAPEC-39, CAPEC-480]

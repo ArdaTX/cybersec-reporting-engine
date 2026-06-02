@@ -1,0 +1,274 @@
+# CVSS v4.0 Knowledge Base Reference
+# CyberSec Reporting Engine
+# Common Vulnerability Scoring System Version 4.0
+
+metadata:
+  framework: CVSS
+  version: "4.0"
+  maintainer: FIRST (Forum of Incident Response and Security Teams)
+  url: https://www.first.org/cvss/v4-0/
+  published: "2023-11-01"
+  predecessor: CVSS v3.1
+
+metric_groups:
+  base:
+    name: Base Metrics
+    description: Intrinsic characteristics of a vulnerability that are constant over time and user environments
+    sub_groups:
+      - name: Exploitability Metrics
+        metrics:
+          - id: AV
+            name: Attack Vector
+            description: The context by which vulnerability exploitation is possible
+            values:
+              - N: Network (Remotely exploitable; no physical or local access needed)
+              - A: Adjacent (Exploitable from adjacent network; e.g., Bluetooth, same subnet)
+              - L: Local (Exploitable via local access; e.g., keyboard, console, remote session)
+              - P: Physical (Requires physical manipulation of the device)
+
+          - id: AC
+            name: Attack Complexity
+            description: Conditions beyond the attacker's control that must exist to exploit the vulnerability
+            values:
+              - L: Low (No special conditions needed; repeatable exploitation possible)
+              - H: High (Specialized conditions required; attacker must invest additional effort)
+
+          - id: AT
+            name: Attack Requirements
+            description: Prerequisite conditions of the vulnerable system that enable exploitation
+            values:
+              - N: None (No prerequisites; vulnerability can be exploited at any time)
+              - P: Present (Attack requires specific conditions on the vulnerable system)
+
+          - id: PR
+            name: Privileges Required
+            description: Level of privileges an attacker must possess before exploitation
+            values:
+              - N: None (No privileges required)
+              - L: Low (Basic user capabilities required)
+              - H: High (Administrative or significant privileges required)
+
+          - id: UI
+            name: User Interaction
+            description: Whether a user other than the attacker must participate in the compromise
+            values:
+              - N: None (No user interaction required)
+              - P: Passive (User must perform limited actions; e.g., visit a page, open a file)
+              - A: Active (User must perform specific actions; e.g., accept a prompt)
+
+      - name: Impact Metrics (Vulnerable System)
+        metrics:
+          - id: VC
+            name: Confidentiality Impact (Vulnerable System)
+            description: Impact to confidentiality of the vulnerable system
+            values:
+              - H: High (Total information disclosure; all files/system data accessible)
+              - L: Low (Limited information disclosure; attacker cannot control what is obtained)
+              - N: None (No impact to confidentiality)
+
+          - id: VI
+            name: Integrity Impact (Vulnerable System)
+            description: Impact to integrity of the vulnerable system
+            values:
+              - H: High (Total compromise of system integrity; complete protection failure)
+              - L: Low (Limited modification; attacker cannot control consequences)
+              - N: None (No impact to integrity)
+
+          - id: VA
+            name: Availability Impact (Vulnerable System)
+            description: Impact to availability of the vulnerable system
+            values:
+              - H: High (Total loss of availability; persistent resource fully unavailable)
+              - L: Low (Reduced performance or intermittent availability)
+              - N: None (No impact to availability)
+
+      - name: Impact Metrics (Subsequent System)
+        metrics:
+          - id: SC
+            name: Confidentiality Impact (Subsequent System)
+            values:
+              - H: High
+              - L: Low
+              - N: None (No subsequent system impact; SI group not applicable)
+
+          - id: SI
+            name: Integrity Impact (Subsequent System)
+            values:
+              - H: High
+              - L: Low
+              - N: None
+
+          - id: SA
+            name: Availability Impact (Subsequent System)
+            values:
+              - H: High
+              - L: Low
+              - N: None
+
+  threat:
+    name: Threat Metrics
+    description: Characteristics of a vulnerability that change over time due to external events
+    metric: E
+    name_full: Exploit Maturity
+    values:
+      - X: Not Defined (Value not assigned)
+      - A: Attacked (Exploits exist and are actively used in the wild)
+      - P: Proof-of-Concept (PoC exploit available but not widely used)
+      - U: Unreported (No known exploit or PoC exists)
+
+  environmental:
+    name: Environmental Metrics
+    description: Characteristics of a vulnerability that are specific to a particular environment
+    metrics:
+      - id: CR
+        name: Confidentiality Requirement
+        values:
+          - H: High (Catastrophic adverse effect if compromised)
+          - M: Medium (Serious adverse effect if compromised)
+          - L: Low (Limited adverse effect if compromised)
+
+      - id: IR
+        name: Integrity Requirement
+        values:
+          - H: High
+          - M: Medium
+          - L: Low
+
+      - id: AR
+        name: Availability Requirement
+        values:
+          - H: High
+          - M: Medium
+          - L: Low
+
+      - id: MAV
+        name: Modified Attack Vector
+        description: Override the Base AV value for the specific environment
+
+      - id: MAC
+        name: Modified Attack Complexity
+
+      - id: MAT
+        name: Modified Attack Requirements
+
+      - id: MPR
+        name: Modified Privileges Required
+
+      - id: MUI
+        name: Modified User Interaction
+
+      - id: MVC
+        name: Modified Confidentiality Impact (Vulnerable System)
+
+      - id: MVI
+        name: Modified Integrity Impact (Vulnerable System)
+
+      - id: MVA
+        name: Modified Availability Impact (Vulnerable System)
+
+      - id: MSC
+        name: Modified Confidentiality Impact (Subsequent System)
+
+      - id: MSI
+        name: Modified Integrity Impact (Subsequent System)
+
+      - id: MSA
+        name: Modified Availability Impact (Subsequent System)
+
+  supplemental:
+    name: Supplemental Metrics
+    description: Optional metrics providing additional context about the vulnerability
+    metrics:
+      - id: S
+        name: Safety
+        description: Impact on safety of human lives or industrial operations
+        values:
+          - X: Not Defined
+          - P: Present (Vulnerability can be leveraged in safety-impact scenario)
+          - N: Negligible (No safety impact)
+
+      - id: AU
+        name: Automatable
+        description: Whether exploitation can be fully automated
+        values:
+          - X: Not Defined
+          - Y: Yes (Exploitation is fully automatable with high reliability)
+          - N: No (Requires human interaction or decision-making)
+
+      - id: R
+        name: Recovery
+        description: Ability of the system to recover after exploitation
+        values:
+          - X: Not Defined
+          - A: Automatic (System recovers automatically)
+          - U: User (Requires manual/user intervention to recover)
+          - I: Irrecoverable (System cannot recover; reinstallation required)
+
+      - id: V
+        name: Value Density
+        description: Concentration of value in the target relative to attacker effort
+        values:
+          - X: Not Defined
+          - D: Diffuse (Value spreads across many targets)
+          - C: Concentrated (High value per exploitation action)
+
+      - id: RE
+        name: Vulnerability Response Effort
+        description: Effort required to respond to the vulnerability
+        values:
+          - X: Not Defined
+          - L: Low (Patch installation; simple configuration change)
+          - M: Moderate (Requires testing and rollout coordination)
+          - H: High (Requires significant migration or architectural change)
+
+      - id: U
+        name: Provider Urgency
+        description: Urgency assessment from the provider's perspective
+        values:
+          - X: Not Defined
+          - Clear: Red
+          - Amber: Yellow
+          - Green: Clear
+
+vector_string_format:
+  format: "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+  components:
+    - header: CVSS:4.0
+    - base_metrics: "AV:[N|A|L|P]/AC:[L|H]/AT:[N|P]/PR:[N|L|H]/UI:[N|P|A]/VC:[H|L|N]/VI:[H|L|N]/VA:[H|L|N]/SC:[H|L|N]/SI:[H|L|N]/SA:[H|L|N]"
+    - threat_metrics: "E:[X|A|P|U]"
+    - environmental_metrics: "CR:[X|H|M|L]/IR:[X|H|M|L]/AR:[X|H|M|L]/MAV:[X|N|A|L|P]/MAC:[X|L|H]/MAT:[X|N|P]/MPR:[X|N|L|H]/MUI:[X|N|P|A]/MVC:[X|H|L|N]/MVI:[X|H|L|N]/MVA:[X|H|L|N]/MSC:[X|H|L|N]/MSI:[X|H|L|N]/MSA:[X|H|L|N]"
+    - supplemental_metrics: "S:[X|P|N]/AU:[X|Y|N]/R:[X|A|U|I]/V:[X|D|C]/RE:[X|L|M|H]/U:[X|Clear|Amber|Green]"
+
+scoring:
+  severity_scale:
+    - rating: None
+      score_range: "0.0"
+      description: No impact
+    - rating: Low
+      score_range: "0.1 - 3.9"
+      description: Limited impact; easily recoverable
+    - rating: Medium
+      score_range: "4.0 - 6.9"
+      description: Significant impact; requires attention
+    - rating: High
+      score_range: "7.0 - 8.9"
+      description: Serious impact; requires immediate attention
+    - rating: Critical
+      score_range: "9.0 - 10.0"
+      description: Catastrophic impact; requires emergency response
+
+  formula_notes:
+    base_score: Calculated from Base Metrics (Exploitability + Impact) using FIRST lookup tables
+    base_max: "10.0"
+    threat_score: "Base score adjusted by Exploit Maturity (E)"
+    environmental_score: "Threat score adjusted by Environmental modifiers"
+    cvss_bt: "CVSS-BT (Base + Threat)"
+    cvss_be: "CVSS-BE (Base + Environmental)"
+    cvss_bte: "CVSS-BTE (Base + Threat + Environmental)"
+    supplemental_metrics: "Not used in score calculation; informational only"
+
+  nomenclature:
+    - CVSS-B: Base Score only
+    - CVSS-BT: Base + Threat Score
+    - CVSS-BE: Base + Environmental Score
+    - CVSS-BTE: Base + Threat + Environmental Score

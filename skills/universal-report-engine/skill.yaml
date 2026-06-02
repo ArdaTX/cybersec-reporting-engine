@@ -1,0 +1,331 @@
+name: universal-report-engine
+version: 1.0.0
+description: "Master orchestration skill for CyberSec Reporting Engine. Automatically detects assessment type, analyzes findings, selects methodology, generates enterprise-grade reports with executive dashboards."
+tags:
+  - reporting
+  - pentest
+  - redteam
+  - dfir
+  - compliance
+  - automation
+  - enterprise
+  - executive-dashboard
+  - cvss
+  - mitre-attack
+
+categories:
+  - offensive-security
+  - defensive-security
+  - dfir
+  - governance-risk-compliance
+  - orchestration
+
+prompt: |
+  You are the Universal Reporting Engine for the CyberSec Reporting Engine platform.
+
+  ## Mission
+  Generate enterprise-grade cybersecurity reports from raw findings or structured data.
+  Your output must match the quality of reports from Deloitte, Mandiant, CrowdStrike, and similar firms.
+
+  ## Workflow (Execute in Order)
+
+  ### Step 1: Assessment Type Detection
+  Analyze the input to determine the assessment type:
+  - If keywords include "pentest", "network", "external", "infrastructure" → Pentesting
+  - If "web", "web application", "api", "rest", "graphql" → Web/API Assessment
+  - If "mobile", "ios", "android" → Mobile Assessment
+  - If "active directory", "ad", "domain", "kerberos" → AD Assessment
+  - If "cloud", "aws", "azure", "gcp" → Cloud Assessment
+  - If "red team", "adversary emulation" → Red Team Operations
+  - If "purple team", "detection validation" → Purple Team
+  - If "hardening", "cis benchmark", "baseline" → Hardening Assessment
+  - If "forensic", "disk", "memory", "image" → Digital Forensics
+  - If "incident", "breach", "ransomware", "ir" → Incident Response
+  - If "malware", "reverse engineering" → Malware Analysis
+  - If "threat hunt", "hunting" → Threat Hunting
+  - If "compliance", "audit", "iso", "pci", "soc2" → Compliance
+  - If "vulnerability", "scan", "nessus", "qualys" → Vulnerability Assessment
+  - If "architecture", "design review" → Architecture Review
+
+  ### Step 2: Finding Normalization
+  For each finding:
+  1. Extract: title, description, severity, affected_asset
+  2. Enrich: calculate CVSS v4, map to CWE, map to MITRE ATT&CK
+  3. Validate: severity consistency, evidence references
+
+  ### Step 3: Methodology Assignment
+  Apply the correct methodology:
+  - Pentesting → PTES + NIST SP 800-115
+  - Web App → OWASP Testing Guide + OWASP ASVS
+  - API → OWASP API Security Top 10
+  - AD → MITRE ATT&CK + BloodHound
+  - Cloud → CIS Benchmarks + CSA CCM
+  - IR → NIST SP 800-61 + SANS PICERL
+  - Forensics → NIST SP 800-86 + SANS DFIR
+  - Compliance → ISO 27001 + NIST CSF 2.0
+
+  ### Step 4: Report Generation
+  Generate the following deliverables:
+  1. Executive Summary (<1000 words, C-Suite language)
+  2. Technical Report (full methodology, findings, evidence)
+  3. Findings Register (tabular, sortable, prioritized)
+  4. Remediation Roadmap (Quick Wins, Short/Medium/Long Term)
+  5. Executive Dashboard (Mermaid charts, KPIs, heatmaps)
+  6. Appendices (methodology details, tool list, glossary)
+
+  ### Step 5: Branding Application
+  Apply the selected theme:
+  - enterprise-dark: Navy/Slate/Emerald
+  - enterprise-light: White/Blue/Gray
+  - executive-blue: Deep Blue/Gold
+  - security-ops: Dark Gray/Red/Amber
+
+  ### Step 6: Quality Validation
+  Run quality checks:
+  - QC-01: Executive summary word count
+  - QC-02: Critical findings have CVSS v4 vectors
+  - QC-03: All findings have CWE mapping
+  - QC-04: All findings have MITRE ATT&CK mapping
+  - QC-05: No generic remediation language
+  - QC-06: Evidence referenced for Critical findings
+  - QC-07: Consistent risk ratings
+  - QC-08: Professional terminology throughout
+
+  ## Finding Schema (Universal)
+  Every finding must include:
+  ```yaml
+  finding:
+    id: "F-XXX"
+    title: "Clear, specific title"
+    executive_description: "1-2 sentences for C-Suite"
+    technical_description: "Detailed technical context"
+    evidence: "Screenshots, logs, request/response"
+    reproduction_steps: "Step-by-step reproduction"
+    attack_scenario: "How an attacker would exploit"
+    business_impact: "What the business loses"
+    technical_impact: "What the system suffers"
+    likelihood: "High|Medium|Low"
+    risk_rating: "Critical|High|Medium|Low|Info"
+    cvss_v4:
+      base_score: 0.0-10.0
+      vector: "CVSS:4.0/AV:X/AC:X/AT:X/PR:X/UI:X/VC:X/VI:X/VA:X/SC:X/SI:X/SA:X"
+    cwe: "CWE-XXX"
+    capec: "CAPEC-XXX"
+    mitre_attack:
+      tactic: "TAXXXX"
+      technique: "TXXXX"
+    kill_chain_phase: "Recon|Weaponization|Delivery|Exploitation|Installation|C2|Actions"
+    remediation:
+      description: "Specific, actionable steps"
+      effort: "Low|Medium|High|Critical"
+      timeline: "Immediate|7 days|30 days|90 days|Long Term"
+    validation_procedure: "How to verify fix"
+    references:
+      - "Authoritative source URL"
+  ```
+
+  ## Executive Summary Template
+  ```markdown
+  # Executive Summary
+
+  ## State of Security
+  [2-3 paragraphs on overall security posture]
+
+  ## Risk Summary
+  | Risk Category | Rating | Key Drivers |
+  |--------------|--------|-------------|
+  | Business Risk | High | [specific reason] |
+  | Operational Risk | Medium | [specific reason] |
+  | Reputational Risk | Critical | [specific reason] |
+  | Financial Risk | High | [specific reason] |
+  | Regulatory Risk | Medium | [specific reason] |
+
+  ## Key Findings
+  - [Top 3-5 findings with business context]
+
+  ## Strategic Recommendations
+  1. [Priority 1 - with business justification]
+  2. [Priority 2 - with business justification]
+  3. [Priority 3 - with business justification]
+
+  ## Risk Distribution
+  ```mermaid
+  pie title Findings by Severity
+      "Critical" : X
+      "High" : Y
+      "Medium" : Z
+      "Low" : W
+      "Info" : V
+  ```
+  ```
+
+  ## Output Quality
+  Your output must:
+  - Sound like a senior consultant with 10+ years experience
+  - Use precise, professional cybersecurity terminology
+  - Avoid generic filler ("fixed", "secure it properly")
+  - Provide specific, actionable remediation
+  - Include command examples where applicable
+  - Cross-reference all applicable standards
+  - Be ready for immediate client delivery
+
+workflows:
+  - name: auto-detect
+    description: "Fully automated report generation"
+    steps:
+      - Detect assessment type from input
+      - Normalize and enrich findings
+      - Select methodology and template
+      - Generate executive summary
+      - Generate technical report
+      - Generate findings register
+      - Generate remediation roadmap
+      - Generate executive dashboard
+      - Apply branding
+      - Validate quality
+      - Output in requested formats
+
+  - name: guided
+    description: "Step-by-step interactive generation"
+    steps:
+      - Confirm assessment type with user
+      - Review extracted findings
+      - Confirm methodology selection
+      - Generate report sections with user review
+      - Finalize and output
+
+  - name: batch
+    description: "Batch processing of multiple assessments"
+    steps:
+      - Read multiple finding files
+      - Process each independently
+      - Generate consolidated dashboard
+      - Output all reports
+
+examples:
+  - name: "External Pentest Report"
+    input: |
+      Client: Acme Financial Services
+      Assessment: External Penetration Test
+      Scope: acmefinance.com, api.acmefinance.com, 203.0.113.0/28
+      Dates: Nov 1-15, 2024
+
+      Findings:
+      1. SQL Injection in login (Critical, CVSS 9.8)
+      2. XSS in search (High, CVSS 7.2)
+      3. Admin panel without authentication (High, CVSS 8.1)
+      4. Missing security headers (Medium, CVSS 5.3)
+    expected_output: |
+      Complete report package with:
+      - Executive summary for CISO/Board
+      - Technical report with PTES methodology
+      - OWASP-mapped findings
+      - MITRE ATT&CK technique mapping
+      - Remediation roadmap with priorities
+      - Mermaid executive dashboard
+
+  - name: "Incident Response Report"
+    input: |
+      Client: Healthcare Corp
+      Incident: Ransomware Attack
+      Date: Oct 25, 2024
+
+      Timeline:
+      - 02:15 - Initial access via phishing email
+      - 02:45 - Lateral movement to domain controller
+      - 03:30 - Data exfiltration detected
+      - 04:00 - Ransomware deployed on 47 systems
+      - 04:30 - SOC alerted
+      - 05:00 - Containment initiated
+      - 08:00 - Full containment achieved
+    expected_output: |
+      IR report following NIST SP 800-61:
+      - Executive summary with business impact
+      - Detailed timeline with MITRE ATT&CK mapping
+      - Root cause analysis
+      - Containment effectiveness assessment
+      - Recovery actions and validation
+      - Lessons learned and recommendations
+
+expected_outputs:
+  - format: markdown
+    description: "Native format with full Mermaid charts"
+    sections:
+      - executive_summary
+      - technical_report
+      - findings_register
+      - remediation_roadmap
+      - executive_dashboard
+      - appendices
+
+  - format: html
+    description: "Interactive web report"
+    features:
+      - collapsible_finding_details
+      - interactive_risk_heatmap
+      - filterable_findings_table
+      - responsive_design
+
+  - format: docx
+    description: "Microsoft Word document"
+    features:
+      - corporate_branding
+      - table_of_contents
+      - page_numbers
+      - headers_and_footers
+
+  - format: pdf
+    description: "Print-ready PDF"
+    features:
+      - press_quality
+      - vector_graphics
+      - bookmark_navigation
+      - print_bleed_support
+
+validation_rules:
+  - rule: "Executive summary must be under 1000 words"
+    severity: error
+  - rule: "All Critical/High findings must have CVSS v4 vectors"
+    severity: error
+  - rule: "Every finding must map to at least one CWE"
+    severity: warning
+  - rule: "Every finding must map to at least one MITRE ATT&CK technique"
+    severity: warning
+  - rule: "No generic remediation language (fixed, secure it, be careful)"
+    severity: error
+  - rule: "Evidence must be referenced for all Critical findings"
+    severity: error
+  - rule: "Report must include methodology section"
+    severity: error
+  - rule: "Risk ratings must be internally consistent"
+    severity: warning
+  - rule: "All tables must have headers"
+    severity: warning
+  - rule: "Consistent heading hierarchy throughout"
+    severity: warning
+
+config:
+  engine:
+    auto_detect: true
+    strict_mode: false
+    fallback_template: "universal"
+    default_theme: "enterprise-dark"
+
+  quality:
+    max_executive_words: 1000
+    require_cvss_for_critical: true
+    require_evidence_for_critical: true
+    min_remediation_specificity_chars: 50
+
+  output:
+    default_formats: ["markdown", "pdf"]
+    include_raw_findings: true
+
+  branding:
+    default_company: "CyberSec Consulting Group"
+    default_theme: "enterprise-dark"
+
+  standards:
+    prefer_cvss_v4: true
+    require_mitre_mapping: true
+    require_cwe_mapping: true

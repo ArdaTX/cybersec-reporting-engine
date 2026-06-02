@@ -1,0 +1,384 @@
+name: compliance-report
+version: 1.0.0
+category: grc
+description: >
+  Generate comprehensive compliance assessment reports aligned with ISO 27001:2022, NIST CSF 2.0,
+  CIS Controls v8, NIST SP 800-53 Rev 5, PCI DSS 4.0.1, SOC 2 Type II, GDPR, HIPAA, and NIST RMF.
+  Produces audit-ready deliverables with control assessment matrices, gap analyses, maturity ratings,
+  and prioritized remediation roadmaps suitable for external auditors, board risk committees, and
+  regulatory submissions. Supports multi-framework assessments with automated control cross-walks.
+
+standards:
+  - ISO 27001:2022
+  - NIST CSF 2.0
+  - CIS Controls v8
+  - NIST SP 800-53 Rev 5
+  - PCI DSS 4.0.1
+  - SOC 2 (AICPA TSC 2017)
+  - GDPR (Art. 5, 24, 25, 28, 32, 33, 34, 35)
+  - HIPAA Security Rule (45 CFR Part 164 Subpart C)
+  - NIST RMF (SP 800-37 Rev 2)
+
+tags:
+  - compliance
+  - iso-27001
+  - nist-csf
+  - pci-dss
+  - soc2
+  - gdpr
+  - hipaa
+  - audit
+  - gap-analysis
+  - maturity-assessment
+  - grc
+  - risk-management
+  - control-assessment
+  - regulatory
+  - framework
+  - isms
+  - cis-controls
+  - nist-800-53
+  - audit-readiness
+  - certification
+
+prompt: >
+  You are a senior GRC (Governance, Risk, and Compliance) consultant with 18+ years of experience
+  leading compliance programs for Fortune 100 enterprises, government agencies, and regulated
+  industries including financial services (PCI DSS, SOX), healthcare (HIPAA), technology (SOC 2,
+  ISO 27001), and critical infrastructure (NIST CSF, NERC CIP). You have led 50+ certification
+  audits across ISO 27001, SOC 2 Type II, PCI DSS, and FedRAMP. You have served as an expert
+  witness in regulatory enforcement actions and have designed compliance programs that passed
+  zero-finding audits from Big Four firms.
+
+  You are now tasked with producing a comprehensive compliance assessment report for an organization
+  undergoing one or more framework assessments. Your report will inform the Board Audit Committee,
+  the CISO, external auditors, regulators, and cyber insurance underwriters. The report must
+  demonstrate audit-caliber rigor, objective evidence-based ratings, and actionable remediation
+  guidance that withstands regulatory scrutiny.
+
+  Follow the 9-step workflow precisely: (1) Scope Definition & Framework Selection with explicit
+  boundary declaration and control cross-walks for multi-framework assessments; (2) Control Inventory
+  & Evidence Requirements with evidence request lists per control owner; (3) Evidence Collection &
+  Validation with deficiency flagging for missing or insufficient evidence; (4) Control Assessment &
+  Effectiveness Rating assessing both design effectiveness and operational effectiveness with
+  documented testing methodology and sample sizes; (5) Gap Analysis identifying missing, partial,
+  and ineffective controls with residual risk scoring; (6) Maturity Assessment using CMMI-based
+  maturity levels (Initial through Optimizing) across people, process, technology, governance,
+  and metrics domains; (7) Remediation Plan with prioritized phases, owners, target dates, effort
+  estimates, and dependency mapping; (8) Audit Readiness Scoring calculating a quantitative
+  readiness score and identifying audit blockers; (9) Report Assembly & Delivery with compliance
+  posture visualization, radar charts, and executive sign-off.
+
+  Apply the compliance-specific JSON schemas for control assessment (with design effectiveness,
+  operational effectiveness, testing methodology, sample size, and evidence references), gap
+  analysis (with gap type, severity, residual risk score, risk scenario, and remediation mapping),
+  and maturity assessment (with CMMI level rating, domain strengths/weaknesses, and improvement
+  recommendations).
+
+  The report must follow the structured format: Executive Summary (overall posture, audit readiness
+  score, critical gaps), Compliance Posture Overview (multi-framework heatmaps, radar charts, trend
+  comparison), Control Assessment Matrix (per-control ratings with evidence status), Gap Analysis
+  (prioritized register with risk scores and root cause analysis for systemic gaps), Maturity
+  Assessment (domain scores with CMMI level descriptions and target roadmap), Remediation Plan
+  (phased with owners, effort, and dependencies), and Audit Readiness Score (with blocker register
+  and trajectory projection).
+
+  Pass all 10 quality controls: scope boundary validation with explicit inclusions/exclusions,
+  framework accuracy with authoritative control ID verification, evidence sufficiency ensuring
+  every rated control has supporting evidence, rating justification requiring deficiency descriptions
+  for non-effective ratings, gap prioritization with severity and risk scoring, inter-rater
+  reliability for multi-assessor engagements, maturity calibration against CMMI definitions,
+  remediation actionability with required fields per item, multi-framework consistency across
+  cross-walked controls, and executive sign-off by CISO or compliance officer.
+
+  Use Mermaid diagrams throughout: pie charts for control effectiveness distribution, radar-beta
+  charts for multi-domain maturity visualization, quadrant charts for gap density analysis, and
+  flowcharts for remediation dependency mapping.
+
+  Your output must be production-quality, reflecting the analytical rigor expected in $450/hr+
+  GRC consulting. Every control rating must be defensible with evidence. Every gap must be
+  quantified with risk scenarios. Every remediation item must be actionable and resourced.
+  You are producing a document that may be reviewed by a PCAOB-qualified audit partner —
+  treat it accordingly.
+
+workflows:
+  - name: single-framework-compliance-assessment
+    description: >
+      Generate a complete compliance assessment report for a single framework (ISO 27001, NIST CSF,
+      PCI DSS, SOC 2, HIPAA, or CIS Controls). Produces all report sections with control assessments,
+      gap analysis, maturity ratings, and remediation plan.
+    steps:
+      - step: scope_definition
+        description: Define assessment scope boundaries and select frameworks
+        required_inputs:
+          - organization_name (string)
+          - assessment_type (iso27001|nist_csf|pci_dss|soc2|hipaa|cis_controls|custom)
+          - scope_boundaries (object: business_units, geographies, technology_stacks, third_parties, exclusions)
+          - assessment_period (object: start_date, end_date)
+          - lead_assessor (object: name, role, certification)
+        outputs:
+          - scope_statement (YAML)
+          - framework_control_catalog (JSON)
+        example: |
+          organization_name: "ACME SaaS Corp"
+          assessment_type: iso27001
+          scope_boundaries:
+            business_units: ["Engineering", "IT Operations", "Security", "HR", "Legal", "Finance"]
+            geographies: ["US (HQ)", "UK (London)", "India (Bangalore)"]
+            technology_stacks: ["AWS us-east-1", "GCP europe-west2", "SaaS: M365, Salesforce, Jira Cloud"]
+            third_parties: ["Primary IaaS provider (AWS)", "Payroll processor (ADP)", "CRM (Salesforce)"]
+            exclusions: ["Subsidiary ACME Int'l GmbH (separate ISMS scope)"]
+          assessment_period:
+            start_date: "2026-05-01"
+            end_date: "2026-05-30"
+          lead_assessor:
+            name: "Sarah GRC Lead"
+            role: "Principal GRC Consultant"
+            certification: "CISSP, CISA, ISO 27001 Lead Auditor, PCI QSA"
+
+      - step: evidence_requirements
+        description: Define evidence requirements per control and generate evidence request lists
+        required_inputs:
+          - control_inventory (array of control assessment schema objects)
+          - evidence_request_template (object: control_id, evidence_type, expected_format, sampling_methodology)
+        outputs:
+          - evidence_requirements_matrix (JSON)
+          - evidence_request_list (YAML per control owner)
+        example: |
+          evidence_requirements:
+            - control_id: "A.5.1"
+              evidence_type: "Information Security Policy"
+              expected_format: "Signed PDF document"
+              sampling_methodology: "100% (single authoritative document)"
+              owner: "CISO"
+              due_date: "2026-05-15"
+
+      - step: evidence_collection_validation
+        description: Collect, validate, and flag deficiencies in control evidence
+        required_inputs:
+          - evidence_items (array of objects: evidence_id, control_id, description, source, collection_date, format, status)
+        outputs:
+          - evidence_collection_tracker (JSON)
+          - deficiency_register (JSON)
+
+      - step: control_assessment
+        description: Assess design and operational effectiveness of each control
+        required_inputs:
+          - control_assessments (array of control assessment schema objects)
+        outputs:
+          - control_assessment_matrix (JSON)
+          - effectiveness_dashboard (Mermaid pie chart)
+
+      - step: gap_analysis
+        description: Identify, categorize, and prioritize control gaps
+        required_inputs:
+          - gaps (array of gap entry schema objects)
+        outputs:
+          - gap_analysis_report (JSON)
+          - gap_density_heatmap (Mermaid quadrant chart)
+
+      - step: maturity_assessment
+        description: Assess organizational maturity across domains using CMMI levels
+        required_inputs:
+          - maturity_assessments (array of maturity assessment schema objects)
+        outputs:
+          - maturity_report (JSON)
+          - maturity_radar_chart (Mermaid radar-beta)
+
+      - step: remediation_plan
+        description: Develop prioritized remediation roadmap with phased timeline
+        required_inputs:
+          - remediation_items (array of objects: id, title, description, owner, target_date, effort_person_days, dependencies, success_criterion)
+        outputs:
+          - remediation_plan (JSON)
+          - dependency_diagram (Mermaid flowchart)
+
+      - step: audit_readiness
+        description: Calculate audit readiness score and identify blockers
+        required_inputs:
+          - control_ratings_summary (object)
+          - evidence_completeness (object)
+          - maturity_scores (object)
+        outputs:
+          - audit_readiness_scorecard (JSON)
+          - audit_blocker_register (JSON)
+
+      - step: report_assembly
+        description: Assemble final report with visualizations, branding, and QC sign-off
+        required_inputs:
+          - delivery_recipients (array of objects)
+          - include_executive_summary (boolean)
+        outputs:
+          - final_compliance_report (Markdown/PDF)
+          - executive_summary (Markdown)
+          - qc_checklist (YAML)
+
+  - name: multi-framework-compliance-assessment
+    description: >
+      Generate a unified compliance report covering multiple frameworks simultaneously. Automates
+      control cross-walking and identifies overlapping evidence requirements for audit efficiency.
+    steps:
+      - step: framework_selection_crosswalk
+        description: Select frameworks and generate control-to-control cross-walk matrix
+        required_inputs:
+          - frameworks (array of framework identifiers)
+          - cross_walk_scope (all_controls|key_controls|custom)
+        outputs:
+          - framework_cross_walk_matrix (JSON)
+          - evidence_optimization_report (YAML)
+
+      - step: unified_control_assessment
+        description: Assess controls once and map ratings to all applicable frameworks
+        required_inputs:
+          - unified_control_catalog (array of objects with cross-walk mappings)
+        outputs:
+          - unified_assessment_matrix (JSON)
+          - per_framework_ratings (JSON)
+
+      - step: integrated_remediation_plan
+        description: Build a single remediation plan addressing gaps across all frameworks
+        required_inputs:
+          - consolidated_gaps (array with framework references)
+        outputs:
+          - integrated_remediation_plan (JSON)
+
+  - name: certification-readiness-assessment
+    description: >
+      Pre-certification readiness assessment for ISO 27001 Stage 1, SOC 2 Type I/II, or PCI DSS
+      ROC preparation. Includes auditor perspective gap identification and mock audit scoring.
+    steps:
+      - step: certification_scope
+        description: Define certification scope per certification body requirements
+        required_inputs:
+          - certification_type (iso27001_stage1|soc2_type1|soc2_type2|pci_dss_roc|fedramp)
+          - certification_body (string)
+          - certification_timeline (object: stage1_date, stage2_date, certification_target)
+        outputs:
+          - certification_scope_statement (YAML)
+          - certification_checklist (YAML)
+
+      - step: mock_audit
+        description: Simulate certification auditor review with formal finding classification
+        required_inputs:
+          - control_ratings (array)
+          - evidence_inventory (array)
+        outputs:
+          - mock_audit_findings (JSON: major_nonconformity, minor_nonconformity, observation, opportunity_for_improvement)
+          - readiness_recommendation (go|conditional_go|no_go)
+
+      - step: corrective_action_plan
+        description: Develop corrective action plan targeting certification findings
+        required_inputs:
+          - mock_audit_findings (array)
+        outputs:
+          - corrective_action_plan (JSON with CAPA format)
+
+examples:
+  - name: iso-27001-2022-pre-certification
+    scenario: >
+      1,200-employee B2B SaaS company preparing for ISO 27001:2022 Stage 1 certification audit
+      in 8 weeks. Partially implemented ISMS with documented policies but inconsistent operational
+      controls. 93 Annex A controls assessed (A.5-A.8). Current effectiveness: 62%. Audit readiness:
+      71%. 7 Ineffective controls are audit blockers requiring immediate remediation.
+    expected_outputs:
+      - Executive summary with 62% effectiveness and 71% readiness scores
+      - Control Assessment Matrix: 58 Effective, 28 Partially Effective, 7 Ineffective
+      - Critical gap register: Supplier Security (A.5.19), Crypto Controls (A.8.24), SDLC (A.8.25), Logging (A.8.16)
+      - Maturity radar chart across A.5, A.6, A.7, A.8 domains with CMMI scores
+      - 4-phase remediation roadmap (180 person-days, 12 weeks)
+      - Audit blocker register with go/no-go assessment per blocker
+      - Mermaid pie chart: control effectiveness distribution by domain
+
+  - name: nist-csf-pci-dss-dual-assessment
+    scenario: >
+      US-based payment processor (800 employees, 2.3M annual transactions) undergoing combined
+      NIST CSF 2.0 maturity assessment and PCI DSS 4.0.1 compliance validation. Dual-framework
+      assessment required by acquiring bank. 108 CSF subcategories and 254 PCI DSS requirements.
+    expected_outputs:
+      - Executive summary integrating both frameworks' findings
+      - NIST CSF maturity: GOVERN 2.4, IDENTIFY 3.1, PROTECT 2.8, DETECT 2.2, RESPOND 1.9, RECOVER 1.5
+      - PCI DSS compliance: 88% (224/254 satisfied); 12 not satisfied (Req 6, 10, 11)
+      - Three systemic gap clusters: Software Security, Security Monitoring, Vulnerability Management
+      - Cross-framework gap mapping showing overlapping root causes
+      - Mermaid radar-beta: NIST CSF function maturity scores
+      - 42 remediation items, 290 person-days, phased over 20 weeks
+      - Audit readiness trajectory: 88% → projected 95% by September 2026
+
+formats:
+  - markdown_report:
+      description: Rich Markdown report with Mermaid diagrams, control matrices, and collapsible sections
+      template: compliance_report.md.j2
+  - pdf_report:
+      description: Print-ready PDF with header/footer, watermark, TOC, and control numbering
+      template: compliance_report.tex.j2
+  - json_structured:
+      description: Machine-readable JSON following the skill schemas for GRC platform ingestion
+      template: compliance_report.json.j2
+  - audit_package:
+      description: Zip archive with report + evidence inventory + control assessment workbook (XLSX)
+      template: compliance_audit_package.zip.j2
+
+validation_rules:
+  - rule: framework_version_match
+    description: All control IDs and clause references must match the authoritative framework version specified in the scope
+    severity: error
+
+  - rule: scope_boundary_explicit
+    description: Scope statement must include explicit inclusions and exclusions; no ambiguous "all systems" without listing
+    severity: error
+
+  - rule: evidence_per_rated_control
+    description: Every control with a rating other than "not_applicable" must reference at least one evidence item
+    severity: error
+
+  - rule: deficiency_for_non_effective
+    description: Every control rated "partially_effective" or "ineffective" must link to at least one deficiency entry with a description
+    severity: error
+
+  - rule: gap_severity_risk_complete
+    description: Every gap entry must include severity rating, residual risk score (0.0-10.0), and risk scenario description
+    severity: error
+
+  - rule: remediation_fields_required
+    description: Every remediation item must include owner, target_date (ISO 8601), effort_person_days (integer), and success_criterion
+    severity: error
+
+  - rule: maturity_level_range
+    description: Maturity ratings must be integers between 1 (Initial) and 5 (Optimizing)
+    severity: error
+
+  - rule: cross_walk_consistency
+    description: Controls mapped to multiple frameworks via cross-walk must have consistent ratings; no framework A says "Effective" while framework B says "Ineffective" for the same evidence
+    severity: error
+
+  - rule: audit_blocker_defined
+    description: At least one audit blocker must be identified if overall readiness score is below 80%
+    severity: warning
+
+  - rule: mermaid_syntax_valid
+    description: All Mermaid diagram code blocks must be syntactically valid
+    severity: error
+
+  - rule: certification_body_reference
+    description: For certification readiness assessments, the specific certification body and relevant scheme requirements must be referenced
+    severity: warning
+
+  - rule: executive_signoff
+    description: Final report must include a designated executive sign-off field with name, title, and date
+    severity: error
+
+  - rule: document_id_convention
+    description: Report must have a document ID following the convention CMP-YYYY-MMDD-NNN
+    severity: error
+
+  - rule: assessment_period_declared
+    description: Assessment period (start and end dates) must be explicitly declared in the report scope section
+    severity: error
+
+  - rule: control_testing_methodology
+    description: Every control assessment must include the testing methodology used (document_review, interview, automated_scan, configuration_review, log_analysis, or walkthrough)
+    severity: warning
+
+  - rule: sample_size_documented
+    description: Every control assessment that uses sampling must document the sample size and rationale
+    severity: warning

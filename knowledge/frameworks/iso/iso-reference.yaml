@@ -1,0 +1,430 @@
+# ISO Standards Knowledge Base Reference
+# CyberSec Reporting Engine
+# Covers ISO 27001:2022 and ISO 27002:2022
+
+metadata:
+  organization: International Organization for Standardization (ISO) / International Electrotechnical Commission (IEC)
+  standards:
+    - ISO 27001:2022 - Information Security Management Systems (ISMS) Requirements
+    - ISO 27002:2022 - Information Security Controls (Implementation Guidance)
+    - ISO 27005:2022 - Information Security Risk Management
+  last_updated: "2025-01"
+
+iso_27001_2022:
+  clauses:
+    - clause: 4
+      name: Context of the Organization
+      description: Understanding the organization and its context, interested parties, and ISMS scope
+    - clause: 5
+      name: Leadership
+      description: Top management commitment, policy, roles, responsibilities, and authorities
+    - clause: 6
+      name: Planning
+      description: Actions to address risks and opportunities, information security objectives
+    - clause: 7
+      name: Support
+      description: Resources, competence, awareness, communication, documented information
+    - clause: 8
+      name: Operation
+      description: Operational planning and control, risk assessment, risk treatment
+    - clause: 9
+      name: Performance Evaluation
+      description: Monitoring, measurement, analysis, evaluation, internal audit, management review
+    - clause: 10
+      name: Improvement
+      description: Continual improvement, nonconformity and corrective action
+
+  annex_a_controls:
+    organizational_controls:
+      - id: "5.1"
+        name: Policies for Information Security
+        type: Organizational
+        description: Define, approve, and communicate information security policies
+        iso_27002_guidance: Top-level policy supported by topic-specific policies reviewed at planned intervals
+      - id: "5.2"
+        name: Information Security Roles and Responsibilities
+        type: Organizational
+        description: Define and allocate roles and responsibilities
+      - id: "5.3"
+        name: Segregation of Duties
+        type: Organizational
+        description: Separate conflicting duties and areas of responsibility
+      - id: "5.4"
+        name: Management Responsibilities
+        type: Organizational
+        description: Management shall require personnel to apply information security
+      - id: "5.5"
+        name: Contact with Authorities
+        type: Organizational
+        description: Maintain contact with relevant authorities
+      - id: "5.6"
+        name: Contact with Special Interest Groups
+        type: Organizational
+        description: Maintain contact with special interest groups
+      - id: "5.7"
+        name: Threat Intelligence
+        type: Organizational
+        description: Collect and analyze information security threat intelligence
+      - id: "5.8"
+        name: Information Security in Project Management
+        type: Organizational
+        description: Integrate information security into project management
+      - id: "5.9"
+        name: Inventory of Information and Other Associated Assets
+        type: Organizational
+        description: Identify and maintain inventory of information and associated assets
+      - id: "5.10"
+        name: Acceptable Use of Information and Other Associated Assets
+        type: Organizational
+        description: Define rules for acceptable use of assets
+      - id: "5.11"
+        name: Return of Assets
+        type: Organizational
+        description: Return organizational assets upon termination
+      - id: "5.12"
+        name: Classification of Information
+        type: Organizational
+        description: Classify information based on confidentiality, integrity, availability
+      - id: "5.13"
+        name: Labelling of Information
+        type: Organizational
+        description: Label information according to classification scheme
+      - id: "5.14"
+        name: Information Transfer
+        type: Organizational
+        description: Define rules for transferring information
+      - id: "5.15"
+        name: Access Control
+        type: Organizational
+        description: Establish access control policy and rules
+      - id: "5.16"
+        name: Identity Management
+        type: Organizational
+        description: Manage identities throughout their lifecycle
+      - id: "5.17"
+        name: Authentication Information
+        type: Organizational
+        description: Manage allocation and management of authentication information
+      - id: "5.18"
+        name: Access Rights
+        type: Organizational
+        description: Provision, review, modify, and remove access rights
+      - id: "5.19"
+        name: Information Security in Supplier Relationships
+        type: Organizational
+        description: Manage information security in supplier relationships
+      - id: "5.20"
+        name: Addressing Information Security within Supplier Agreements
+        type: Organizational
+        description: Define security requirements in supplier agreements
+      - id: "5.21"
+        name: Managing Information Security in the ICT Supply Chain
+        type: Organizational
+        description: Manage supply chain security risks
+      - id: "5.22"
+        name: Monitoring, Review and Change Management of Supplier Services
+        type: Organizational
+        description: Monitor and review supplier services and changes
+      - id: "5.23"
+        name: Information Security for Use of Cloud Services
+        type: Organizational
+        description: Manage cloud service security requirements
+      - id: "5.24"
+        name: Information Security Incident Management Planning and Preparation
+        type: Organizational
+        description: Plan and prepare for incident management
+      - id: "5.25"
+        name: Assessment and Decision on Information Security Events
+        type: Organizational
+        description: Assess events and determine if they are incidents
+      - id: "5.26"
+        name: Response to Information Security Incidents
+        type: Organizational
+        description: Respond to and contain incidents
+      - id: "5.27"
+        name: Learning from Information Security Incidents
+        type: Organizational
+        description: Learn from incidents and improve
+      - id: "5.28"
+        name: Collection of Evidence
+        type: Organizational
+        description: Identify, collect, and preserve evidence
+      - id: "5.29"
+        name: Information Security During Disruption
+        type: Organizational
+        description: Plan for business continuity during disruption
+      - id: "5.30"
+        name: ICT Readiness for Business Continuity
+        type: Organizational
+        description: Ensure ICT systems are ready for continuity
+      - id: "5.31"
+        name: Legal, Statutory, Regulatory and Contractual Requirements
+        type: Organizational
+        description: Identify and comply with legal requirements
+      - id: "5.32"
+        name: Intellectual Property Rights
+        type: Organizational
+        description: Protect intellectual property rights
+      - id: "5.33"
+        name: Protection of Records
+        type: Organizational
+        description: Protect records from loss, destruction, and falsification
+      - id: "5.34"
+        name: Privacy and Protection of PII
+        type: Organizational
+        description: Protect personally identifiable information
+      - id: "5.35"
+        name: Independent Review of Information Security
+        type: Organizational
+        description: Conduct independent reviews at planned intervals
+      - id: "5.36"
+        name: Compliance with Policies, Rules and Standards for Information Security
+        type: Organizational
+        description: Review compliance with security policies
+      - id: "5.37"
+        name: Documented Operating Procedures
+        type: Organizational
+        description: Document operating procedures for information processing facilities
+
+    people_controls:
+      - id: "6.1"
+        name: Screening
+        type: People
+        description: Background verification of all candidates
+      - id: "6.2"
+        name: Terms and Conditions of Employment
+        type: People
+        description: Include security responsibilities in employment contracts
+      - id: "6.3"
+        name: Information Security Awareness, Education and Training
+        type: People
+        description: Provide security awareness and training
+      - id: "6.4"
+        name: Disciplinary Process
+        type: People
+        description: Formal disciplinary process for policy violations
+      - id: "6.5"
+        name: Responsibilities After Termination or Change of Employment
+        type: People
+        description: Communicate ongoing security responsibilities
+      - id: "6.6"
+        name: Confidentiality or Non-disclosure Agreements
+        type: People
+        description: Use confidentiality agreements as needed
+      - id: "6.7"
+        name: Remote Working
+        type: People
+        description: Define security measures for remote work
+      - id: "6.8"
+        name: Information Security Event Reporting
+        type: People
+        description: Establish event reporting mechanisms
+
+    physical_controls:
+      - id: "7.1"
+        name: Physical Security Perimeters
+        type: Physical
+        description: Define and protect physical security perimeters
+      - id: "7.2"
+        name: Physical Entry
+        type: Physical
+        description: Secure physical entry to facilities
+      - id: "7.3"
+        name: Securing Offices, Rooms and Facilities
+        type: Physical
+        description: Design and implement physical security for facilities
+      - id: "7.4"
+        name: Physical Security Monitoring
+        type: Physical
+        description: Monitor facilities for unauthorized access
+      - id: "7.5"
+        name: Protecting Against Physical and Environmental Threats
+        type: Physical
+        description: Protect against physical and environmental threats
+      - id: "7.6"
+        name: Working in Secure Areas
+        type: Physical
+        description: Define procedures for working in secure areas
+      - id: "7.7"
+        name: Clear Desk and Clear Screen
+        type: Physical
+        description: Enforce clear desk and clear screen policies
+      - id: "7.8"
+        name: Equipment Siting and Protection
+        type: Physical
+        description: Site and protect equipment appropriately
+      - id: "7.9"
+        name: Security of Assets Off-Premises
+        type: Physical
+        description: Protect off-premises assets
+      - id: "7.10"
+        name: Storage Media
+        type: Physical
+        description: Manage storage media lifecycle
+      - id: "7.11"
+        name: Supporting Utilities
+        type: Physical
+        description: Protect supporting utilities from failure
+      - id: "7.12"
+        name: Cabling Security
+        type: Physical
+        description: Protect cabling from interception or damage
+      - id: "7.13"
+        name: Equipment Maintenance
+        type: Physical
+        description: Maintain equipment to ensure security
+      - id: "7.14"
+        name: Secure Disposal or Re-use of Equipment
+        type: Physical
+        description: Dispose or reuse equipment securely
+
+    technological_controls:
+      - id: "8.1"
+        name: User Endpoint Devices
+        type: Technological
+        description: Protect user endpoint devices
+      - id: "8.2"
+        name: Privileged Access Rights
+        type: Technological
+        description: Restrict and manage privileged access
+      - id: "8.3"
+        name: Information Access Restriction
+        type: Technological
+        description: Restrict access to information and systems
+      - id: "8.4"
+        name: Access to Source Code
+        type: Technological
+        description: Restrict access to source code
+      - id: "8.5"
+        name: Secure Authentication
+        type: Technological
+        description: Implement secure authentication technologies
+      - id: "8.6"
+        name: Capacity Management
+        type: Technological
+        description: Monitor and manage system capacity
+      - id: "8.7"
+        name: Protection Against Malware
+        type: Technological
+        description: Implement malware protection measures
+      - id: "8.8"
+        name: Management of Technical Vulnerabilities
+        type: Technological
+        description: Manage technical vulnerabilities
+      - id: "8.9"
+        name: Configuration Management
+        type: Technological
+        description: Manage secure configurations
+      - id: "8.10"
+        name: Information Deletion
+        type: Technological
+        description: Securely delete information when no longer needed
+      - id: "8.11"
+        name: Data Masking
+        type: Technological
+        description: Mask data according to data protection requirements
+      - id: "8.12"
+        name: Data Leakage Prevention
+        type: Technological
+        description: Apply data leakage prevention measures
+      - id: "8.13"
+        name: Information Backup
+        type: Technological
+        description: Maintain and test backup copies
+      - id: "8.14"
+        name: Redundancy of Information Processing Facilities
+        type: Technological
+        description: Ensure redundancy of processing facilities
+      - id: "8.15"
+        name: Logging
+        type: Technological
+        description: Record and analyze event logs
+      - id: "8.16"
+        name: Monitoring Activities
+        type: Technological
+        description: Monitor systems and networks
+      - id: "8.17"
+        name: Clock Synchronization
+        type: Technological
+        description: Synchronize clocks of all systems
+      - id: "8.18"
+        name: Use of Privileged Utility Programs
+        type: Technological
+        description: Restrict and control use of utility programs
+      - id: "8.19"
+        name: Installation of Software on Operational Systems
+        type: Technological
+        description: Control software installation
+      - id: "8.20"
+        name: Networks Security
+        type: Technological
+        description: Secure and manage networks
+      - id: "8.21"
+        name: Security of Network Services
+        type: Technological
+        description: Enforce security for network services
+      - id: "8.22"
+        name: Segregation of Networks
+        type: Technological
+        description: Segregate networks based on sensitivity
+      - id: "8.23"
+        name: Web Filtering
+        type: Technological
+        description: Filter web access to reduce exposure
+      - id: "8.24"
+        name: Use of Cryptography
+        type: Technological
+        description: Define and apply cryptographic controls
+      - id: "8.25"
+        name: Secure Development Life Cycle
+        type: Technological
+        description: Apply SDL in development lifecycle
+      - id: "8.26"
+        name: Application Security Requirements
+        type: Technological
+        description: Define security requirements for applications
+      - id: "8.27"
+        name: Secure System Architecture and Engineering Principles
+        type: Technological
+        description: Apply secure engineering principles
+      - id: "8.28"
+        name: Secure Coding
+        type: Technological
+        description: Apply secure coding practices
+      - id: "8.29"
+        name: Security Testing in Development and Acceptance
+        type: Technological
+        description: Test security in development and acceptance
+      - id: "8.30"
+        name: Outsourced Development
+        type: Technological
+        description: Manage security of outsourced development
+      - id: "8.31"
+        name: Separation of Development, Test and Production Environments
+        type: Technological
+        description: Separate dev, test, and production environments
+      - id: "8.32"
+        name: Change Management
+        type: Technological
+        description: Control changes to information processing facilities
+      - id: "8.33"
+        name: Test Information
+        type: Technological
+        description: Protect and manage test information
+      - id: "8.34"
+        name: Protection of Information Systems During Audit Testing
+        type: Technological
+        description: Protect systems during audit activities
+
+iso_27002_implementation_attributes:
+  attribute_types:
+    - name: Control Type
+      values: [Preventive, Detective, Corrective]
+    - name: Information Security Properties
+      values: [Confidentiality, Integrity, Availability]
+    - name: Cybersecurity Concepts
+      values: [Identify, Protect, Detect, Respond, Recover]
+    - name: Operational Capabilities
+      values: [Governance, Asset Management, Information Protection, Human Resource Security, Physical Security, System and Network Security, Application Security, Secure Configuration, Identity and Access Management, Threat and Vulnerability Management, Continuity, Supplier Relationships Security, Legal and Compliance, Information Security Event Management, Information Security Assurance]
+    - name: Security Domains
+      values: [Governance and Ecosystem, Protection, Defence, Resilience]

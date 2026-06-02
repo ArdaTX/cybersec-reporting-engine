@@ -1,0 +1,386 @@
+/* =============================================================================
+ * Executive Tables CSS — CyberSec Reporting Engine
+ * Professional, print-ready table styles for findings, metrics,
+ * compliance mappings, and executive summaries.
+ * =============================================================================
+ */
+
+/* --------------------------------------------------------------------------
+ * 1. Base Table Reset
+ * -------------------------------------------------------------------------- */
+
+.exec-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary, #1a2332);
+  margin: 24px 0;
+}
+
+.exec-table caption {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary, #64748b);
+  text-align: left;
+  padding: 8px 0 12px 0;
+  caption-side: top;
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Header Styles
+ * -------------------------------------------------------------------------- */
+
+.exec-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary, #64748b);
+  background: var(--surface, #f8fafc);
+  border-bottom: 2px solid var(--border, #e2e8f0);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.exec-table thead th:first-child {
+  border-radius: 6px 0 0 0;
+}
+
+.exec-table thead th:last-child {
+  border-radius: 0 6px 0 0;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Body Row Styles
+ * -------------------------------------------------------------------------- */
+
+.exec-table tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light, #f1f5f9);
+  vertical-align: middle;
+}
+
+/* Alternating row stripes */
+.exec-table tbody tr:nth-child(even) {
+  background: var(--background-alt, #f8fafc);
+}
+
+.exec-table tbody tr:nth-child(odd) {
+  background: var(--surface, #ffffff);
+}
+
+/* Hover state */
+.exec-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.06);
+  transition: background 150ms ease;
+}
+
+/* Selected row */
+.exec-table tbody tr.selected {
+  background: rgba(59, 130, 246, 0.10);
+  outline: 1px solid rgba(59, 130, 246, 0.30);
+}
+
+/* Last row removes bottom border for clean finish */
+.exec-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* --------------------------------------------------------------------------
+ * 4. Compact Variant (Higher Data Density)
+ * -------------------------------------------------------------------------- */
+
+.exec-table--compact {
+  font-size: 13px;
+}
+
+.exec-table--compact thead th {
+  padding: 8px 12px;
+  font-size: 10px;
+}
+
+.exec-table--compact tbody td {
+  padding: 8px 12px;
+}
+
+/* --------------------------------------------------------------------------
+ * 5. Severity Row Highlighting
+ * -------------------------------------------------------------------------- */
+
+.exec-table tbody tr.row-critical {
+  border-left: 4px solid var(--severity-critical, #e74c3c);
+  background: rgba(231, 76, 60, 0.06);
+}
+
+.exec-table tbody tr.row-high {
+  border-left: 4px solid var(--severity-high, #e67e22);
+  background: rgba(230, 126, 34, 0.04);
+}
+
+.exec-table tbody tr.row-medium {
+  border-left: 4px solid var(--severity-medium, #f1c40f);
+}
+
+.exec-table tbody tr.row-low {
+  border-left: 4px solid var(--severity-low, #2ecc71);
+}
+
+/* --------------------------------------------------------------------------
+ * 6. Column Alignment Utilities
+ * -------------------------------------------------------------------------- */
+
+.exec-table .col--number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.exec-table .col--center {
+  text-align: center;
+}
+
+.exec-table .col--badge {
+  text-align: center;
+  width: 100px;
+}
+
+.exec-table .col--status {
+  width: 120px;
+}
+
+.exec-table .col--actions {
+  width: 80px;
+  text-align: center;
+}
+
+.exec-table .col--date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+ * 7. Code / Monospace Cells
+ * -------------------------------------------------------------------------- */
+
+.exec-table .cell--mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px;
+  color: var(--text-secondary, #475569);
+  background: var(--background-alt, #f8fafc);
+  padding: 6px 12px;
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+ * 8. Cell Value Highlights
+ * -------------------------------------------------------------------------- */
+
+.exec-table .cell--strong {
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+}
+
+.exec-table .cell--muted {
+  color: var(--text-muted, #94a3b8);
+  font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+ * 9. Status Indicators (Inline)
+ * -------------------------------------------------------------------------- */
+
+.exec-table .status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.status-dot--open     { background: var(--severity-high, #e67e22); }
+.status-dot--closed   { background: var(--severity-low, #2ecc71); }
+.status-dot--in-progress { background: var(--severity-info, #3498db); animation: pulse-status 2s infinite; }
+.status-dot--accepted { background: var(--status-neutral, #94a3b8); }
+.status-dot--wont-fix { background: var(--text-muted, #64748b); }
+
+@keyframes pulse-status {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* --------------------------------------------------------------------------
+ * 10. Findings Summary Table
+ * -------------------------------------------------------------------------- */
+
+.findings-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+}
+
+.findings-table th {
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-secondary, #64748b);
+  border-bottom: 2px solid var(--border, #e2e8f0);
+  background: var(--surface, #ffffff);
+}
+
+.findings-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-light, #f1f5f9);
+}
+
+.findings-table .finding-id {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--accent-secondary, #3498db);
+  font-weight: 600;
+}
+
+.findings-table .finding-title {
+  font-weight: 600;
+}
+
+.findings-table .finding-cvss {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.findings-table .finding-affected {
+  font-size: 12px;
+  color: var(--text-muted, #94a3b8);
+}
+
+/* --------------------------------------------------------------------------
+ * 11. Compliance Mapping Table
+ * -------------------------------------------------------------------------- */
+
+.compliance-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+
+.compliance-table thead th {
+  padding: 10px 14px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+}
+
+.compliance-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.compliance-table .compliance--pass  { color: var(--severity-low, #2ecc71); font-weight: 700; }
+.compliance-table .compliance--fail  { color: var(--severity-critical, #e74c3c); font-weight: 700; }
+.compliance-table .compliance--warn  { color: var(--severity-medium, #f1c40f); font-weight: 700; }
+.compliance-table .compliance--na    { color: var(--text-muted, #94a3b8); }
+
+/* --------------------------------------------------------------------------
+ * 12. Print Optimization
+ * -------------------------------------------------------------------------- */
+
+@media print {
+  .exec-table {
+    font-size: 11px;
+    page-break-inside: avoid;
+  }
+
+  .exec-table thead th {
+    font-size: 9px;
+    padding: 8px 10px;
+    background: #f8fafc !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .exec-table tbody td {
+    padding: 8px 10px;
+  }
+
+  .exec-table tbody tr:nth-child(even) {
+    background: #f8fafc !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .exec-table tbody tr.row-critical {
+    border-left: 3px solid #e74c3c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Avoid page breaks inside rows */
+  .exec-table tbody tr {
+    page-break-inside: avoid;
+  }
+
+  /* Repeat headers on each page */
+  .exec-table thead {
+    display: table-header-group;
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * 13. Dark Theme Overrides
+ * -------------------------------------------------------------------------- */
+
+.theme-dark .exec-table,
+.theme-enterprise-dark .exec-table,
+.theme-executive-blue .exec-table,
+.theme-security-ops .exec-table {
+
+  .exec-table thead th {
+    background: var(--surface, #161b22);
+    border-bottom-color: var(--border, #30363d);
+  }
+
+  .exec-table tbody td {
+    border-bottom-color: var(--border-light, #21262d);
+  }
+
+  .exec-table tbody tr:nth-child(even) {
+    background: var(--background-alt, #111820);
+  }
+
+  .exec-table tbody tr:nth-child(odd) {
+    background: var(--surface, #161b22);
+  }
+
+  .exec-table tbody tr:hover {
+    background: rgba(52, 152, 219, 0.08);
+  }
+
+  .exec-table .cell--mono {
+    background: var(--background-alt, #111820);
+  }
+}
+
+@media print {
+  .theme-dark .exec-table thead th,
+  .theme-enterprise-dark .exec-table thead th,
+  .theme-executive-blue .exec-table thead th,
+  .theme-security-ops .exec-table thead th {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+  }
+}

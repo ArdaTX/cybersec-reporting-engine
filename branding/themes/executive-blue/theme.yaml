@@ -1,0 +1,152 @@
+# =============================================================================
+# Executive Blue Theme — CyberSec Reporting Engine
+# Premium executive feel with deep navy foundation, gold accents,
+# and refined typography. Designed for C-Suite and board-level reporting.
+# =============================================================================
+name: "Executive Blue"
+id: executive-blue
+version: 1.0.0
+description: "Premium executive theme with deep navy and gold accents for C-Suite and board-level reporting"
+
+colors:
+  primary: "#0b1e3d"
+  primary_light: "#132d5e"
+  primary_dark: "#071630"
+  secondary: "#1a3357"
+  secondary_light: "#24457a"
+  accent: "#c9a84c"
+  accent_dark: "#a6893a"
+  accent_light: "#d4b967"
+  accent_secondary: "#5b8db8"
+  accent_secondary_dark: "#45729e"
+  accent_secondary_light: "#7ea8cc"
+
+  text_primary: "#e8edf2"
+  text_secondary: "#b0c0d0"
+  text_muted: "#6b8299"
+  text_inverse: "#0b1e3d"
+
+  background: "#071224"
+  background_alt: "#0a1a33"
+  surface: "#0d1f3f"
+  surface_elevated: "#11264a"
+  surface_overlay: "rgba(13, 31, 63, 0.97)"
+
+  border: "#1a3357"
+  border_light: "#122848"
+  border_focus: "#c9a84c"
+
+  divider: "#122848"
+
+  severity:
+    critical: "#e74c3c"
+    critical_bg: "rgba(231, 76, 60, 0.12)"
+    critical_border: "rgba(231, 76, 60, 0.35)"
+    high: "#e67e22"
+    high_bg: "rgba(230, 126, 34, 0.12)"
+    high_border: "rgba(230, 126, 34, 0.35)"
+    medium: "#f1c40f"
+    medium_bg: "rgba(241, 196, 15, 0.12)"
+    medium_border: "rgba(241, 196, 15, 0.35)"
+    low: "#2ecc71"
+    low_bg: "rgba(46, 204, 113, 0.12)"
+    low_border: "rgba(46, 204, 113, 0.35)"
+    info: "#5b8db8"
+    info_bg: "rgba(91, 141, 184, 0.12)"
+    info_border: "rgba(91, 141, 184, 0.35)"
+
+  status:
+    success: "#27ae60"
+    warning: "#f39c12"
+    error: "#e74c3c"
+    pending: "#6b8299"
+    in_progress: "#5b8db8"
+    neutral: "#5a7184"
+
+  chart:
+    series_1: "#c9a84c"
+    series_2: "#5b8db8"
+    series_3: "#e74c3c"
+    series_4: "#2ecc71"
+    series_5: "#9b59b6"
+    series_6: "#e67e22"
+    series_7: "#1abc9c"
+    series_8: "#e91e63"
+    grid: "#122848"
+    axis: "#6b8299"
+    tooltip_bg: "#0d1f3f"
+    tooltip_text: "#e8edf2"
+
+  link: "#7ea8cc"
+  link_hover: "#a0c8e8"
+
+typography:
+  headings: "Playfair Display, Georgia, serif"
+  body: "Inter, system-ui, -apple-system, sans-serif"
+  code: "JetBrains Mono, ui-monospace, SFMono-Regular, monospace"
+  sizes:
+    h1: "32px"
+    h2: "26px"
+    h3: "22px"
+    h4: "17px"
+    body: "15px"
+    small: "13px"
+    caption: "11px"
+    overline: "10px"
+  weights:
+    light: 300
+    regular: 400
+    medium: 500
+    semibold: 600
+    bold: 700
+  line_heights:
+    heading: 1.35
+    body: 1.65
+    compact: 1.2
+
+spacing:
+  unit: 8
+  xs: "4px"
+  sm: "8px"
+  md: "16px"
+  lg: "24px"
+  xl: "32px"
+  xxl: "48px"
+  section: "72px"
+
+borders:
+  radius_sm: "3px"
+  radius_md: "6px"
+  radius_lg: "10px"
+  radius_xl: "14px"
+  radius_full: "9999px"
+
+shadows:
+  sm: "0 1px 3px rgba(0, 0, 0, 0.3)"
+  md: "0 4px 8px rgba(0, 0, 0, 0.4)"
+  lg: "0 12px 30px rgba(0, 0, 0, 0.5)"
+  xl: "0 24px 60px rgba(0, 0, 0, 0.6)"
+
+animation:
+  transition_fast: "200ms ease"
+  transition_normal: "300ms ease"
+  transition_slow: "500ms ease"
+
+icons:
+  set: "lucide"
+  size_sm: "14px"
+  size_md: "18px"
+  size_lg: "24px"
+
+page:
+  max_width: "1200px"
+  content_width: "780px"
+  margin: "32px auto"
+  padding: "48px"
+
+print:
+  page_size: "A4"
+  margin_top: "20mm"
+  margin_bottom: "20mm"
+  margin_left: "18mm"
+  margin_right: "18mm"

@@ -1,0 +1,260 @@
+# MITRE D3FEND Knowledge Base Reference
+# CyberSec Reporting Engine
+# Defensive technique countermeasures mapped to ATT&CK
+
+metadata:
+  framework: MITRE D3FEND
+  version: v1.0
+  domain: Defensive Countermeasures
+  url: https://d3fend.mitre.org
+  description: A knowledge graph of cybersecurity countermeasures
+
+defensive_categories:
+  - name: Harden
+    id: D3-H
+    description: Reduce attack surface by strengthening system configurations
+    techniques:
+      - Application Hardening (D3-AH)
+      - Credential Hardening (D3-CH)
+      - Message Hardening (D3-MH)
+      - Platform Hardening (D3-PH)
+
+  - name: Detect
+    id: D3-D
+    description: Identify adversary activity through monitoring and analysis
+    techniques:
+      - File Analysis (D3-FA)
+      - Identifier Analysis (D3-IA)
+      - Message Analysis (D3-MA)
+      - Network Traffic Analysis (D3-NTA)
+      - Platform Monitoring (D3-PM)
+      - Process Analysis (D3-PSA)
+      - User Behavior Analysis (D3-UBA)
+
+  - name: Isolate
+    id: D3-I
+    description: Segregate resources to limit adversary movement
+    techniques:
+      - Execution Isolation (D3-EI)
+      - Network Isolation (D3-NI)
+
+  - name: Deceive
+    id: D3-DE
+    description: Mislead adversaries with decoy resources
+    techniques:
+      - Decoy Environment (D3-DCE)
+      - Decoy Object (D3-DCO)
+      - Decoy Persona (D3-DCP)
+
+  - name: Evict
+    id: D3-E
+    description: Remove adversary presence from systems
+    techniques:
+      - Credential Eviction (D3-CE)
+      - Process Eviction (D3-PE)
+
+attck_to_d3fend_mapping:
+  # Initial Access
+  - attck_id: T1566
+    attck_name: Phishing
+    d3fend_countermeasures:
+      - D3-MH: Sender Reputation Analysis, Link Analysis, File Analysis
+      - D3-UBA: User training, phishing simulation
+      - D3-PH: Email authentication (SPF/DKIM/DMARC)
+
+  - attck_id: T1190
+    attck_name: Exploit Public-Facing Application
+    d3fend_countermeasures:
+      - D3-AH: Web Application Firewall, Input Validation
+      - D3-NTA: Web request anomaly detection
+      - D3-PH: Patch management, vulnerability scanning
+
+  # Execution
+  - attck_id: T1059
+    attck_name: Command and Scripting Interpreter
+    d3fend_countermeasures:
+      - D3-PM: Script Block Logging, AMSI
+      - D3-PSA: Command-line argument analysis
+      - D3-AH: Constrained Language Mode, AppLocker
+
+  - attck_id: T1204
+    attck_name: User Execution
+    d3fend_countermeasures:
+      - D3-MH: Attachment sandboxing, macro scanning
+      - D3-UBA: User behavior analytics, training
+      - D3-AH: Mark of the Web enforcement
+
+  # Persistence
+  - attck_id: T1547
+    attck_name: Boot or Logon Autostart Execution
+    d3fend_countermeasures:
+      - D3-PM: Autoruns monitoring, registry auditing
+      - D3-FA: Startup folder integrity monitoring
+      - D3-AH: Secure Boot, boot attestation
+
+  - attck_id: T1053
+    attck_name: Scheduled Task/Job
+    d3fend_countermeasures:
+      - D3-PM: Task Scheduler log monitoring
+      - D3-PSA: Unusual task creation detection
+      - D3-FA: Task XML analysis for suspicious entries
+
+  # Privilege Escalation
+  - attck_id: T1055
+    attck_name: Process Injection
+    d3fend_countermeasures:
+      - D3-PSA: Process memory analysis, VAD inspection
+      - D3-PM: Sysmon Event 8/10, ETW tracing
+      - D3-AH: CFG, DEP, ASLR enforcement
+
+  # Defense Evasion
+  - attck_id: T1027
+    attck_name: Obfuscated Files or Information
+    d3fend_countermeasures:
+      - D3-FA: Entropy analysis, YARA scanning
+      - D3-PSA: Deobfuscation and runtime analysis
+      - D3-NTA: Protocol anomaly detection
+
+  - attck_id: T1562
+    attck_name: Impair Defenses
+    d3fend_countermeasures:
+      - D3-PM: Tamper protection, service monitoring
+      - D3-AH: Security tool self-protection
+      - D3-FA: Security tool file integrity monitoring
+
+  # Credential Access
+  - attck_id: T1003
+    attck_name: OS Credential Dumping
+    d3fend_countermeasures:
+      - D3-PM: LSASS access monitoring, Credential Guard
+      - D3-CH: Protected Users group, LSA protection
+      - D3-PSA: Memory access pattern analysis
+
+  - attck_id: T1110
+    attck_name: Brute Force
+    d3fend_countermeasures:
+      - D3-CH: MFA enforcement, strong password policies
+      - D3-NTA: Rate limiting, account lockout
+      - D3-PM: Authentication failure alerting
+
+  # Discovery
+  - attck_id: T1018
+    attck_name: Remote System Discovery
+    d3fend_countermeasures:
+      - D3-NTA: NetFlow analysis, port scan detection
+      - D3-NI: Network segmentation, microsegmentation
+      - D3-DCO: Honeypots, decoy systems
+
+  # Lateral Movement
+  - attck_id: T1021
+    attck_name: Remote Services
+    d3fend_countermeasures:
+      - D3-NI: Network segmentation, SMB/RDP hardening
+      - D3-PM: Remote desktop session logging
+      - D3-NTA: Lateral movement traffic signatures
+
+  # Collection
+  - attck_id: T1074
+    attck_name: Data Staged
+    d3fend_countermeasures:
+      - D3-FA: File access monitoring in temp directories
+      - D3-NTA: Archive creation detection
+      - D3-PM: Data staging path monitoring
+
+  # C2
+  - attck_id: T1071
+    attck_name: Application Layer Protocol
+    d3fend_countermeasures:
+      - D3-NTA: Protocol anomaly detection, beaconing analysis
+      - D3-IA: JA3/JA3S fingerprinting
+      - D3-NI: DNS sinkhole, proxy inspection
+
+  # Exfiltration
+  - attck_id: T1048
+    attck_name: Exfiltration Over Alternative Protocol
+    d3fend_countermeasures:
+      - D3-NTA: Egress traffic monitoring, volume baselining
+      - D3-FA: DLP content inspection
+      - D3-NI: Egress filtering, data diode for OT
+
+  # Impact
+  - attck_id: T1486
+    attck_name: Data Encrypted for Impact
+    d3fend_countermeasures:
+      - D3-FA: Canary files, entropy-based detection
+      - D3-PM: VSS monitoring, backup protection
+      - D3-NI: Immutable backup enforcement
+
+detection_engineering_guidance:
+  principles:
+    - "Prefer behavioral detection over signature-based detection"
+    - "Chain multiple weak signals into strong detection logic"
+    - "Map all detections to MITRE ATT&CK techniques"
+    - "Test detections with Atomic Red Team or equivalent frameworks"
+    - "Monitor detection effectiveness with false positive rate SLAs"
+    - "Layer detections across endpoint, network, and identity"
+    - "Implement detection as code with version control"
+
+  detection_pipeline:
+    - phase: Data Collection
+      activities:
+        - Identify log sources required for each technique
+        - Ensure logging infrastructure reliability
+        - Normalize and enrich log data
+    - phase: Rule Development
+      activities:
+        - Write detection logic (Sigma, KQL, SPL, EQL)
+        - Implement correlation rules for multi-stage attacks
+        - Create suppression rules for known false positives
+    - phase: Validation
+      activities:
+        - Execute Atomic Red Team tests against detection rules
+        - Review detection accuracy (TP/FP ratio)
+        - Tune thresholds for operational environment
+    - phase: Deployment
+      activities:
+        - Deploy to production SIEM/EDR
+        - Set up alert routing and escalation
+        - Document runbooks for each alert
+    - phase: Maintenance
+      activities:
+        - Track detection coverage via ATT&CK Navigator
+        - Periodic false positive review and tuning
+        - Update rules for new adversary TTPs
+
+  siem_integrations:
+    splunk:
+      forwarder_configs:
+        - Windows Event Log Collection
+        - Sysmon XML log ingestion
+        - Network flow data (NetFlow/IPFIX)
+        - Cloud audit logs (AWS CloudTrail, Azure Monitor, GCP Audit)
+    elastic:
+      agent_configs:
+        - Elastic Agent with endpoint security integration
+        - Winlogbeat for Windows event forwarding
+        - Packetbeat for network protocol analysis
+        - Auditbeat for system audit data
+
+  detection_coverage_priorities:
+    - priority: Critical
+      techniques:
+        - T1003  # OS Credential Dumping
+        - T1486  # Ransomware encryption
+        - T1055  # Process Injection
+        - T1027  # Obfuscation
+        - T1566  # Phishing
+    - priority: High
+      techniques:
+        - T1059  # Scripting
+        - T1547  # Autostart persistence
+        - T1071  # C2 protocols
+        - T1048  # Alternative exfiltration
+        - T1562  # Impair defenses
+    - priority: Medium
+      techniques:
+        - T1018  # Network discovery
+        - T1082  # System info discovery
+        - T1552  # Unsecured credentials
+        - T1574  # Hijack execution flow
+        - T1098  # Account manipulation

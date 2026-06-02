@@ -1,0 +1,280 @@
+# =============================================================================
+# Mermaid Chart Templates — CyberSec Reporting Engine
+# Reusable Mermaid.js diagram templates for security reports.
+# All templates use CSS variables for dynamic theming via theme definitions.
+# =============================================================================
+
+version: 1.0.0
+description: "Reusable Mermaid diagram templates for CyberSec Reporting Engine"
+
+# ---------------------------------------------------------------------------
+# Global Mermaid Config
+# ---------------------------------------------------------------------------
+config:
+  theme: "base"
+  themeVariables:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "13px"
+    primaryColor: "var(--chart-series-1)"
+    primaryTextColor: "var(--text-primary)"
+    lineColor: "var(--chart-grid)"
+    tertiaryColor: "var(--surface)"
+
+# ---------------------------------------------------------------------------
+# 1. Risk Heatmap
+# ---------------------------------------------------------------------------
+risk_heatmap:
+  id: "chart-risk-heatmap"
+  label: "Risk Heatmap"
+  description: "Likelihood vs Impact heatmap showing risk concentration across severity zones"
+  template: |
+    quadrantChart
+      title Risk Heatmap
+      x-axis "Low Impact" --> "High Impact"
+      y-axis "Low Likelihood" --> "High Likelihood"
+      quadrant-1 "Critical Zone"
+      quadrant-2 "High Risk"
+      quadrant-3 "Monitor"
+      quadrant-4 "Low Risk"
+      "SQL Injection": [0.85, 0.90]
+      "XSS - Stored": [0.65, 0.70]
+      "Missing Patches": [0.75, 0.55]
+      "Weak Passwords": [0.40, 0.80]
+      "Info Disclosure": [0.30, 0.35]
+      "SSL/TLS Issues": [0.50, 0.25]
+      "Open S3 Bucket": [0.90, 0.60]
+      "Default Credentials": [0.70, 0.45]
+      "Phishing Susceptibility": [0.55, 0.75]
+      "Unpatched VPN": [0.95, 0.85]
+
+# ---------------------------------------------------------------------------
+# 2. Risk Distribution (Pie Chart)
+# ---------------------------------------------------------------------------
+risk_distribution:
+  id: "chart-risk-distribution"
+  label: "Risk Distribution"
+  description: "Pie chart showing distribution of findings by severity level"
+  template: |
+    pie showData
+      title Findings by Severity
+      "Critical" : {{CRITICAL_COUNT}}
+      "High" : {{HIGH_COUNT}}
+      "Medium" : {{MEDIUM_COUNT}}
+      "Low" : {{LOW_COUNT}}
+      "Informational" : {{INFO_COUNT}}
+
+# ---------------------------------------------------------------------------
+# 3. Incident Timeline (Gantt Chart)
+# ---------------------------------------------------------------------------
+timeline:
+  id: "chart-timeline"
+  label: "Incident Timeline"
+  description: "Gantt-style chart showing chronological sequence of attack/response events"
+  template: |
+    gantt
+      title Incident Response Timeline
+      dateFormat  YYYY-MM-DD HH:mm
+      axisFormat  %m/%d %H:%M
+      tickInterval 1day
+
+      section Initial Access
+      Phishing Email Delivered    :done, t1, {{PHISH_DELIVERED}}, {{PHISH_DELIVERED}}
+      Credentials Compromised      :crit, t2, {{CREDS_COMPROMISED}}, {{CREDS_COMPROMISED}}
+
+      section Lateral Movement
+      Internal Recon              :crit, t3, {{INTERNAL_RECON}}, {{LATERAL_END}}
+      Privilege Escalation        :crit, t4, {{PRIV_ESC}}, {{PRIV_ESC}}
+      Domain Admin Compromise     :crit, t5, {{DA_COMPROMISE}}, {{DA_COMPROMISE}}
+
+      section Data Access
+      Data Staging                :crit, t6, {{DATA_STAGING}}, {{DATA_STAGING}}
+      Exfiltration Detected       :active, t7, {{EXFIL_DETECTED}}, {{EXFIL_END}}
+
+      section Response
+      Incident Declared           :done, milestone, m1, {{INCIDENT_DECLARED}}, 0m
+      Containment Started         :done, t8, {{CONTAIN_START}}, {{CONTAIN_HOURS}}
+      Eradication Complete        :done, t9, {{ERADICATE_END}}, {{ERADICATE_END}}
+      Recovery Complete           :active, t10, {{RECOVER_END}}, {{RECOVER_END}}
+
+# ---------------------------------------------------------------------------
+# 4. Compliance Radar Chart
+# ---------------------------------------------------------------------------
+compliance_radar:
+  id: "chart-compliance-radar"
+  label: "Compliance Radar"
+  description: "Spider/radar chart showing compliance posture across NIST CSF functions"
+  template: |
+    ---
+    config:
+      radar:
+        axisConfig:
+          showScale: true
+          scaleMin: 0
+          scaleMax: 100
+          labelFontSize: 12
+    ---
+    quadrantChart
+      title NIST CSF Compliance Posture
+      x-axis "Low Maturity" --> "High Maturity"
+      y-axis "Low Coverage" --> "High Coverage"
+      quadrant-1 "Mature"
+      quadrant-2 "Developing"
+      quadrant-3 "Initial"
+      quadrant-4 "Defined"
+      "Identify": [{{IDENTIFY}}, {{IDENTIFY}}]
+      "Protect": [{{PROTECT}}, {{PROTECT}}]
+      "Detect": [{{DETECT}}, {{DETECT}}]
+      "Respond": [{{RESPOND}}, {{RESPOND}}]
+      "Recover": [{{RECOVER}}, {{RECOVER}}]
+      "Govern": [{{GOVERN}}, {{GOVERN}}]
+
+# ---------------------------------------------------------------------------
+# 5. Attack Path Visualization (Flowchart)
+# ---------------------------------------------------------------------------
+attack_path:
+  id: "chart-attack-path"
+  label: "Attack Path"
+  description: "Flowchart showing adversary kill chain from initial access to objective"
+  template: |
+    flowchart LR
+      A["🔓 Initial Access<br/>Phishing Email"] --> B["⚙️ Execution<br/>PowerShell Download"]
+      B --> C["📌 Persistence<br/>Scheduled Task"]
+      C --> D["👤 Privilege Escalation<br/>UAC Bypass"]
+      D --> E["🛡️ Defense Evasion<br/>Disable Defender"]
+      D --> F["🔍 Discovery<br/>BloodHound Enum"]
+      E --> G["↔️ Lateral Movement<br/>Pass-the-Hash"]
+      F --> G
+      G --> H["📦 Collection<br/>File Share Enum"]
+      H --> I["📤 Exfiltration<br/>DNS Tunneling"]
+
+      style A fill:var\(--chart-series-3\),stroke:var\(--chart-series-3\),color:white
+      style B fill:var\(--chart-series-4\),stroke:var\(--chart-series-4\),color:black
+      style C fill:var\(--chart-series-5\),stroke:var\(--chart-series-5\),color:white
+      style D fill:var\(--chart-series-6\),stroke:var\(--chart-series-6\),color:white
+      style E fill:var\(--chart-series-7\),stroke:var\(--chart-series-7\),color:white
+      style F fill:var\(--chart-series-8\),stroke:var\(--chart-series-8\),color:white
+      style G fill:var\(--chart-series-2\),stroke:var\(--chart-series-2\),color:white
+      style H fill:var\(--chart-series-1\),stroke:var\(--chart-series-1\),color:white
+      style I fill:var\(--chart-series-3\),stroke:var\(--chart-series-3\),color:white
+
+# ---------------------------------------------------------------------------
+# 6. Remediation Gantt Chart
+# ---------------------------------------------------------------------------
+remediation_gantt:
+  id: "chart-remediation-gantt"
+  label: "Remediation Plan"
+  description: "Gantt chart showing planned remediation timeline for findings"
+  template: |
+    gantt
+      title Remediation Roadmap
+      dateFormat  YYYY-MM-DD
+      axisFormat  %b %d
+      tickInterval 1week
+
+      section Critical (24h SLA)
+      FIX-001: Patch VPN Gateway (CVSS 9.8)     :crit, r1, {{TODAY}}, 2d
+      FIX-002: Rotate Compromised Keys           :crit, r2, {{TODAY}}, 1d
+
+      section High (7d SLA)
+      FIX-003: Update Web Server TLS             :high, r3, after r1, 3d
+      FIX-004: Harden IAM Policies               :high, r4, {{TODAY}}, 5d
+      FIX-005: Deploy WAF Rules                  :high, r5, after r3, 2d
+
+      section Medium (30d SLA)
+      FIX-006: Patch Application Servers         :med,  r6, after r5, 7d
+      FIX-007: Enable MFA on VPN                  :med,  r7, {{TODAY}}, 14d
+      FIX-008: Update Internal CA                 :med,  r8, after r6, 5d
+
+      section Low (90d SLA)
+      FIX-009: Harden SSH Config                 :low,  r9, after r7, 10d
+      FIX-010: Implement CSP Headers             :low,  r10, after r8, 10d
+
+      section Milestones
+      Q{{CURRENT_QUARTER}} Review              :milestone, m1, {{MILESTONE_DATE}}, 0d
+
+# ---------------------------------------------------------------------------
+# 7. Coverage Heatmap (MITRE ATT&CK)
+# ---------------------------------------------------------------------------
+coverage_heatmap:
+  id: "chart-coverage-heatmap"
+  label: "Detection Coverage Heatmap"
+  description: "MITRE ATT&CK-aligned detection coverage matrix showing gaps"
+  template: |
+    quadrantChart
+      title MITRE ATT&amp;CK Detection Coverage
+      x-axis "Low Impact" --> "High Impact"
+      y-axis "Low Coverage" --> "High Coverage"
+      quadrant-1 "Strong Coverage"
+      quadrant-2 "Monitor"
+      quadrant-3 "Gap — Prioritize"
+      quadrant-4 "Accept Risk"
+      "Initial Access (T1078)": [0.85, 0.92]
+      "Execution (T1059)": [0.90, 0.88]
+      "Persistence (T1547)": [0.75, 0.65]
+      "Privilege Escalation (T1068)": [0.80, 0.45]
+      "Defense Evasion (T1562)": [0.70, 0.30]
+      "Credential Access (T1003)": [0.95, 0.85]
+      "Discovery (T1087)": [0.60, 0.55]
+      "Lateral Movement (T1021)": [0.85, 0.70]
+      "Collection (T1119)": [0.65, 0.60]
+      "Exfiltration (T1048)": [0.75, 0.75]
+      "Command & Control (T1071)": [0.90, 0.90]
+      "Impact (T1486)": [0.80, 0.95]
+
+# ---------------------------------------------------------------------------
+# 8. Vulnerability Age Distribution
+# ---------------------------------------------------------------------------
+vulnerability_age:
+  id: "chart-vuln-age"
+  label: "Vulnerability Aging"
+  description: "Distribution of open findings by age bucket"
+  template: |
+    xychart-beta
+      title "Vulnerability Aging Distribution"
+      x-axis ["0-7d", "8-30d", "31-60d", "61-90d", "91-180d", "180d+"]
+      y-axis "Count" 0 --> {{MAX_AGE_COUNT}}
+      bar [{{AGE_0_7}}, {{AGE_8_30}}, {{AGE_31_60}}, {{AGE_61_90}}, {{AGE_91_180}}, {{AGE_180_PLUS}}]
+      line [{{AGE_0_7}}, {{AGE_8_30}}, {{AGE_31_60}}, {{AGE_61_90}}, {{AGE_91_180}}, {{AGE_180_PLUS}}]
+
+# ---------------------------------------------------------------------------
+# 9. Remediation Progress (Sankey-style Bar)
+# ---------------------------------------------------------------------------
+remediation_progress:
+  id: "chart-remediation-progress"
+  label: "Remediation Progress"
+  description: "Stacked bar showing finding status progression"
+  template: |
+    ---
+    config:
+      xyChart:
+        width: 800
+        height: 300
+    ---
+    xychart-beta
+      title "Remediation Progress"
+      x-axis ["Findings"]
+      y-axis "Count" 0 --> {{TOTAL_FINDINGS}}
+      stacked-bar ["New", "In Progress", "Resolved", "Accepted Risk"]
+      bar [
+        [{{NEW_COUNT}}],
+        [{{IN_PROGRESS_COUNT}}],
+        [{{RESOLVED_COUNT}}],
+        [{{ACCEPTED_COUNT}}]
+      ]
+
+# ---------------------------------------------------------------------------
+# 10. Risk Trend Timeline (Line Chart)
+# ---------------------------------------------------------------------------
+risk_trend:
+  id: "chart-risk-trend"
+  label: "Risk Trend"
+  description: "Line chart showing risk posture over time (monthly snapshots)"
+  template: |
+    xychart-beta
+      title "Risk Posture Trend — {{CURRENT_YEAR}}"
+      x-axis [{{MONTH_1}}, {{MONTH_2}}, {{MONTH_3}}, {{MONTH_4}}, {{MONTH_5}}, {{MONTH_6}}]
+      y-axis "Findings" 0 --> {{MAX_TREND_VALUE}}
+      line "Critical" [{{CRIT_M1}}, {{CRIT_M2}}, {{CRIT_M3}}, {{CRIT_M4}}, {{CRIT_M5}}, {{CRIT_M6}}]
+      line "High" [{{HIGH_M1}}, {{HIGH_M2}}, {{HIGH_M3}}, {{HIGH_M4}}, {{HIGH_M5}}, {{HIGH_M6}}]
+      line "Medium" [{{MED_M1}}, {{MED_M2}}, {{MED_M3}}, {{MED_M4}}, {{MED_M5}}, {{MED_M6}}]
+      line "Low" [{{LOW_M1}}, {{LOW_M2}}, {{LOW_M3}}, {{LOW_M4}}, {{LOW_M5}}, {{LOW_M6}}]

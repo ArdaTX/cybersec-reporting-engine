@@ -1,0 +1,416 @@
+name: incident-response-report
+version: 1.0.0
+category: dfir
+description: >
+  Generate comprehensive, courtroom-admissible incident response reports aligned with NIST SP 800-61 Rev 2,
+  SANS PICERL, MITRE ATT&CK, and the Cyber Kill Chain. Produces executive-ready deliverables with forensic
+  rigor suitable for board briefings, regulatory disclosure, cyber insurance claims, and post-breach litigation
+  support. Covers the full PICERL lifecycle from detection through lessons learned with IOC extraction,
+  timeline reconstruction, root cause analysis, containment documentation, and post-incident recommendations.
+
+standards:
+  - NIST SP 800-61 Rev 2
+  - SANS PICERL
+  - MITRE ATT&CK v16
+  - Cyber Kill Chain (Lockheed Martin)
+  - ISO 27035:2023
+
+tags:
+  - incident-response
+  - ir
+  - breach
+  - ransomware
+  - containment
+  - eradication
+  - picerl
+  - nist-800-61
+  - dfir
+  - forensic-reporting
+  - post-incident
+  - lessons-learned
+  - ioc-extraction
+  - timeline-reconstruction
+  - root-cause-analysis
+  - cyber-kill-chain
+  - mitre-attack
+
+prompt: >
+  You are a senior DFIR consultant with 15+ years of experience leading incident response engagements
+  for Fortune 500 enterprises, government agencies, and critical infrastructure operators. Your
+  specialization spans advanced persistent threat (APT) intrusions, ransomware negotiations and recovery,
+  business email compromise investigations, insider threat cases, and supply chain compromises. You
+  have testified as an expert witness in federal court on digital forensics matters and have led
+  post-breach investigations involving regulatory bodies including the SEC, FTC, EU DPAs, and
+  state attorneys general.
+
+  You are now tasked with producing a comprehensive, courtroom-admissible incident response report
+  for a confirmed security breach. Your report will be read by the Board of Directors, the CISO,
+  external legal counsel, cyber insurance carriers, and potentially regulators and law enforcement.
+  The report must demonstrate forensic rigor, analytical depth, and professional judgment that will
+  withstand adversarial scrutiny in litigation.
+
+  Follow the 10-step workflow precisely: (1) Case Intake & Declaration, recording the incident trigger,
+  severity classification, and business impact; (2) Evidence Collection & Chain of Custody with
+  SHA-256 hashing and WORM storage; (3) Timeline Reconstruction using the SANS PICERL framework
+  overlaid with MITRE ATT&CK techniques and Cyber Kill Chain phases; (4) IOC Extraction & Enrichment
+  across atomic, computed, and behavioral indicator categories with multi-source threat intelligence
+  enrichment; (5) Root Cause Analysis using the 5-Why methodology with full attack path mapping;
+  (6) Scope of Compromise Assessment quantifying blast radius, data exposure, and crown jewel proximity;
+  (7) Containment Actions Documentation for short-term and long-term measures with verification;
+  (8) Eradication & Recovery documentation with system rebuild verification and business acceptance;
+  (9) Lessons Learned & Post-Incident Review with a prioritized remediation roadmap; (10) Report
+  Assembly & Delivery with classification marking, TLP designation, encrypted delivery, and
+  quality control sign-off.
+
+  Apply the IR-specific JSON schemas for timeline entries (with PICERL phase, ATT&CK technique,
+  Kill Chain phase, and confidence scoring), IOC entries (with enrichment results, threat actor
+  and malware family attribution, and remediation guidance), and containment actions (with
+  authorization records, outcome verification, and rollback plans).
+
+  The report must follow the structured format: Executive Summary (1-2 pages for C-suite with
+  business impact quantification), Incident Timeline (Mermaid Gantt chart with PICERL overlay),
+  Root Cause Analysis (5-Why and attack path diagram), Scope of Compromise (affected systems,
+  compromised accounts, data exposure register), Containment Actions (short-term and long-term logs),
+  Eradication Steps, Recovery Actions, IOCs (atomic/computed/behavioral), Lessons Learned, and
+  Recommendations (short-term tactical, medium-term operational, long-term strategic with owners
+  and deadlines).
+
+  Pass all 10 quality controls: timestamp coherence in UTC ISO 8601, IOC uniqueness and deduplication,
+  TTP mapping of every timeline entry to MITRE ATT&CK, evidence traceability with no orphan claims,
+  complete chain of custody, PII/PHI redaction with redaction log, narrative consistency across
+  all sections, regulatory trigger assessment for breach notification, actionable recommendations
+  with owners and measurable success criteria, and independent peer review.
+
+  Use the Mermaid Gantt chart template provided with PICERL phases, event markers, and milestones.
+  Apply the branding conventions: TLP:AMBER classification, "CONFIDENTIAL — ATTORNEY-CLIENT
+  PRIVILEGE" banner, diagonal watermark, and document ID convention IR-YYYY-MMDD-NNN.
+
+  Your output must be production-quality, reflecting the analytical rigor expected in $500/hr+
+  incident response consulting. Every claim must be traceable to evidence. Every recommendation
+  must be actionable. Every timeline entry must be temporally coherent. You are producing a
+  document that may be Exhibit A in litigation — treat it accordingly.
+
+workflows:
+  - name: standardized-ir-report
+    description: >
+      Generate a complete incident response report following the full 10-step workflow for any
+      confirmed security breach. Produces all report sections, IOCs, timeline, root cause analysis,
+      and recommendations with quality control sign-off.
+    steps:
+      - step: case_intake
+        description: Record incident declaration trigger, severity, business impact, and case identifier
+        required_inputs:
+          - incident_detection_date (ISO 8601)
+          - reporting_party (name, role, contact)
+          - initial_severity (Critical|High|Medium|Low)
+          - business_impact_statement (string, max 500 words)
+          - incident_type (ransomware|bec|apt|insider|supply_chain|data_breach|dos|other)
+        outputs:
+          - case_intake_form (YAML)
+          - case_identifier (IR-YYYY-MMDD-NNN)
+        example: |
+          incident_detection_date: "2026-06-01T03:42:00Z"
+          reporting_party:
+            name: "Jane SOC Analyst"
+            role: "SOC Tier 2 Lead"
+            contact: "jane.analyst@acme.com"
+          initial_severity: Critical
+          business_impact_statement: "Active ransomware encryption detected on 12 servers and 34 workstations across Finance, HR, and Legal departments. Estimated operational impact: $2.4M/day in revenue at risk."
+          incident_type: ransomware
+
+      - step: evidence_collection
+        description: Document chain of custody for all forensic evidence with SHA-256 hashing
+        required_inputs:
+          - evidence_items (array of objects: source, acquisition_method, hash, custodian, timestamp, storage_location)
+        outputs:
+          - chain_of_custody_log (JSON)
+          - evidence_inventory (JSON)
+        example: |
+          evidence_items:
+            - source: "DC01.domain.local"
+              acquisition_method: "FTK Imager Live RAM Capture"
+              hash: "a3f8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+              hash_algorithm: SHA-256
+              custodian: "John IR Lead"
+              timestamp: "2026-06-01T04:15:00Z"
+              storage_location: "s3://ir-evidence-bucket/IR-2026-0601-001/"
+
+      - step: timeline_reconstruction
+        description: Build chronological super-timeline with PICERL phases, ATT&CK techniques, and Kill Chain mapping
+        required_inputs:
+          - timeline_entries (array of timeline entry schema objects)
+          - include_mermaid_gantt (boolean)
+        outputs:
+          - timeline_register (JSON)
+          - mermaid_gantt_chart (string)
+        example: |
+          timeline_entries:
+            - id: TL-001
+              timestamp: "2026-06-01T03:42:00Z"
+              event_type: detection
+              picerl_phase: identification
+              description: "Microsoft Defender for Endpoint behavioral detection: ransomware encryption pattern identified on FIN-SRV-03"
+              source_system: "MDE Advanced Hunting"
+              source_evidence_id: "EVID-001"
+              attck_technique_id: "T1486"
+              attck_tactic: impact
+              kill_chain_phase: actions_on_objectives
+              actor: threat_actor
+              confidence: high
+
+      - step: ioc_extraction
+        description: Extract, categorize, and enrich all IOCs from evidence sources
+        required_inputs:
+          - ioc_entries (array of IOC entry schema objects)
+          - enrichment_sources (array: virustotal, abuseipdb, misp, alienvault_otx, shodan)
+        outputs:
+          - ioc_master_list (JSON)
+          - enrichment_report (JSON)
+          - confidence_score_matrix (YAML)
+
+      - step: root_cause_analysis
+        description: Perform 5-Why analysis and full attack path mapping
+        required_inputs:
+          - initial_access_vector (string)
+          - five_why_chain (array of 5 strings)
+          - attack_path_steps (array of objects: step_number, action, attck_technique_id, kill_chain_phase, description)
+        outputs:
+          - root_cause_statement (string)
+          - attack_path_diagram (Mermaid flowchart)
+          - five_why_analysis (YAML)
+
+      - step: scope_assessment
+        description: Define blast radius, compromised accounts, data exposure, and lateral movement
+        required_inputs:
+          - affected_systems (array of objects)
+          - compromised_accounts (array of objects)
+          - data_exposure_register (array of objects)
+          - lateral_movement_paths (array of objects)
+        outputs:
+          - scope_of_compromise_matrix (JSON)
+          - data_exposure_quantification (YAML)
+          - crown_jewel_proximity_map (Mermaid)
+
+      - step: containment_documentation
+        description: Document all containment actions with verification and authorization records
+        required_inputs:
+          - containment_actions (array of containment action schema objects)
+        outputs:
+          - containment_action_log (JSON)
+          - isolation_verification_report (YAML)
+
+      - step: eradication_recovery
+        description: Document eradication measures, system rebuild, data restoration, and business validation
+        required_inputs:
+          - eradication_actions (array of objects)
+          - recovery_steps (array of objects)
+          - rebuild_systems (array of objects)
+          - restoration_sequence (array of objects)
+        outputs:
+          - eradication_verification_log (JSON)
+          - recovery_runbook (YAML)
+          - service_restoration_checklist (YAML)
+
+      - step: lessons_learned
+        description: Conduct post-incident review and produce remediation roadmap
+        required_inputs:
+          - what_went_well (array of strings)
+          - what_went_poorly (array of strings)
+          - detection_gaps (array of objects)
+          - process_deficiencies (array of objects)
+        outputs:
+          - lessons_learned_register (JSON)
+          - improvement_roadmap (YAML with owners, due dates, success criteria)
+
+      - step: report_assembly
+        description: Assemble final report, apply branding, execute QC gates, and deliver
+        required_inputs:
+          - include_executive_summary (boolean, default true)
+          - delivery_recipients (array of objects: name, email, role)
+          - classification (TLP:AMBER|TLP:RED|TLP:GREEN)
+          - redaction_required (boolean)
+        outputs:
+          - final_report (Markdown/PDF)
+          - executive_summary (Markdown)
+          - qc_checklist (YAML)
+          - delivery_receipt (JSON)
+
+  - name: ransomware-ir-report
+    description: >
+      Specialized workflow for ransomware incidents. Includes ransomware-specific fields such as
+      ransom note details, encryption algorithm identification, decryptor availability assessment,
+      cryptocurrency wallet addresses, negotiation posture, and backup integrity verification.
+    steps:
+      - step: ransomware_intake
+        description: Capture ransomware-specific incident details
+        required_inputs:
+          - ransomware_family (string: LockBit, ALPHV, Cl0p, Play, etc.)
+          - ransom_note_content (string)
+          - ransom_demand (object: amount, cryptocurrency, wallet_address)
+          - encryption_algorithm (string: AES-256, RSA-2048, ChaCha20-Salsa20, hybrid)
+          - encrypts_file_extensions (array of strings)
+          - deletes_volume_shadow_copies (boolean)
+        outputs:
+          - ransomware_classification (YAML)
+
+      - step: decryptor_assessment
+        description: Assess decryptor availability from law enforcement, security researchers, or No More Ransom
+        required_inputs:
+          - ransomware_family
+          - encryption_indicators (array: ransom_note_filename, file_extension, header_bytes)
+        outputs:
+          - decryptor_availability_report (YAML)
+
+      - step: backup_verification
+        description: Verify backup integrity before initiating restore operations
+        required_inputs:
+          - backup_systems (array of objects: system, backup_type, last_successful, verification_method)
+        outputs:
+          - backup_integrity_report (JSON)
+
+  - name: bec-ir-report
+    description: >
+      Specialized workflow for Business Email Compromise (BEC) and OAuth token theft incidents.
+      Includes BEC-specific fields such as email forwarding rules, OAuth application grants,
+      payment fraud indicators, and financial institution notification tracking.
+    steps:
+      - step: bec_intake
+        description: Capture BEC-specific incident details
+        required_inputs:
+          - compromise_type (phishing|aitm|credential_theft|insider|vendor_impersonation)
+          - affected_mailboxes (array of UPNs)
+          - unauthorized_rules (array of objects: rule_name, action, target, created_timestamp)
+          - oauth_applications (array of objects: app_id, app_name, permissions_granted, consent_timestamp)
+        outputs:
+          - bec_classification (YAML)
+
+      - step: financial_impact_assessment
+        description: Quantify financial fraud exposure and track financial institution notifications
+        required_inputs:
+          - fraudulent_transactions (array of objects: amount, currency, destination, status, bank_notification_date)
+          - intercepted_transactions (array of objects: amount, currency, interception_method)
+        outputs:
+          - financial_exposure_report (JSON)
+
+      - step: email_purge_workflow
+        description: Document phishing email purge and malicious rule removal
+        required_inputs:
+          - phishing_emails_to_purge (array of objects: message_id, sender, subject, recipients)
+          - rules_to_remove (array of objects: rule_id, mailbox_upn, rule_name)
+        outputs:
+          - purge_verification_report (YAML)
+
+examples:
+  - name: lockbit-ransomware-incident
+    scenario: >
+      Mid-market financial services firm (500 endpoints, hybrid Azure AD/on-prem AD, M365 E5)
+      experienced LockBit 3.0 ransomware encryption via spear-phishing ISO attachment with DLL
+      side-loading (T1574.002). Initial detection at 03:42 UTC via MDE behavioral detection.
+      Containment achieved at 04:51 UTC. 2,847 files encrypted across 12 servers and 34 workstations.
+      No data exfiltration confirmed. Complete system rebuild and restoration from verified backups.
+    expected_outputs:
+      - Executive summary with business impact quantification
+      - Mermaid Gantt timeline with PICERL overlay
+      - 5-Why root cause analysis showing phishing → ISO bypass → DLL side-loading → no AppLocker → ASR gap
+      - Attack path diagram (Mermaid flowchart)
+      - IOC master list (12 atomic IOCs, 3 YARA rules, 2 Sigma rules)
+      - Containment action log (6 actions: network segmentation, credential rotation, DNS sinkhole, etc.)
+      - MITRE ATT&CK Navigator JSON (T1566.001, T1204.002, T1574.002, T1486, T1490)
+      - Regulatory trigger assessment (state breach notification law applicability)
+      - Recommendations with owner, deadline, and success criteria per item
+
+  - name: bec-evilginx3-oauth-token-theft
+    scenario: >
+      SaaS company (200 employees, Google Workspace, Okta SSO) detected unauthorized CFO mailbox
+      access via EvilGinx3 adversary-in-the-middle phishing attack. Session token captured
+      post-MFA, used to create inbox forwarding rules for financial communications. Attacker
+      attempted to redirect $450,000 wire transfer. SOC detected via Microsoft Sentinel rule
+      on anomalous inbox rule creation. Incident contained with zero financial loss.
+    expected_outputs:
+      - Executive summary emphasizing no financial loss due to timely detection
+      - Attack path diagram showing EvilGinx3 proxy chain
+      - Mermaid Gantt timeline (22-minute attack window)
+      - Root cause: lack of phishing-resistant MFA (FIDO2), missing impossible travel CA policies
+      - IOC list (EvilGinx3 phishing domain, external Gmail address, malicious OAuth app IDs)
+      - Containment documentation (token revocation, account disablement, rule purge, bank notification)
+      - Recommendations: FIDO2 rollout, conditional access enforcement, inbox rule monitoring
+
+formats:
+  - markdown_report:
+      description: Rich Markdown report with Mermaid diagrams, tables, and collapsible sections
+      template: incident_response_report.md.j2
+  - pdf_report:
+      description: Print-ready PDF with page numbering, headers/footers, watermark, and TOC
+      template: incident_response_report.tex.j2
+  - json_structured:
+      description: Machine-readable JSON following the skill schemas for SIEM/SOAR ingestion
+      template: incident_response_report.json.j2
+  - executive_briefing:
+      description: 2-page executive briefing slide deck (Markdown → reveal.js)
+      template: incident_response_briefing.md.j2
+
+validation_rules:
+  - rule: all_timestamps_utc_iso8601
+    description: Every timestamp field must be in UTC ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)
+    severity: error
+    pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$'
+
+  - rule: temporal_coherence
+    description: No timeline event may precede the incident detection timestamp; containment must follow identification; recovery must follow eradication
+    severity: error
+
+  - rule: ioc_deduplication
+    description: All IOCs must be unique by canonical value; no duplicate entries permitted
+    severity: error
+
+  - rule: attck_technique_valid
+    description: Every ATT&CK technique ID must be a valid MITRE ATT&CK v16 technique (T####.### format, verified against ATT&CK STIX data)
+    severity: error
+
+  - rule: kill_chain_phase_valid
+    description: Every Kill Chain phase reference must be one of the seven canonical phases (reconnaissance, weaponization, delivery, exploitation, installation, command_and_control, actions_on_objectives)
+    severity: warning
+
+  - rule: evidence_traceability
+    description: Every factual assertion in the report body must reference at least one source evidence artifact ID
+    severity: error
+
+  - rule: chain_of_custody_complete
+    description: Every forensic evidence item must have a complete custody log from acquisition to report inclusion; no custody gaps
+    severity: error
+
+  - rule: ioc_enrichment_required
+    description: All IOCs with confidence=high must have enrichment results from at least two threat intelligence sources
+    severity: warning
+
+  - rule: pii_redaction
+    description: Report body must not contain raw PII, PHI, or credentials; all instances must be redacted with redaction log entries
+    severity: error
+
+  - rule: recommendation_quality
+    description: Every recommendation must include an assigned owner, deadline (ISO 8601 date), and a measurable success criterion
+    severity: error
+
+  - rule: regulatory_assessment
+    description: At least one regulatory trigger assessment must be completed (GDPR, CCPA, HIPAA, PCI DSS, SEC, state breach notification — assessed per incident jurisdiction)
+    severity: error
+
+  - rule: executive_summary_length
+    description: Executive summary must be between 250 and 750 words; it must be comprehensible to non-technical board members
+    severity: warning
+
+  - rule: mermaid_diagram_valid
+    description: All Mermaid diagram code blocks must be syntactically valid and renderable; test with mermaid-cli if available
+    severity: error
+
+  - rule: tlp_designation
+    description: Every page or top-level report section must include a TLP designation (TLP:AMBER default)
+    severity: error
+
+  - rule: document_id_convention
+    description: Report must have a document ID following the convention IR-YYYY-MMDD-NNN
+    severity: error
+
+  - rule: peer_review_signoff
+    description: Final report must include peer review sign-off by a qualified second IR analyst not directly involved in the incident
+    severity: warning

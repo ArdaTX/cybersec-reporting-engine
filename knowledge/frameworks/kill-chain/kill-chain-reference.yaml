@@ -1,0 +1,177 @@
+# Cyber Kill Chain Knowledge Base Reference
+# CyberSec Reporting Engine
+# Based on Lockheed Martin's Cyber Kill Chain framework
+
+metadata:
+  framework: Cyber Kill Chain
+  creator: Lockheed Martin
+  year: 2011
+  url: https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html
+
+phases:
+  - phase: 1
+    name: Reconnaissance
+    description: Research, identification and selection of targets
+    adversary_goal: Identify potential targets and vulnerabilities through passive and active information gathering
+    common_techniques:
+      - Web scraping and search engine discovery
+      - DNS enumeration and subdomain discovery (sublist3r, subfinder)
+      - Social media and LinkedIn profiling
+      - WHOIS lookup and reverse WHOIS
+      - Certificate Transparency log analysis (crt.sh)
+      - Port scanning and service identification (Nmap, Masscan)
+      - Email harvesting (theHarvester, Hunter.io)
+      - Network topology mapping (traceroute, Shodan)
+    detection_opportunities:
+      - Monitor for external port scanning from unusual sources
+      - DNS query monitoring for zone enumeration patterns
+      - Web server log analysis for scanning fingerprint signatures
+      - Certificate Transparency log monitoring for domain enumeration
+    mitre_attack_mapping: [TA0043 Reconnaissance]
+
+  - phase: 2
+    name: Weaponization
+    description: Coupling exploit with backdoor into deliverable payload
+    adversary_goal: Create a malicious payload combining an exploit and implant, tailored to target
+    common_techniques:
+      - Malware packaging with crypters/packers for AV evasion
+      - Malicious Office documents with VBA macros
+      - PDF exploitation with embedded JavaScript
+      - Malicious LNK shortcut files disguised as documents
+      - Exploit kit preparation (waterhole attacks)
+      - Supply chain compromise (trojanized updates)
+    detection_opportunities:
+      - Threat intelligence feeds identifying new malware infrastructure
+      - Sandbox analysis of suspicious files
+      - Malware repository analysis (VirusTotal, MalwareBazaar)
+      - Code repository monitoring for leaked weaponized tools
+    mitre_attack_mapping: [TA0042 Resource Development]
+
+  - phase: 3
+    name: Delivery
+    description: Transmission of the weapon to the targeted environment
+    adversary_goal: Deliver the weaponized payload to the target via email, web, USB, or other vectors
+    common_techniques:
+      - Spearphishing emails with malicious attachments (T1566.001)
+      - Spearphishing with malicious links (T1566.002)
+      - Drive-by compromise via compromised websites (T1189)
+      - USB drop attacks
+      - Watering hole attacks (T1189)
+      - Third-party service compromise (T1199)
+    detection_opportunities:
+      - Email gateway inspection (attachment sandboxing, URL filtering)
+      - DMARC/SPF/DKIM validation failures
+      - Web proxy category and reputation filtering
+      - Endpoint protection at file write/execution boundaries
+    mitre_attack_mapping: [TA0001 Initial Access]
+
+  - phase: 4
+    name: Exploitation
+    description: Exploiting a vulnerability to execute code on target system
+    adversary_goal: Trigger the exploit to gain code execution on the target
+    common_techniques:
+      - Exploiting public-facing application vulnerabilities (T1190)
+      - Client-side exploitation (browser, document reader) (T1203)
+      - Zero-day exploitation
+      - Credential theft via phishing login pages
+    detection_opportunities:
+      - WAF/IDS alerts for exploit patterns
+      - Honeypot trigger events
+      - Application crash/error rate anomalies
+      - Endpoint behavioral detection (process injection, shellcode execution)
+    mitre_attack_mapping: [TA0001 Initial Access, TA0002 Execution]
+
+  - phase: 5
+    name: Installation
+    description: Installing malware on the compromised system
+    adversary_goal: Establish persistence and install backdoor for long-term access
+    common_techniques:
+      - Registry Run key persistence (T1547.001)
+      - Scheduled Task creation (T1053.005)
+      - Windows service installation (T1543.003)
+      - WMI event subscription (T1546.003)
+      - DLL search order hijacking (T1574.001)
+      - Web shell deployment on servers (T1505.003)
+    detection_opportunities:
+      - Registry write monitoring (Sysmon Event 13)
+      - Scheduled task creation events (Windows Event 4698)
+      - New service installation (Windows Event 7045)
+      - File creation monitoring in system directories
+      - Autoruns analysis for new persistence mechanisms
+    mitre_attack_mapping: [TA0003 Persistence, TA0002 Execution]
+
+  - phase: 6
+    name: Command and Control (C2)
+    description: Two-way communication channel established between attacker and compromised system
+    adversary_goal: Maintain remote control over compromised systems
+    common_techniques:
+      - Web protocols (HTTP/HTTPS) for C2 (T1071.001)
+      - DNS tunneling for C2 (T1071.004)
+      - Custom protocols over non-standard ports
+      - Domain fronting via CDN (T1090.004)
+      - Social media and cloud services as C2 channels (T1102)
+      - Encrypted / obfuscated C2 traffic
+    detection_opportunities:
+      - Beaconing detection via connection interval statistical analysis
+      - DNS query entropy anomaly detection
+      - JA3/JA3S fingerprinting to identify C2 tool signatures
+      - Outbound traffic to known-bad IPs/domains
+      - Anomalous outbound traffic volume or timing
+    mitre_attack_mapping: [TA0011 Command and Control]
+
+  - phase: 7
+    name: Actions on Objectives
+    description: With hands-on-keyboard access, intruders accomplish their original goals
+    adversary_goal: Achieve the ultimate mission objective (data theft, disruption, espionage, etc.)
+    common_techniques:
+      - Data exfiltration via C2 channel (T1041)
+      - Data encryption for ransomware (T1486)
+      - Data destruction (T1485)
+      - Credential dumping for domain compromise (T1003)
+      - Lateral movement to high-value targets (T1021)
+      - Defacement or system sabotage (T1491)
+    detection_opportunities:
+      - Data loss prevention (DLP) alerts for sensitive data egress
+      - Abnormal network traffic volume (outbound)
+      - File integrity monitoring for mass modifications
+      - SIEM correlation for privilege escalation chains
+      - User behavior analytics for anomalous data access
+    mitre_attack_mapping: [TA0040 Impact, TA0010 Exfiltration, TA0009 Collection]
+
+extended_kill_chain:
+  advanced_phases:
+    - phase: 8
+      name: Persistence
+      description: Adversary maintains long-term access to the compromised environment
+      detection: Monitor for new user accounts, scheduled tasks, and service creation
+    - phase: 9
+      name: Lateral Movement
+      description: Adversary moves within the environment to reach target systems
+      detection: Monitor for RDP, SMB, WMI, and WinRM activity between workstations
+    - phase: 10
+      name: Privilege Escalation
+      description: Adversary elevates to higher privileges (local admin, domain admin)
+      detection: Monitor for UAC bypasses, token manipulation, and credential dumping
+    - phase: 11
+      name: Defense Evasion
+      description: Adversary clears logs, disables security tools, and obfuscates activity
+      detection: Monitor for audit log clearing, security service stops, and timestomping
+
+defensive_model:
+  name: Course of Action Matrix
+  description: Defensive actions mapped to each kill chain phase
+  matrix:
+    - phase: Reconnaissance
+      actions: [Web analytics, OSINT counterintelligence, honeypot deployment]
+    - phase: Weaponization
+      actions: [Threat intelligence sharing, malware analysis, YARA rule development]
+    - phase: Delivery
+      actions: [Email gateway filtering, web proxy monitoring, USB device control]
+    - phase: Exploitation
+      actions: [Vulnerability management, WAF, IDS/IPS, endpoint memory protection]
+    - phase: Installation
+      actions: [Application whitelisting, EDR, file integrity monitoring, administrative privilege restriction]
+    - phase: C2
+      actions: [Network segmentation, proxy egress filtering, DNS sinkholing, TLS inspection]
+    - phase: Actions on Objectives
+      actions: [DLP, SIEM correlation, user behavior analytics, incident response playbooks]

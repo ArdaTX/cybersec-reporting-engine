@@ -1,0 +1,1 @@
+../../../skills/ad-assessment-report//SKILL.md

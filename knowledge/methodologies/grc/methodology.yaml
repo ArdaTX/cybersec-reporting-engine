@@ -1,0 +1,298 @@
+# Governance, Risk, and Compliance (GRC) Methodologies Reference
+# CyberSec Reporting Engine
+# Covers ISO 27001 Audit, NIST CSF Assessment, PCI DSS Assessment, SOC 2 Audit
+
+metadata:
+  domain: Governance, Risk, and Compliance
+  frameworks:
+    - ISO/IEC 27001:2022 (ISMS Audit)
+    - NIST Cybersecurity Framework (CSF) 2.0 (Maturity Assessment)
+    - PCI DSS v4.0.1 (Compliance Assessment)
+    - SOC 2 Type II (Trust Services Criteria Audit)
+    - CIS Controls IG1/IG2/IG3 (Implementation Assessment)
+  last_updated: "2025-01"
+
+iso_27001_audit:
+  name: ISO 27001:2022 ISMS Audit Methodology
+  description: Systematic audit of Information Security Management System per ISO 27001 requirements
+
+  phases:
+    - phase: 1
+      name: Audit Planning
+      activities:
+        - Define audit scope, objectives, and criteria
+        - Review previous audit findings and corrective actions
+        - Identify auditees and schedule interviews
+        - Prepare audit checklist against Annex A controls
+        - Send audit plan and document request list to auditee
+      deliverables:
+        - Audit Plan document
+        - Document request list
+        - Audit checklist (customized to scope)
+
+    - phase: 2
+      name: Document Review (Stage 1)
+      activities:
+        - Review ISMS policy and scope document
+        - Review Statement of Applicability (SoA)
+        - Review risk assessment and risk treatment plan
+        - Review information security objectives
+        - Review management review minutes
+        - Assess completeness of documentation
+      deliverables:
+        - Document review findings report
+        - Stage 1 audit report
+        - Readiness assessment
+
+    - phase: 3
+      name: On-Site Assessment (Stage 2)
+      activities:
+        - Opening meeting with management
+        - Interview control owners and process owners
+        - Sample-based testing of control effectiveness
+        - Observe operations and physical security
+        - Review evidence of control operation
+        - Identify nonconformities and observations
+      deliverables:
+        - Audit evidence log
+        - Nonconformity reports (Major and Minor)
+        - Observations for improvement
+        - Closing meeting presentation
+
+    - phase: 4
+      name: Reporting
+      activities:
+        - Classify findings (Conformity, Nonconformity, Observation, Opportunity)
+        - Draft audit report with findings and evidence
+        - Review report with auditee for factual accuracy
+        - Issue final audit report
+        - Provide certification recommendation
+      deliverables:
+        - Final audit report
+        - Nonconformity register
+        - Certification recommendation letter
+        - Management summary
+
+    - phase: 5
+      name: Follow-up
+      activities:
+        - Review corrective action plans
+        - Verify implementation of corrective actions
+        - Close nonconformities upon verification
+        - Plan surveillance audits (annual)
+        - Plan recertification audit (every 3 years)
+      deliverables:
+        - Corrective action verification report
+        - Closed nonconformity log
+        - Surveillance audit schedule
+
+nist_csf_assessment:
+  name: NIST CSF 2.0 Maturity Assessment Methodology
+  description: Assess organizational cybersecurity maturity against the NIST CSF
+
+  phases:
+    - phase: 1
+      name: Scoping and Planning
+      activities:
+        - Define assessment scope (organization, business unit, system)
+        - Identify stakeholders and interviewees
+        - Select target maturity profile
+        - Define assessment methodology (workshops, interviews, evidence review)
+        - Schedule assessment activities
+      deliverables:
+        - Assessment plan
+        - Stakeholder map
+        - Current and target profile templates
+
+    - phase: 2
+      name: Data Collection
+      activities:
+        - Conduct interviews with control owners
+        - Review existing policies, procedures, and evidence
+        - Assess against all 6 CSF Functions (Govern, Identify, Protect, Detect, Respond, Recover)
+        - Evaluate Category and Subcategory implementation
+        - Identify existing controls and their effectiveness
+      deliverables:
+        - Interview notes
+        - Evidence collection log
+        - Draft current state profile
+
+    - phase: 3
+      name: Gap Analysis
+      activities:
+        - Compare current state to target profile
+        - Identify gaps across all Functions and Categories
+        - Rate gap severity (Critical, High, Medium, Low)
+        - Map gaps to NIST 800-53 controls where applicable
+        - Model impact of unaddressed gaps
+      deliverables:
+        - Gap analysis matrix
+        - Heat map of CSF Category maturity
+        - Prioritized gap list
+
+    - phase: 4
+      name: Action Plan Development
+      activities:
+        - Define remediation actions for each gap
+        - Assign owners and target dates
+        - Estimate resource requirements and costs
+        - Sequence actions in logical implementation order
+        - Define success metrics for each action
+      deliverables:
+        - Remediation action plan
+        - Resource and budget estimates
+        - Implementation roadmap
+        - KPI definitions
+
+    - phase: 5
+      name: Reporting
+      activities:
+        - Document current vs target maturity
+        - Present findings and roadmap to leadership
+        - Integrate findings into risk register
+        - Align with budget and strategic planning cycles
+      deliverables:
+        - CSF Assessment Report
+        - Executive presentation
+        - Updated risk register
+        - Target maturity trajectory
+
+pci_dss_assessment:
+  name: PCI DSS v4.0.1 Compliance Assessment Methodology
+  description: Assess compliance with Payment Card Industry Data Security Standard
+
+  phases:
+    - phase: 1
+      name: Scoping
+      activities:
+        - Identify cardholder data environment (CDE)
+        - Map data flows for cardholder data
+        - Identify all system components in scope
+        - Determine assessment type (SAQ, RoC, Self-Assessment)
+        - Define segmentation validation approach
+      deliverables:
+        - CDE scope document
+        - Data flow diagrams
+        - System inventory in scope
+        - Segmentation test plan
+
+    - phase: 2
+      name: Assessment
+      activities:
+        - Review all 12 PCI DSS requirements (6 domains)
+        - Test controls through sampling (sufficient sample sizes per PCI SSC guidance)
+        - Interview personnel responsible for each requirement
+        - Review configurations and evidence
+        - Perform penetration testing (external and internal per Requirement 11.4)
+        - Validate segmentation controls
+      deliverables:
+        - Requirement-by-requirement assessment results
+        - Evidence collection package
+        - Penetration test reports
+        - ASV scan results
+
+    - phase: 3
+      name: Reporting
+      activities:
+        - Document compliance status (In Place, In Place with Remediation, Not In Place, Not Applicable)
+        - Complete Report on Compliance (RoC) or Self-Assessment Questionnaire (SAQ)
+        - Document compensating controls with justifications
+        - Attestation of Compliance (AoC) signed by QSA and merchant
+        - Submit to acquirer or payment brand as required
+      deliverables:
+        - Report on Compliance (RoC) or SAQ
+        - Attestation of Compliance (AoC)
+        - Compensating control worksheets
+        - Remediation tracker for non-compliant items
+
+    - phase: 4
+      name: Continuous Compliance
+      activities:
+        - Implement quarterly ASV scans
+        - Maintain segmentation validation
+        - Continuous monitoring of security controls
+        - Annual reassessment
+        - Change management for CDE modifications
+      deliverables:
+        - Quarterly scan reports
+        - Continuous monitoring plan
+        - Change management log
+
+soc2_audit:
+  name: SOC 2 Type II Audit Methodology
+  description: Examination of controls against AICPA Trust Services Criteria
+
+  trust_services_criteria:
+    - name: Security (Common Criteria - always required)
+      categories:
+        - CC1: Control Environment (COSO Principle 1-5)
+        - CC2: Communication and Information (COSO Principle 13-14)
+        - CC3: Risk Assessment (COSO Principle 6-9)
+        - CC4: Monitoring Activities (COSO Principle 16-17)
+        - CC5: Control Activities (COSO Principle 10-12)
+        - CC6: Logical and Physical Access Controls
+        - CC7: System Operations
+        - CC8: Change Management
+        - CC9: Risk Mitigation
+    - name: Availability (optional)
+      categories:
+        - A1: Availability, Capacity, Backup, and Recovery
+    - name: Processing Integrity (optional)
+      categories:
+        - PI1: Processing Integrity
+    - name: Confidentiality (optional)
+      categories:
+        - C1: Confidentiality Controls
+    - name: Privacy (optional)
+      categories:
+        - P1-P8: Privacy Controls (per GAPP)
+
+  audit_process:
+    - phase: 1
+      name: Scoping and Readiness
+      activities:
+        - Define TSCs in scope
+        - Define system boundary and description
+        - Conduct readiness assessment
+        - Identify and remediate control gaps
+      deliverables:
+        - System description
+        - Readiness assessment report
+        - Control gap remediation log
+
+    - phase: 2
+      name: Testing and Evidence Collection
+      activities:
+        - Test design of controls
+        - Test operating effectiveness over observation period
+        - Sample transaction populations for testing
+        - Interview control operators
+        - Review system-generated evidence
+      deliverables:
+        - Control test matrix
+        - Evidence package
+        - Exception/exceptions log
+
+    - phase: 3
+      name: Reporting
+      activities:
+        - Document control descriptions and test results
+        - Describe identified exceptions
+        - Assess exceptions for materiality
+        - Issue SOC 2 Type II report with auditor opinion
+      deliverables:
+        - SOC 2 Type II Report
+        - Auditor's opinion
+        - Management response letter
+        - Remediation plan for exceptions
+
+common_grc_tools:
+  - Archer (RSA)
+  - ServiceNow GRC
+  - MetricStream
+  - OneTrust (privacy management)
+  - LogicGate
+  - AuditBoard
+  - Hyperproof (continuous compliance)
+  - Vanta (automated SOC 2 / ISO 27001)
+  - Drata (compliance automation)

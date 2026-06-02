@@ -1,0 +1,71 @@
+# Dependencies
+node_modules/
+.python-venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Output directories
+outputs/*/generated/
+outputs/*/output/
+
+# Environment and secrets
+.env
+.env.local
+*.pem
+*.key
+credentials.json
+
+# Client data (sensitive)
+client-data/
+findings-data/
+evidence/
+*.pcap
+*.raw
+*.dd
+*.E01
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Test artifacts
+coverage/
+.nyc_output/
+test-results/
+*.tgz
+
+# Build artifacts
+dist/
+build/
+*.js.map
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.bak
+*.log
+
+# Python
+*.egg-info/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Docker
+.docker/
+
+# Misc
+*.zip
+*.tar.gz
+!examples/**/*.zip
